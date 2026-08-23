@@ -171,6 +171,50 @@ nothing — and the same run demonstrates it there, with Agent A writing "38.46%
 `volume_pct_change` of `38.458`. Both the degenerate terms and the three-word phrase floor
 are now pinned by mutation tests; restoring either mistake turns the suite red.
 
+## Numbers come from the engine, not from a model that saw one
+
+Node 5 is the first node allowed to see both slices, and everything downstream inherits
+what it asserts. Three checks run inside its repair loop, so a violation is handed back as
+a correction rather than counted as a failure at the end. The same functions score the run
+in `eval/validators.py`, so the results table is produced by the code that did the
+enforcing.
+
+| Metric | What it checks | Result |
+| --- | --- | --- |
+| 1 — numeric pass-through | every number traces to `stats/engine.py` | 1.000 over 104 numbers |
+| 2 — abstention | `insufficient_data` matches the significance verdict | 1.000 over 24 checks |
+| 3 — evidence binding | every claim cites a field that resolves | 1.000 over 90 references |
+
+The obvious way to write Metric 1 is wrong, and it took a live run to see why. "Never emit
+a number that is not in the supplied data" sounds airtight — but Node 4's agent prose *is*
+supplied data, and those agents round. Agent A wrote "38.46%" for a `volume_pct_change` of
+`38.458`; the exact value appears nowhere in its reply. A Node 5 citing 38.46 would satisfy
+the obvious rule while stating a number no engine computed, and the pipeline would report
+100% compliance while laundering a rounding through a language model. So the numeric
+authority is `trend_data.figures` alone. An agent's prose is an opinion about numbers, not
+a source of them.
+
+## The engine knew, and wasn't saying
+
+The first version of Node 5 narrated `-0.459%` as a decline. It was not hallucinating:
+nothing it received distinguished noise from signal, so it described every figure it was
+given. The cause was upstream — `linregress` returns a p-value and the engine was throwing
+it away, returning only the slope.
+
+Surfacing it is a one-line change with a disproportionate result. Requiring `p < 0.05`
+recovers the generator's hidden latent state **exactly, on all twelve cases**: both null
+cases contain no significant figure, and all ten cases carrying a real decline contain at
+least one. `insufficient_data` is therefore not a judgement call but a function of the
+statistics, and Metric 2 checks it as an equality.
+
+Both directions of that equality earn their place. The dangerous failure is narrating
+noise, and that is what the first version checked — but the live run then produced the
+opposite defect and walked straight past it. On `agree_02` the node wrote "there is a
+significant increase in brightness settings", cited the figure behind it, and set
+`insufficient_data` to true in the same reply. Not caution: a document that contradicts
+itself, of the kind Node 10 would hand to a clinician. Checking one direction had also left
+the metric with a denominator of 4 instead of 24.
+
 ## Layout
 
 ```
