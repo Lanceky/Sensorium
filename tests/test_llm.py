@@ -13,7 +13,7 @@ from types import SimpleNamespace
 import pytest
 
 from llm import client
-from sensorium import config, runlog, schemas
+from sensorium import config, prompts, runlog, schemas
 
 
 class ScriptedTransport:
@@ -142,7 +142,14 @@ def test_call_node_routes_the_model_and_temperature_from_the_registry(pinned_mod
     assert call["temperature"] == cfg.temperature
 
 
-def test_the_system_prompt_is_the_versioned_file(pinned_models, run_id):
+def test_the_system_prompt_opens_with_the_versioned_file(pinned_models, run_id):
+    """The design-doc wording must lead, verbatim and unedited.
+
+    The generated output contract is appended after it, so this is a prefix check rather
+    than equality: it still fails if a single character of the versioned prompt changes,
+    and additionally pins the order, since a schema dump ahead of the persona would bury
+    the instructions that shape the reply.
+    """
     from sensorium import prompts
 
     transport = ScriptedTransport(VALID_01)
@@ -150,7 +157,7 @@ def test_the_system_prompt_is_the_versioned_file(pinned_models, run_id):
 
     system = transport.calls[0]["messages"][0]
     assert system["role"] == "system"
-    assert system["content"] == prompts.load_prompt("node_01", "v1")
+    assert system["content"].startswith(prompts.load_prompt("node_01", "v1"))
 
 
 def test_the_run_log_records_the_routing_actually_used(pinned_models, run_id):
@@ -272,9 +279,13 @@ def test_a_bad_payload_fails_before_the_provider_is_touched(pinned_models, run_i
     assert runlog.list_runs() == []
 
 
-def test_unpinned_models_refuse_to_run(run_id):
-    """Without ``pinned_models`` the registry is still empty, and a node must not
-    silently fall back to some default model."""
+def test_an_unpinned_model_refuses_to_run(monkeypatch, run_id):
+    """A node must never silently fall back to a default model.
+
+    The registry is populated now, so the empty state is set up explicitly rather than
+    relied upon; the guard has to keep working for any size added later.
+    """
+    monkeypatch.setitem(config.MODEL_BY_SIZE, "small", "")
     transport = ScriptedTransport(VALID_01)
     with pytest.raises(config.ConfigError, match="not pinned yet"):
         client.call_node("node_01", _payload_01(), run_id=run_id, transport=transport)
@@ -345,3 +356,51 @@ def test_featherless_rejects_an_empty_completion(monkeypatch):
 def test_featherless_targets_the_configured_base_url():
     transport = client.FeatherlessTransport(api_key="test-key")
     assert transport.base_url == config.FEATHERLESS_BASE_URL == "https://api.featherless.ai/v1"
+
+
+# ---------------------------------------------------- the generated output contract
+
+
+def test_the_system_prompt_carries_the_output_schema(pinned_models, run_id):
+    """Without this the first live call returned prose: no prompt states its output shape."""
+    transport = ScriptedTransport(VALID_01)
+    client.call_node("node_01", _payload_01(), run_id=run_id, transport=transport)
+
+    system = transport.calls[0]["messages"][0]["content"]
+    assert '"message"' in system and '"done"' in system
+    assert '"additionalProperties": false' in system
+
+
+def test_the_verbatim_prompt_survives_alongside_the_contract(pinned_models, run_id):
+    """The design-doc wording is the deliverable; the contract is appended, not merged in."""
+    transport = ScriptedTransport(VALID_01)
+    client.call_node("node_01", _payload_01(), run_id=run_id, transport=transport)
+
+    system = transport.calls[0]["messages"][0]["content"]
+    assert prompts.load_prompt("node_01", "v1") in system
+
+
+def test_each_node_is_shown_its_own_contract(pinned_models, run_id):
+    """A node shown the wrong schema would be corrected toward the wrong shape."""
+    transport = ScriptedTransport('{"observations": []}')
+    client.call_node(
+        "node_02", {"conversation": []}, run_id=run_id, transport=transport
+    )
+
+    system = transport.calls[0]["messages"][0]["content"]
+    assert '"observations"' in system
+    assert '"done"' not in system
+
+
+def test_the_blind_agents_receive_identical_contracts(pinned_models, run_id):
+    """Node 4's agents share an output schema; differing contracts would confound them."""
+    assert schemas.contract_text(
+        client.output_schema_for("node_04a")
+    ) == schemas.contract_text(client.output_schema_for("node_04b"))
+
+
+def test_the_contract_names_no_schema_file(pinned_models, run_id):
+    """Leaking $id invites the model to echo filenames back as keys."""
+    transport = ScriptedTransport(VALID_01)
+    client.call_node("node_01", _payload_01(), run_id=run_id, transport=transport)
+    assert "node_01.output.json" not in transport.calls[0]["messages"][0]["content"]

@@ -113,3 +113,53 @@ def test_malformed_citation_uri_is_rejected(valid_fixtures):
     payload["suggestions"][0]["source_url"] = "not a url"
     with pytest.raises(schemas.SchemaError):
         schemas.validate("node_06.output.json", payload)
+
+
+# ------------------------------------------------- schema as prompt contract (Step 5.1)
+
+
+def test_contract_inlines_refs_so_enum_members_are_visible():
+    """A model shown {"$ref": "common.json#/$defs/modality"} has been told nothing."""
+    contract = schemas.contract_text("node_02.output.json")
+    assert "$ref" not in contract
+    assert '"vision"' in contract and '"hearing"' in contract and '"unclear"' in contract
+
+
+def test_contract_drops_schema_metadata():
+    """$id in particular invites the model to echo the filename back as a key."""
+    contract = schemas.contract_text("node_01.output.json")
+    assert "$schema" not in contract
+    assert "$id" not in contract
+    assert "node_01.output.json" not in contract
+
+
+def test_contract_keeps_the_constraints_that_are_enforced():
+    contract = schemas.contract_text("node_01.output.json")
+    assert '"message"' in contract and '"done"' in contract
+    assert '"required"' in contract
+    assert '"additionalProperties": false' in contract
+
+
+def test_every_node_schema_produces_a_self_contained_contract():
+    """Any unresolvable $ref would ship a placeholder to the model instead of a rule."""
+    for name in schemas.node_schema_names():
+        contract = schemas.contract_text(name)
+        assert "$ref" not in contract
+        assert "recursive reference" not in contract
+        json.loads(contract)
+
+
+def test_a_contract_is_a_valid_schema_for_its_own_instances(valid_fixtures):
+    """Inlining must preserve meaning, not just shape."""
+    for name, instance in valid_fixtures.items():
+        Draft202012Validator(json.loads(schemas.contract_text(name))).validate(instance)
+
+
+def test_unresolvable_ref_is_reported_rather_than_silently_dropped(monkeypatch):
+    monkeypatch.setattr(
+        schemas, "get_schema", lambda name: {"$ref": "common.json#/$defs/nonexistent"}
+    )
+    schemas.contract_text.cache_clear()
+    with pytest.raises(schemas.SchemaError, match="does not resolve"):
+        schemas.contract_text("node_01.output.json")
+    schemas.contract_text.cache_clear()
