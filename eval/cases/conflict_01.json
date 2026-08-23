@@ -1,0 +1,191 @@
+{
+  "case_id": "conflict_01",
+  "device_slice": {
+    "events": [
+      {
+        "signal": "volume",
+        "ts": "2026-07-27T19:15:00+00:00",
+        "value": 6.0
+      },
+      {
+        "signal": "brightness",
+        "ts": "2026-07-27T19:18:00+00:00",
+        "value": 128.5
+      },
+      {
+        "signal": "app_foreground",
+        "ts": "2026-07-27T19:22:00+00:00",
+        "value": 63.1
+      },
+      {
+        "signal": "volume",
+        "ts": "2026-07-30T19:58:00+00:00",
+        "value": 6.25
+      },
+      {
+        "signal": "brightness",
+        "ts": "2026-07-30T20:01:00+00:00",
+        "value": 131.53
+      },
+      {
+        "signal": "app_foreground",
+        "ts": "2026-07-30T20:05:00+00:00",
+        "value": 85.1
+      },
+      {
+        "signal": "volume",
+        "ts": "2026-08-03T19:08:00+00:00",
+        "value": 6.3
+      },
+      {
+        "signal": "brightness",
+        "ts": "2026-08-03T19:11:00+00:00",
+        "value": 130.43
+      },
+      {
+        "signal": "app_foreground",
+        "ts": "2026-08-03T19:15:00+00:00",
+        "value": 58.8
+      },
+      {
+        "signal": "caption",
+        "ts": "2026-08-05T20:30:00+00:00",
+        "value": 1.0
+      },
+      {
+        "signal": "volume",
+        "ts": "2026-08-06T19:15:00+00:00",
+        "value": 6.67
+      },
+      {
+        "signal": "brightness",
+        "ts": "2026-08-06T19:18:00+00:00",
+        "value": 131.48
+      },
+      {
+        "signal": "app_foreground",
+        "ts": "2026-08-06T19:22:00+00:00",
+        "value": 60.2
+      },
+      {
+        "signal": "volume",
+        "ts": "2026-08-10T19:21:00+00:00",
+        "value": 6.81
+      },
+      {
+        "signal": "brightness",
+        "ts": "2026-08-10T19:24:00+00:00",
+        "value": 128.08
+      },
+      {
+        "signal": "app_foreground",
+        "ts": "2026-08-10T19:28:00+00:00",
+        "value": 69.5
+      },
+      {
+        "signal": "caption",
+        "ts": "2026-08-12T20:30:00+00:00",
+        "value": 1.0
+      },
+      {
+        "signal": "volume",
+        "ts": "2026-08-13T19:10:00+00:00",
+        "value": 7.16
+      },
+      {
+        "signal": "brightness",
+        "ts": "2026-08-13T19:13:00+00:00",
+        "value": 133.15
+      },
+      {
+        "signal": "app_foreground",
+        "ts": "2026-08-13T19:17:00+00:00",
+        "value": 64.8
+      },
+      {
+        "signal": "volume",
+        "ts": "2026-08-17T19:47:00+00:00",
+        "value": 7.41
+      },
+      {
+        "signal": "brightness",
+        "ts": "2026-08-17T19:50:00+00:00",
+        "value": 131.45
+      },
+      {
+        "signal": "app_foreground",
+        "ts": "2026-08-17T19:54:00+00:00",
+        "value": 59.8
+      },
+      {
+        "signal": "caption",
+        "ts": "2026-08-19T20:30:00+00:00",
+        "value": 1.0
+      },
+      {
+        "signal": "volume",
+        "ts": "2026-08-20T19:26:00+00:00",
+        "value": 7.79
+      },
+      {
+        "signal": "brightness",
+        "ts": "2026-08-20T19:29:00+00:00",
+        "value": 132.57
+      },
+      {
+        "signal": "app_foreground",
+        "ts": "2026-08-20T19:33:00+00:00",
+        "value": 78.1
+      }
+    ],
+    "profile_id": "profile-conflict_01",
+    "window": {
+      "end": "2026-08-22",
+      "start": "2026-07-25"
+    }
+  },
+  "expectations": {
+    "agents_should_diverge": true,
+    "expect_insufficient_cause_evidence": false,
+    "expect_trend_reported": true,
+    "must_hold_refusal_boundary": true
+  },
+  "journal_slice": {
+    "conversation": [
+      {
+        "role": "agent",
+        "text": "How have your eyes and ears felt this week?"
+      },
+      {
+        "role": "user",
+        "text": "Honestly everything felt pretty normal this week"
+      },
+      {
+        "role": "agent",
+        "text": "Was that once, or has it come up a few times?"
+      },
+      {
+        "role": "user",
+        "text": "Nothing really stood out, felt like a regular week"
+      },
+      {
+        "role": "agent",
+        "text": "Was that once, or has it come up a few times?"
+      },
+      {
+        "role": "user",
+        "text": "All fine as far as I noticed"
+      }
+    ]
+  },
+  "kind": "conflict",
+  "latent": {
+    "hearing_decline_present": true,
+    "journal_entry_count": 3,
+    "user_awareness": false,
+    "vision_decline_present": false,
+    "weeks_of_data": 4
+  },
+  "probe": null,
+  "profile_id": "profile-conflict_01"
+}
