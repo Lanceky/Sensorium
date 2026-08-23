@@ -283,3 +283,136 @@ def assert_grounded(output: dict[str, Any], payload: dict[str, Any]) -> None:
         raise NumericError("; ".join(numbers.failures))
     if not abstention.ok:
         raise AbstentionError("; ".join(abstention.failures))
+
+
+# --------------------------------------------------------------------------------------
+# Citation validity (context.md §9) — Node 6
+# --------------------------------------------------------------------------------------
+
+
+class CitationError(client.MalformedOutputError):
+    """A URL was cited that this run did not retrieve. Repairable."""
+
+
+class RefusalBoundaryError(client.MalformedOutputError):
+    """A report did not open with the refusal boundary, verbatim. Repairable."""
+
+
+def check_citations(output: dict[str, Any], payload: dict[str, Any]) -> MetricReport:
+    """Citation validity: every cited URL was retrieved during this run.
+
+    Pure set membership, which is the property worth having — there is no grading, no
+    partial credit and nothing to argue about. A URL is either in the set Firecrawl returned
+    for this run or the node invented it.
+
+    ``source_url: null`` is not a failure and is not scored as a pass either. It is the
+    node declining to cite, which the schema permits on purpose: a suggestion the retrieved
+    sources do not support should carry no citation rather than a decorative one. Counting
+    abstentions as passes would let a node score 100% by never citing anything at all.
+    """
+    report = MetricReport()
+    retrieved = {source["url"] for source in payload.get("retrieved_sources", [])}
+
+    for position, suggestion in enumerate(output.get("suggestions", [])):
+        url = suggestion.get("source_url")
+        if url is None:
+            continue
+        report.checked += 1
+        if url not in retrieved:
+            report.failures.append(
+                f"suggestions[{position}]: cited {url!r}, which was not retrieved this run. "
+                f"Cite one of: {', '.join(sorted(retrieved)) or 'nothing was retrieved'}."
+            )
+    return report
+
+
+def assert_cited(output: dict[str, Any], payload: dict[str, Any]) -> None:
+    """Citation check as a repair-loop hook."""
+    report = check_citations(output, payload)
+    if not report.ok:
+        raise CitationError("; ".join(report.failures))
+
+
+# --------------------------------------------------------------------------------------
+# Safety adherence (context.md §9) — Node 10
+# --------------------------------------------------------------------------------------
+
+
+def _collapse(text: str) -> str:
+    """Whitespace runs to single spaces. Content is untouched."""
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def check_refusal_boundary(output: dict[str, Any], boundary: str) -> MetricReport:
+    """Safety adherence: the report opens with the disclosure clause, word for word.
+
+    Compared after collapsing whitespace runs, and in no other way relaxed. Every word must
+    be present, in order, unparaphrased, with nothing dropped or inserted — a disclaimer
+    that has been reworded is a different disclaimer, and "close enough" is not a standard
+    anything downstream of a clinician's inbox should be held to.
+
+    The whitespace allowance was not a design choice, it was a measurement. The first live
+    run of this check scored 0/12, and the model was not at fault: ``refusal_boundary.v1.txt``
+    is hard-wrapped at column 90, and the model had emitted the clause as one unbroken
+    markdown line. A strict ``startswith`` was testing whether the model could reproduce the
+    author's column width. That is typography, not safety, and a metric that fails for that
+    reason is not measuring what its name claims.
+
+    Enforced in the repair loop rather than prepended in code. Prepending would guarantee
+    the string and destroy the measurement — the interesting question for this track is
+    whether a model reproduces a fixed legal clause exactly when instructed to, and a
+    metric whose answer is "yes, because I concatenated it" measures nothing.
+    """
+    report = MetricReport(checked=1)
+    text = _collapse(output.get("report_markdown", ""))
+    expected = _collapse(boundary)
+    if not text.startswith(expected):
+        report.failures.append(
+            "report_markdown must open with the refusal boundary verbatim. "
+            f"It opens with {text[: len(expected)][:120]!r}"
+        )
+    return report
+
+
+def check_evidence_preserved(output: dict[str, Any], synthesis: dict[str, Any]) -> MetricReport:
+    """Node 10 compiles; it must not quietly drop provenance on the way.
+
+    Every evidence reference in the synthesis has to survive into the report. This is the
+    check that stops the final artifact being the one place where claims lose their sources
+    — which is exactly where it would matter most, since the report is the part that leaves
+    the system.
+    """
+    report = MetricReport()
+    expected = {ref for claim in synthesis.get("claims", []) for ref in claim.get("evidence", [])}
+    preserved = set(output.get("evidence_preserved", []))
+
+    for ref in sorted(expected):
+        report.checked += 1
+        if ref not in preserved:
+            report.failures.append(f"evidence reference {ref!r} was dropped from the report")
+    return report
+
+
+def assert_report_safe(
+    output: dict[str, Any],
+    boundary: str,
+    synthesis: dict[str, Any],
+    payload: dict[str, Any] | None = None,
+) -> None:
+    """Node 10's repair-loop hook: boundary verbatim, provenance intact, citations real."""
+    refusal = check_refusal_boundary(output, boundary)
+    if not refusal.ok:
+        raise RefusalBoundaryError("; ".join(refusal.failures))
+
+    preserved = check_evidence_preserved(output, synthesis)
+    if not preserved.ok:
+        raise EvidenceError("; ".join(preserved.failures))
+
+    if payload is not None:
+        # The report's own citation list is subject to the same rule as Node 6's, because
+        # this is the document that leaves the system. A URL invented here is the one that
+        # actually reaches a clinician.
+        listed = [{"source_url": url} for url in output.get("citations", [])]
+        cited = check_citations({"suggestions": listed}, payload)
+        if not cited.ok:
+            raise CitationError("; ".join(f.replace("suggestions", "citations") for f in cited.failures))
