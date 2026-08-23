@@ -46,6 +46,7 @@ class Call:
     latency_ms: int
     ts: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
     error: str | None = None
+    attempt: int = 1
 
     def payload_text(self) -> str:
         """The input payload as a JSON string, for substring containment checks."""
@@ -71,6 +72,7 @@ def log_call(
     raw_output: Any,
     latency_ms: int,
     error: str | None = None,
+    attempt: int = 1,
 ) -> Call:
     """Append one call to the run log and return it."""
     call = Call(
@@ -83,6 +85,7 @@ def log_call(
         raw_output=raw_output,
         latency_ms=latency_ms,
         error=error,
+        attempt=attempt,
     )
     directory = run_dir(run_id)
     directory.mkdir(parents=True, exist_ok=True)
@@ -99,6 +102,7 @@ def timed_call(
     temperature: float,
     prompt_version: str,
     input_payload: Any,
+    attempt: int = 1,
 ) -> Iterator[dict[str, Any]]:
     """Time a node invocation and log it, including when it raises.
 
@@ -106,8 +110,13 @@ def timed_call(
 
         with timed_call(rid, "node_05", model, 0.0, "v1", payload) as slot:
             slot["raw_output"] = call_model(...)
+
+    A caller that handles its own failure — a repair retry, which recovers rather than
+    raises — records why the attempt was rejected by setting ``slot["error"]``. Without
+    that, a repaired attempt would be logged as a success and the iteration log would
+    lose the evidence that a repair was needed at all.
     """
-    slot: dict[str, Any] = {"raw_output": None}
+    slot: dict[str, Any] = {"raw_output": None, "error": None}
     started = time.perf_counter()
     try:
         yield slot
@@ -115,11 +124,13 @@ def timed_call(
         log_call(
             run_id, node, model, temperature, prompt_version, input_payload,
             slot.get("raw_output"), int((time.perf_counter() - started) * 1000), repr(exc),
+            attempt,
         )
         raise
     log_call(
         run_id, node, model, temperature, prompt_version, input_payload,
         slot.get("raw_output"), int((time.perf_counter() - started) * 1000),
+        slot.get("error"), attempt,
     )
 
 
@@ -137,15 +148,23 @@ def load_calls(run_id: str, node: str | None = None) -> list[Call]:
 
 
 def load_call(run_id: str, node: str) -> Call:
-    """The single call for ``node``; raises if absent or ambiguous."""
+    """The authoritative call for ``node``: its final attempt.
+
+    A node that needed a repair retry has more than one logged attempt; the last one is
+    the output that flowed downstream, so that is what independence and fidelity checks
+    must inspect. Raises if the node is absent, or if it genuinely ran twice in one run
+    (duplicate attempt numbers), which no downstream check can disambiguate.
+    """
     calls = load_calls(run_id, node)
     if not calls:
         raise RunLogError(f"run {run_id} has no call for node {node!r}")
-    if len(calls) > 1:
+    attempts = [c.attempt for c in calls]
+    if len(set(attempts)) != len(attempts):
         raise RunLogError(
-            f"run {run_id} has {len(calls)} calls for node {node!r}; use load_calls()"
+            f"run {run_id} has {len(calls)} calls for node {node!r} with repeated attempt "
+            f"numbers {sorted(attempts)}; use load_calls()"
         )
-    return calls[0]
+    return max(calls, key=lambda c: c.attempt)
 
 
 def list_runs() -> list[str]:
