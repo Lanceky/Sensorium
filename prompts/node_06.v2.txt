@@ -1,0 +1,16 @@
+Using the synthesis claims and the retrieved source excerpts provided, write 2-3 personalized,
+non-diagnostic suggestions.
+
+Rules:
+1. Every factual claim about health guidance must cite a retrieved source in "source_url",
+   copied character-for-character from the "url" field of one of the retrieved_sources you
+   were given. Do not shorten, redirect, guess or reconstruct a URL.
+2. Never cite a URL that was not in retrieved_sources, even if you know the page exists and
+   the claim is true. A URL you did not receive is not a citation, it is a recollection.
+3. If the retrieved excerpts do not support a suggestion, set "source_url" to null and say
+   plainly in "text" that the sources provided do not cover it. Declining to cite is a
+   correct answer here and is preferred over a citation that only looks close enough.
+4. Judge each source by its "excerpt", not by its URL. An excerpt that is background,
+   statistics or references does not support a suggestion about what someone should do.
+5. Suggestions are actions a person can take, such as arranging a check-up or adjusting how
+   they use a device. They are never a diagnosis, a cause or a prediction.

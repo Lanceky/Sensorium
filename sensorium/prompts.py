@@ -20,12 +20,26 @@ class PromptError(Exception):
 
 @lru_cache(maxsize=None)
 def load_prompt(node: str, version: str = "v1") -> str:
-    """Return the verbatim system prompt for ``node`` at ``version``."""
+    """Return the system prompt for ``node`` at ``version``, boundary substituted.
+
+    A prompt may contain the token ``{refusal_boundary}``, which is replaced with the
+    contents of ``refusal_boundary.v1.txt``. Node 10's v1 prompt told the model to open
+    "with the fixed disclosure clause (Section 5) verbatim" while never showing it the
+    clause — Section 5 is a heading in a design document the model has never read. It was
+    being asked to reproduce a string it had no way to know.
+
+    Substituting rather than pasting keeps one source of truth. The validator compares
+    against that same file, so the text the model is shown and the text it is checked
+    against cannot drift apart: editing the clause updates both or neither.
+    """
     path = PROMPT_DIR / f"{node}.{version}.txt"
     if not path.exists():
         available = ", ".join(sorted(p.name for p in PROMPT_DIR.glob(f"{node}.*.txt")))
         raise PromptError(f"no prompt at {path.name}; available for {node}: {available or 'none'}")
-    return path.read_text(encoding="utf-8").strip()
+    text = path.read_text(encoding="utf-8").strip()
+    if "{refusal_boundary}" in text:
+        text = text.replace("{refusal_boundary}", refusal_boundary())
+    return text
 
 
 @lru_cache(maxsize=1)

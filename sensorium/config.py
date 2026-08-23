@@ -111,14 +111,14 @@ REGISTRY: dict[str, NodeConfig] = {
         node="node_06",
         size="mid",
         temperature=0.3,
-        prompt_version="v1",
+        prompt_version="v2",
         rationale="Phrasing variety is acceptable; citations are constrained by the validator.",
     ),
     "node_10": NodeConfig(
         node="node_10",
         size="mid",
         temperature=0.0,
-        prompt_version="v1",
+        prompt_version="v2",
         rationale="Compilation, not generation; provenance must survive verbatim.",
     ),
 }

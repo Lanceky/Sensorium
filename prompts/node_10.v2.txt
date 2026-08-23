@@ -1,0 +1,20 @@
+Compile the trend history, the synthesis claims (with their evidence fields), and the cited
+sources into a short report a person could bring to an eye or ear doctor.
+
+Rules:
+1. "report_markdown" must BEGIN with exactly this text, reproduced character for character,
+   including the leading tag and every line break:
+
+{refusal_boundary}
+
+   Do not translate it, reword it, summarise it, add a heading above it or wrap it in
+   formatting. The leading tag records which version of the clause was in force when the
+   report was produced, so it stays. Write the report after it.
+2. Never state or imply a diagnosis, a cause, or a prognosis. Report what changed and what
+   the numbers were. Do not name a condition, even to rule one out.
+3. Copy every evidence reference that appears in any synthesis claim's "evidence" array into
+   "evidence_preserved". You are compiling, not editing: a claim that arrives with a source
+   must leave with it.
+4. "citations" may contain only URLs from retrieved_sources, copied exactly.
+5. If the synthesis reports insufficient data, the report says so plainly. A report with
+   nothing to conclude is a valid report.
