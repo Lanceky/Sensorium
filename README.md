@@ -29,9 +29,35 @@ nearly free later:
 | No number without provenance | Node 3's `figures` registry is the only origin; `figures_cited[].key` must resolve to it (Step 7) |
 | No fabricated citation | `source_url` must appear in that run's Firecrawl results (Step 8) |
 | Safety boundary holds under pressure | One versioned string in `prompts/refusal_boundary.v1.txt`, asserted byte-for-byte (Step 8) |
+| Agent disagreement is real, not authored | Both slices derived from a declared `LatentState` by projections that never see the case kind (Step 2) |
 
 Deterministic nodes are named as such in `sensorium/config.py` and never routed to a
 model — no step pretends to be an LLM task that isn't one.
+
+## The evaluation set
+
+`eval/cases/` holds 12 committed cases — 3 agreeing, 3 conflicting, 2 sparse, 2 null,
+2 adversarial — generated from a declared latent truth rather than written by hand:
+
+```
+LatentState  ->  device slice   (what the phone measured)
+             ->  journal slice  (what the person said)
+```
+
+`user_awareness` is the pivot. A real decline the user *hasn't* noticed produces a journal
+that honestly reads as "everything's fine", so the two agents genuinely conflict without
+anyone scripting it.
+
+Independence is enforced at generation time on two levels: the slices share no top-level
+key, and journal text carries **no device vocabulary and no digits**. The second matters
+most — a journal entry saying *"I turned the volume up to 9"* would hand the narrative
+agent a measurement, so the agents would agree from shared tokens rather than from the
+underlying state.
+
+```bash
+python -m eval.generator           # regenerate and write
+python -m eval.generator --check   # verify committed cases match the generator
+```
 
 ## Layout
 
@@ -43,7 +69,7 @@ nodes/        One module per node                      (Steps 4-8)
 llm/          Featherless client + repair retry        (Step 3)
 stats/        Wolfram|One client, scipy fallback       (Step 4)
 retrieval/    Firecrawl client + response cache        (Step 8)
-eval/         Ground-truth generator, validators, harness, baseline  (Steps 2, 7, 9)
+eval/         generator.py + cases/ · validators, harness, baseline  (Steps 7, 9)
 runs/         Append-only call logs — the submission's evidence
 tests/        Contract tests + hand-written fixtures
 ```
@@ -76,7 +102,7 @@ cannot be reconstructed once a prompt file is overwritten.
 ## Build status
 
 - [x] **Step 1** — contracts, config, run log
-- [ ] Step 2 — latent ground-truth generator (12 cases)
+- [x] **Step 2** — latent ground-truth generator (12 cases)
 - [ ] Step 3 — Featherless client and model registry *(pins `MODEL_BY_SIZE`)*
 - [ ] Step 4 — Node 3 statistics engine and number registry
 - [ ] Step 5 — Nodes 1 and 2
