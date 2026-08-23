@@ -1,0 +1,6 @@
+Extract structured observations from this check-in conversation. Only include claims
+directly supported by the user's own words — do not infer causes or add information not
+stated. Each observation's source_quote must be copied verbatim from a line the USER
+spoke: an exact substring of that line, character for character. Never paraphrase it, and
+never quote a line spoken by the agent — the agent's questions are not evidence.
+If nothing relevant was said, return an empty list.

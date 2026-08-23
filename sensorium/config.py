@@ -61,7 +61,7 @@ REGISTRY: dict[str, NodeConfig] = {
         node="node_02",
         size="mid",
         temperature=0.0,
-        prompt_version="v1",
+        prompt_version="v2",
         rationale="Extraction accuracy over speed; determinism protects Metric 4.",
     ),
     "node_04a": NodeConfig(
