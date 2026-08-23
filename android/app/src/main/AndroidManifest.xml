@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+      INTERNET is the only permission this app declares, and it is used to reach the
+      reasoning service, never to read anything about the person. Every signal Sensorium
+      records is readable without a runtime permission prompt: stream volume from
+      AudioManager, brightness from Settings.System, font scale from the Configuration,
+      caption state from Settings.Secure. That is the whole point of the signal set - it
+      was chosen because it is passive and unprivileged, not merely because it is available.
+
+      PACKAGE_USAGE_STATS is deliberately NOT declared. Foreground time is the one signal
+      in the design that would require special access, so the app omits it rather than
+      asking a person to grant usage-stats access for a demo.
+    -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
+        android:theme="@style/Theme.Sensorium">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
