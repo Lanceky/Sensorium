@@ -1,4 +1,0 @@
-Extract structured observations from this check-in conversation. Only include claims
-directly supported by the user's own words — do not infer causes or add information not
-stated. Each observation must quote or closely paraphrase the specific line it came from.
-If nothing relevant was said, return an empty list.

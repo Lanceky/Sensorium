@@ -1,5 +1,0 @@
-Using the synthesis claims and the retrieved source excerpts provided, write 2-3 personalized,
-non-diagnostic suggestions. Every factual claim about health guidance must cite a specific
-retrieved source by URL. Never cite a URL that was not included in the retrieved sources you
-were given. If retrieved sources don't cover the situation, say so rather than filling the
-gap from general knowledge.

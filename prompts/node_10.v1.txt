@@ -1,4 +1,0 @@
-Compile the trend history, the synthesis claims (with their evidence fields), and cited
-sources into a short report a person could bring to an eye or ear doctor. Begin with the
-fixed disclosure clause (Section 5, refusal boundary) verbatim. Never state or imply a
-diagnosis. Preserve all evidence citations from the synthesis input.
