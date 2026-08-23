@@ -1,49 +1,90 @@
 {
   "node_00.output.json": {
     "profile_id": "household-1-adult",
-    "window": { "start": "2026-08-01", "end": "2026-08-22" },
+    "window": {
+      "start": "2026-08-01",
+      "end": "2026-08-22"
+    },
     "events": [
-      { "ts": "2026-08-01T19:04:00Z", "signal": "volume", "value": 7 },
-      { "ts": "2026-08-09T20:44:00Z", "signal": "volume", "value": 8 },
-      { "ts": "2026-08-14T20:11:00Z", "signal": "volume", "value": 9 },
-      { "ts": "2026-08-18T21:30:00Z", "signal": "caption", "value": 1 },
-      { "ts": "2026-08-22T21:02:00Z", "signal": "brightness_mode", "value": 0 }
+      {
+        "ts": "2026-08-01T19:04:00Z",
+        "signal": "volume",
+        "value": 7
+      },
+      {
+        "ts": "2026-08-09T20:44:00Z",
+        "signal": "volume",
+        "value": 8
+      },
+      {
+        "ts": "2026-08-14T20:11:00Z",
+        "signal": "volume",
+        "value": 9
+      },
+      {
+        "ts": "2026-08-18T21:30:00Z",
+        "signal": "caption",
+        "value": 1
+      },
+      {
+        "ts": "2026-08-22T21:02:00Z",
+        "signal": "brightness_mode",
+        "value": 0
+      }
     ]
   },
-
   "node_0_5.input.json": {
     "sessions": [
-      { "date": "2026-07-11", "step_reached": 4, "modality": "hearing" },
-      { "date": "2026-08-01", "step_reached": 4, "modality": "hearing" },
-      { "date": "2026-08-22", "step_reached": 6, "modality": "hearing" }
+      {
+        "date": "2026-07-11",
+        "step_reached": 4,
+        "modality": "hearing"
+      },
+      {
+        "date": "2026-08-01",
+        "step_reached": 4,
+        "modality": "hearing"
+      },
+      {
+        "date": "2026-08-22",
+        "step_reached": 6,
+        "modality": "hearing"
+      }
     ]
   },
-
   "node_0_5.output.json": {
     "direction": "declined",
     "steps_moved": 2,
     "session_count": 3
   },
-
   "node_01.input.json": {
     "user_reply": "I asked my roommate to repeat something twice yesterday",
     "turn": 2
   },
-
   "node_01.output.json": {
     "message": "Was that in a quiet room or somewhere noisy?",
     "done": false
   },
-
   "node_02.input.json": {
     "conversation": [
-      { "role": "agent", "text": "How have your eyes and ears felt this week?" },
-      { "role": "user", "text": "Fine mostly, but I asked my roommate to repeat something twice yesterday." },
-      { "role": "agent", "text": "Was that in a quiet room or somewhere noisy?" },
-      { "role": "user", "text": "Quiet room, just the two of us." }
+      {
+        "role": "agent",
+        "text": "How have your eyes and ears felt this week?"
+      },
+      {
+        "role": "user",
+        "text": "Fine mostly, but I asked my roommate to repeat something twice yesterday."
+      },
+      {
+        "role": "agent",
+        "text": "Was that in a quiet room or somewhere noisy?"
+      },
+      {
+        "role": "user",
+        "text": "Quiet room, just the two of us."
+      }
     ]
   },
-
   "node_02.output.json": {
     "observations": [
       {
@@ -56,47 +97,84 @@
         "source_quote": "Quiet room, just the two of us.",
         "modality": "hearing"
       }
+    ],
+    "no_symptom_statements": [
+      {
+        "source_quote": "Otherwise everything felt pretty normal this week",
+        "modality": "unclear"
+      }
     ]
   },
-
   "node_03.input.json": {
     "signals": {
       "profile_id": "household-1-adult",
-      "window": { "start": "2026-08-01", "end": "2026-08-22" },
+      "window": {
+        "start": "2026-08-01",
+        "end": "2026-08-22"
+      },
       "events": [
-        { "ts": "2026-08-01T19:04:00Z", "signal": "volume", "value": 7 },
-        { "ts": "2026-08-14T20:11:00Z", "signal": "volume", "value": 9 }
+        {
+          "ts": "2026-08-01T19:04:00Z",
+          "signal": "volume",
+          "value": 7
+        },
+        {
+          "ts": "2026-08-14T20:11:00Z",
+          "signal": "volume",
+          "value": 9
+        }
       ]
     },
     "self_check": {
       "sessions": [
-        { "date": "2026-08-01", "step_reached": 4, "modality": "hearing" },
-        { "date": "2026-08-22", "step_reached": 6, "modality": "hearing" }
+        {
+          "date": "2026-08-01",
+          "step_reached": 4,
+          "modality": "hearing"
+        },
+        {
+          "date": "2026-08-22",
+          "step_reached": 6,
+          "modality": "hearing"
+        }
       ]
     },
     "window_weeks": 3
   },
-
   "node_03.output.json": {
     "figures": {
-      "volume_pct_change_3w": { "value": 14.2, "unit": "%", "method": "linear_regression" },
-      "caption_toggle_rate": { "value": 0.31, "unit": "ratio", "method": "event_rate" },
-      "changepoint_week": { "value": 3, "unit": "week", "method": "changepoint_detection" }
+      "volume_pct_change_3w": {
+        "value": 14.2,
+        "unit": "%",
+        "method": "linear_regression"
+      },
+      "caption_toggle_rate": {
+        "value": 0.31,
+        "unit": "ratio",
+        "method": "event_rate"
+      },
+      "changepoint_week": {
+        "value": 3,
+        "unit": "week",
+        "method": "changepoint_detection"
+      }
     },
     "window_weeks": 3,
     "sufficient_data": true
   },
-
   "node_04a.input.json": {
     "trend_data": {
       "figures": {
-        "volume_pct_change_3w": { "value": 14.2, "unit": "%", "method": "linear_regression" }
+        "volume_pct_change_3w": {
+          "value": 14.2,
+          "unit": "%",
+          "method": "linear_regression"
+        }
       },
       "window_weeks": 3,
       "sufficient_data": true
     }
   },
-
   "node_04b.input.json": {
     "observations": {
       "observations": [
@@ -105,10 +183,10 @@
           "source_quote": "I asked my roommate to repeat something twice yesterday",
           "modality": "hearing"
         }
-      ]
+      ],
+      "no_symptom_statements": []
     }
   },
-
   "node_04.output.json": {
     "interpretation": "Media volume rose steadily across the observed window with no plateau.",
     "unknowns": [
@@ -116,19 +194,26 @@
       "whether listening environments became noisier"
     ]
   },
-
   "node_05.input.json": {
     "agent_a": {
       "interpretation": "Media volume rose steadily across the observed window.",
-      "unknowns": ["whether the user has noticed any change"]
+      "unknowns": [
+        "whether the user has noticed any change"
+      ]
     },
     "agent_b": {
       "interpretation": "One report of needing repetition in a quiet room.",
-      "unknowns": ["whether device volume behaviour changed"]
+      "unknowns": [
+        "whether device volume behaviour changed"
+      ]
     },
     "trend_data": {
       "figures": {
-        "volume_pct_change_3w": { "value": 14.2, "unit": "%", "method": "linear_regression" }
+        "volume_pct_change_3w": {
+          "value": 14.2,
+          "unit": "%",
+          "method": "linear_regression"
+        }
       },
       "window_weeks": 3,
       "sufficient_data": true
@@ -140,40 +225,61 @@
           "source_quote": "I asked my roommate to repeat something twice yesterday",
           "modality": "hearing"
         }
-      ]
+      ],
+      "no_symptom_statements": []
     }
   },
-
   "node_05.output.json": {
     "claims": [
       {
         "text": "Media volume increased over the last three weeks.",
-        "evidence": ["trend_data.figures.volume_pct_change_3w"]
+        "evidence": [
+          "trend_data.figures.volume_pct_change_3w"
+        ]
       },
       {
         "text": "One self-reported instance of needing repetition in a quiet room.",
-        "evidence": ["observations.observations[0]"]
+        "evidence": [
+          "observations.observations[0]"
+        ]
       }
     ],
-    "figures_cited": [{ "key": "volume_pct_change_3w", "value": 14.2 }],
+    "figures_cited": [
+      {
+        "key": "volume_pct_change_3w",
+        "value": 14.2
+      }
+    ],
     "agreement": "Both slices point in the same direction for hearing comfort.",
     "disagreement": null,
-    "confidence": { "trend": "high", "cause": "low" },
+    "confidence": {
+      "trend": "high",
+      "cause": "low"
+    },
     "insufficient_data": false
   },
-
   "node_06.input.json": {
     "synthesis": {
       "claims": [
         {
           "text": "Media volume increased over the last three weeks.",
-          "evidence": ["trend_data.figures.volume_pct_change_3w"]
+          "evidence": [
+            "trend_data.figures.volume_pct_change_3w"
+          ]
         }
       ],
-      "figures_cited": [{ "key": "volume_pct_change_3w", "value": 14.2 }],
+      "figures_cited": [
+        {
+          "key": "volume_pct_change_3w",
+          "value": 14.2
+        }
+      ],
       "agreement": "Both slices point in the same direction.",
       "disagreement": null,
-      "confidence": { "trend": "high", "cause": "low" },
+      "confidence": {
+        "trend": "high",
+        "cause": "low"
+      },
       "insufficient_data": false
     },
     "retrieved_sources": [
@@ -183,7 +289,6 @@
       }
     ]
   },
-
   "node_06.output.json": {
     "suggestions": [
       {
@@ -196,11 +301,14 @@
       }
     ]
   },
-
   "node_10.input.json": {
     "trend_data": {
       "figures": {
-        "volume_pct_change_3w": { "value": 14.2, "unit": "%", "method": "linear_regression" }
+        "volume_pct_change_3w": {
+          "value": 14.2,
+          "unit": "%",
+          "method": "linear_regression"
+        }
       },
       "window_weeks": 3,
       "sufficient_data": true
@@ -209,13 +317,23 @@
       "claims": [
         {
           "text": "Media volume increased over the last three weeks.",
-          "evidence": ["trend_data.figures.volume_pct_change_3w"]
+          "evidence": [
+            "trend_data.figures.volume_pct_change_3w"
+          ]
         }
       ],
-      "figures_cited": [{ "key": "volume_pct_change_3w", "value": 14.2 }],
+      "figures_cited": [
+        {
+          "key": "volume_pct_change_3w",
+          "value": 14.2
+        }
+      ],
       "agreement": "Both slices agree.",
       "disagreement": null,
-      "confidence": { "trend": "high", "cause": "low" },
+      "confidence": {
+        "trend": "high",
+        "cause": "low"
+      },
       "insufficient_data": false
     },
     "retrieved_sources": [
@@ -225,10 +343,13 @@
       }
     ]
   },
-
   "node_10.output.json": {
     "report_markdown": "[refusal_boundary v1] This is self-reported, non-clinical information...\n\n## Observed trends\n- Media volume increased over the last three weeks.",
-    "citations": ["https://www.who.int/news-room/fact-sheets/detail/deafness-and-hearing-loss"],
-    "evidence_preserved": ["trend_data.figures.volume_pct_change_3w"]
+    "citations": [
+      "https://www.who.int/news-room/fact-sheets/detail/deafness-and-hearing-loss"
+    ],
+    "evidence_preserved": [
+      "trend_data.figures.volume_pct_change_3w"
+    ]
   }
 }

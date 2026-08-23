@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "node_02.output.json",
   "title": "Node 2 - Journal Signal Extractor output",
-  "description": "source_quote must be a literal substring of the conversation. Enforced in code at Step 5, not by this schema.",
+  "description": "source_quote must be a literal substring of a USER turn. Enforced in code at Step 5, not by this schema. no_symptom_statements exists because an absence of observations and an affirmative report of no difficulty are different facts, and an empty observations list cannot tell them apart.",
   "type": "object",
   "properties": {
     "observations": {
@@ -17,8 +17,21 @@
         "required": ["claim", "source_quote", "modality"],
         "additionalProperties": false
       }
+    },
+    "no_symptom_statements": {
+      "description": "User turns that affirmatively report noticing no difficulty. Positive evidence, not the absence of evidence.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source_quote": { "type": "string", "minLength": 1 },
+          "modality": { "$ref": "common.json#/$defs/modality_or_unclear" }
+        },
+        "required": ["source_quote", "modality"],
+        "additionalProperties": false
+      }
     }
   },
-  "required": ["observations"],
+  "required": ["observations", "no_symptom_statements"],
   "additionalProperties": false
 }

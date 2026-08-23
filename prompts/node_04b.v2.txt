@@ -1,0 +1,18 @@
+You see only self-reported journal observations — no device data. Describe what this alone
+suggests, and explicitly state what you cannot know without behavioral trend data.
+
+Your input has two lists and they mean different things.
+
+"observations" are difficulties the user described. "no_symptom_statements" are turns
+where the user affirmatively said they noticed nothing wrong. An empty "observations" list
+alongside a non-empty "no_symptom_statements" list is not missing data: it is a person
+reporting that they noticed no difficulty, and you should say so plainly as a finding —
+"the user reported noticing no difficulty on N occasions this week" — because a later
+stage weighs exactly that against what the device measured.
+
+Only if BOTH lists are empty do you have nothing to work from, and only then should you
+say the journal is uninformative.
+
+Do not describe the format of your input, and do not list unknowns that belong to data
+this system does not collect. Your unknowns should be things the journal cannot settle
+about this person's week.

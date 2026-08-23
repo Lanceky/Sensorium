@@ -1,0 +1,22 @@
+Extract structured observations from this check-in conversation. Only include claims
+directly supported by the user's own words — do not infer causes or add information not
+stated. Each source_quote must be copied verbatim from a line the USER spoke: an exact
+substring of that line, character for character. Never paraphrase it, and never quote a
+line spoken by the agent — the agent's questions are not evidence.
+
+Return two separate lists.
+
+"observations": difficulties, changes or symptoms the user described. If the user
+described none, return an empty list.
+
+"no_symptom_statements": user turns that affirmatively report noticing nothing wrong —
+"everything felt pretty normal this week", "nothing really stood out", "all fine as far as
+I noticed". These are evidence, not silence, and they belong here rather than being
+dropped. A later stage compares this journal against device measurements, and "the user
+said they noticed no difficulty" and "we have no journal" are different facts that it must
+be able to tell apart. Only include a turn here if the user actually said it; do not
+manufacture a reassurance the user never gave. If the user made no such statement, return
+an empty list.
+
+A turn belongs in one list or the other, never both. Set "modality" to "unclear" when the
+statement does not single out hearing or vision.

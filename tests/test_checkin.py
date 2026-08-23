@@ -75,8 +75,9 @@ def _obs(claim: str, quote: str, modality: str = "hearing") -> dict:
     return {"claim": claim, "source_quote": quote, "modality": modality}
 
 
-def _extraction(*observations: dict) -> str:
-    return json.dumps({"observations": list(observations)})
+def _extraction(*observations: dict, no_symptom: list[dict] | None = None) -> str:
+    return json.dumps({"observations": list(observations),
+                       "no_symptom_statements": list(no_symptom or [])})
 
 
 CONVERSATION = [
@@ -338,11 +339,31 @@ def test_v2_withdrew_the_paraphrase_licence():
 
 
 def test_node_02_is_routed_to_the_repaired_prompt():
-    assert config.get_node_config("node_02").prompt_version == "v2"
+    assert config.get_node_config("node_02").prompt_version == "v3"
 
 
-def test_both_prompt_versions_stay_on_disk():
-    assert prompts.prompt_versions("node_02") == ["v1", "v2"]
+def test_all_prompt_versions_stay_on_disk():
+    assert prompts.prompt_versions("node_02") == ["v1", "v2", "v3"]
+
+
+def test_v3_keeps_the_verbatim_rule_v2_introduced():
+    """A later revision must not quietly undo an earlier fix."""
+    v3 = prompts.load_prompt("node_02", "v3")
+    assert "verbatim" in v3
+    assert "Never paraphrase" in v3
+
+
+def test_v3_separates_an_affirmative_no_from_silence():
+    """The Step 9 defect, pinned.
+
+    "everything felt pretty normal" is not an observation, so v2 correctly extracted
+    nothing and the narrative agent received an empty list — indistinguishable from having
+    no journal at all. The conflict cases exist precisely to pit that reassurance against
+    the device readings, and it never arrived.
+    """
+    v3 = prompts.load_prompt("node_02", "v3")
+    assert "no_symptom_statements" in v3
+    assert "evidence, not silence" in v3
 
 
 # ----------------------------------------------------------------- against the eval set
@@ -382,3 +403,61 @@ def test_no_case_journal_can_source_a_symptom_the_user_did_not_report(cases):
         for invented in ("harder to follow", "repeat", "squinting", "leaning in"):
             with pytest.raises(node_02.SourceQuoteError):
                 node_02.verify_source_quotes(conversation, [_obs("invented", invented)])
+
+
+# --------------------------------------------- no_symptom_statements are evidence too
+
+
+def test_a_fabricated_no_symptom_quote_is_rejected(pinned_models, run_id):
+    """The new field carries quotes, so it inherits the check that makes quotes evidence.
+
+    Mutation testing found this gap: `no_symptom_statements` was added to the contract and
+    threaded into the blind narrative agent without a test proving its quotes are verified.
+    A field the pipeline treats as sourced evidence but never checks is the exact hole
+    Node 2 exists to close, and it was open for the length of one commit.
+    """
+    fabricated = json.dumps({
+        "observations": [],
+        "no_symptom_statements": [
+            {"source_quote": "I felt completely fine all week", "modality": "unclear"}
+        ],
+    })
+    honest = _extraction(no_symptom=[
+        {"source_quote": "Conversations in the kitchen felt harder to follow this week",
+         "modality": "unclear"}
+    ])
+    transport = ScriptedTransport(fabricated, honest)
+    result = node_02.run(CONVERSATION, run_id=run_id, transport=transport)
+
+    assert len(transport.calls) == 2, "the fabricated quote should have cost a repair"
+    assert result["no_symptom_statements"][0]["source_quote"].startswith("Conversations")
+
+
+def test_the_repair_prompt_names_the_offending_field(pinned_models, run_id):
+    """`observations[0]` and `no_symptom_statements[0]` must not be reported alike."""
+    fabricated = json.dumps({
+        "observations": [],
+        "no_symptom_statements": [
+            {"source_quote": "I felt completely fine all week", "modality": "unclear"}
+        ],
+    })
+    transport = ScriptedTransport(fabricated, _extraction())
+    node_02.run(CONVERSATION, run_id=run_id, transport=transport)
+
+    repair = json.dumps(transport.calls[1])
+    assert "no_symptom_statements[0]" in repair
+
+
+def test_an_agent_question_cannot_become_a_no_symptom_statement(pinned_models, run_id):
+    """The agent's own leading question is not the user reporting they are fine."""
+    from nodes import node_02 as n2
+
+    with pytest.raises(n2.SourceQuoteError) as info:
+        n2.verify_source_quotes(
+            CONVERSATION,
+            [{"source_quote": "Anything felt off with your eyes or ears lately?",
+              "modality": "unclear"}],
+            field="no_symptom_statements",
+        )
+    assert "the agent's own question" in str(info.value)
+    assert "no_symptom_statements[0]" in str(info.value)

@@ -24,6 +24,19 @@ source line — licence to produce exactly the output the validator must reject.
 for a verbatim substring instead. Both prompts stay on disk; the diff is an iteration-log
 entry, and the underlying mistake is worth recording: the contract and the instructions
 disagreed, and it was the instructions that were wrong.
+
+v3 adds ``no_symptom_statements``, and the reason is a defect the Step 9 harness exposed
+rather than a refinement. On the conflict cases the user says "everything felt pretty
+normal this week" while the device readings show a significant change — that gap is the
+entire point of those cases. But "everything felt normal" describes no difficulty, so v2
+correctly extracted nothing, and the journal reached the blind narrative agent as
+``{"observations": []}``. An empty list cannot distinguish *the user reported noticing
+nothing wrong* from *we have no journal at all*, so the agent produced a comment about its
+input format, the synthesiser had no claim to contradict, and conflict detection scored
+0/3 on the only cases built to contain a conflict. Every other metric read 1.000
+throughout: the architecture was running with one of its two agents effectively mute, and
+nothing in the scoreboard said so. Recording an affirmative "no difficulty" report as
+positive evidence is what restores the comparison the two-agent design exists to make.
 """
 
 from __future__ import annotations
@@ -52,7 +65,8 @@ def _canonical(text: str) -> str:
 
 
 def verify_source_quotes(
-    conversation: Sequence[dict[str, str]], observations: Sequence[dict[str, Any]]
+    conversation: Sequence[dict[str, str]], observations: Sequence[dict[str, Any]],
+    *, field: str = "observations",
 ) -> None:
     """Raise :class:`SourceQuoteError` unless every quote came from a user turn."""
     user_text = [_canonical(t["text"]) for t in conversation if t["role"] == "user"]
@@ -70,9 +84,9 @@ def verify_source_quotes(
             else "it does not appear anywhere in the conversation"
         )
         raise SourceQuoteError(
-            f"observations[{index}].source_quote {observation['source_quote']!r} is not "
+            f"{field}[{index}].source_quote {observation['source_quote']!r} is not "
             f"usable evidence: {reason}. Quote a user line verbatim, or drop the "
-            f"observation."
+            f"entry."
         )
 
 
@@ -88,6 +102,8 @@ def run(
 
     def check(parsed: Any) -> None:
         verify_source_quotes(payload["conversation"], parsed["observations"])
+        verify_source_quotes(payload["conversation"], parsed["no_symptom_statements"],
+                             field="no_symptom_statements")
 
     return client.call_node(
         NODE,

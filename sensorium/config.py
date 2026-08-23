@@ -83,7 +83,7 @@ REGISTRY: dict[str, NodeConfig] = {
         node="node_02",
         size="mid",
         temperature=0.0,
-        prompt_version="v2",
+        prompt_version="v3",
         rationale="Extraction accuracy over speed; determinism protects Metric 4.",
     ),
     "node_04a": NodeConfig(
@@ -97,14 +97,14 @@ REGISTRY: dict[str, NodeConfig] = {
         node="node_04b",
         size="mid",
         temperature=0.2,
-        prompt_version="v1",
+        prompt_version="v2",
         rationale="Must be identical to node_04a so disagreement is caused by data, not routing.",
     ),
     "node_05": NodeConfig(
         node="node_05",
         size="large",
         temperature=0.0,
-        prompt_version="v3",
+        prompt_version="v5",
         rationale="Highest-stakes reasoning; every consistency claim depends on this node.",
     ),
     "node_06": NodeConfig(
@@ -113,6 +113,17 @@ REGISTRY: dict[str, NodeConfig] = {
         temperature=0.3,
         prompt_version="v2",
         rationale="Phrasing variety is acceptable; citations are constrained by the validator.",
+    ),
+    "baseline": NodeConfig(
+        node="baseline",
+        size="large",
+        temperature=0.0,
+        prompt_version="v1",
+        rationale=(
+            "The comparison arm, given every advantage: the largest model, temperature 0, "
+            "and the union of every input the pipeline splits across nodes. A baseline "
+            "handicapped by routing would make the results table worthless."
+        ),
     ),
     "node_10": NodeConfig(
         node="node_10",
