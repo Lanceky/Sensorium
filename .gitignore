@@ -2,7 +2,9 @@
 .env
 *.key
 
-# Run logs are evidence, but they are large and regenerable; keep the ones you cite.
+# Run logs are evidence, but they are large and regenerable. The ones actually cited
+# by the iteration log are copied into evidence/ and committed, since a cited
+# artifact a reader cannot open is not evidence.
 runs/*
 !runs/.gitkeep
 
