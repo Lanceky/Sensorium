@@ -7,21 +7,50 @@
   "properties": {
     "figures": {
       "type": "object",
-      "propertyNames": { "pattern": "^[a-z0-9_]+$" },
+      "propertyNames": {
+        "pattern": "^[a-z0-9_]+$"
+      },
       "additionalProperties": {
         "type": "object",
         "properties": {
-          "value": { "type": "number" },
-          "unit": { "type": "string", "minLength": 1 },
-          "method": { "$ref": "common.json#/$defs/stat_method" }
+          "value": {
+            "type": "number"
+          },
+          "unit": {
+            "type": "string",
+            "minLength": 1
+          },
+          "method": {
+            "$ref": "common.json#/$defs/stat_method"
+          },
+          "significant": {
+            "description": "Whether the fitted slope differs from zero at p<0.05. Absent when the figure is not regression-derived, or when too few points exist to judge. A figure that is present but not significant is noise, and Node 5 must not report it as a trend.",
+            "type": [
+              "boolean",
+              "null"
+            ]
+          }
         },
-        "required": ["value", "unit", "method"],
+        "required": [
+          "value",
+          "unit",
+          "method"
+        ],
         "additionalProperties": false
       }
     },
-    "window_weeks": { "type": "integer", "minimum": 0 },
-    "sufficient_data": { "type": "boolean" }
+    "window_weeks": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "sufficient_data": {
+      "type": "boolean"
+    }
   },
-  "required": ["figures", "window_weeks", "sufficient_data"],
+  "required": [
+    "figures",
+    "window_weeks",
+    "sufficient_data"
+  ],
   "additionalProperties": false
 }

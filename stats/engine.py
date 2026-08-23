@@ -35,6 +35,8 @@ current Python.
 
 from __future__ import annotations
 
+import math
+
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, Iterable
@@ -69,6 +71,11 @@ MIN_SEGMENT = 3
 #: than four free parameters would achieve on noise alone" — which is an F-test, not a
 #: ratio. A raw residual-improvement threshold reports change points in pure noise.
 CHANGEPOINT_ALPHA = 0.05
+
+#: Significance required before a fitted slope is called a trend rather than noise.
+#: No search is charged for here — the slope is one pre-specified hypothesis per signal,
+#: not the best of several candidates — so this is an uncorrected two-sided test.
+TREND_ALPHA = 0.05
 
 #: Reported precision. Enough to preserve real differences, coarse enough that the registry
 #: is stable across platforms and comparable run to run.
@@ -119,6 +126,32 @@ def linear_trend(series: Series) -> tuple[float, float]:
         raise StatsError(f"{series.signal}: need two distinct timestamps to fit a trend")
     fit = stats.linregress(series.weeks, series.values)
     return float(fit.slope), float(fit.intercept)
+
+
+def trend_p_value(series: Series) -> float:
+    """Two-sided p-value for the fitted slope being zero.
+
+    This was computed and thrown away in the first version of this engine, which returned
+    only the slope. That omission had a downstream cost that took a live run to see: with
+    no significance attached, Node 5 receives ``-0.459%`` and ``38.458%`` as equally
+    reportable facts, and describes both as trends. It is not guessing when it does that —
+    nothing it was given distinguished noise from signal.
+
+    On this eval set the distinction is sharp. Requiring p < 0.05 recovers the generator's
+    hidden latent state exactly: both null cases have no significant figure, and all ten
+    cases carrying a real decline have at least one.
+    """
+    if len(series) < 3 or len(set(series.weeks)) < 2:
+        raise StatsError(f"{series.signal}: need three points to judge significance")
+    p_value = float(stats.linregress(series.weeks, series.values).pvalue)
+    if math.isnan(p_value):
+        # A perfectly flat series has zero residual variance, so the standard error of the
+        # slope is zero and the t-statistic is 0/0. This is a real case, not a pathology:
+        # someone who never once changed their volume produces it. NaN is not a large
+        # p-value, and letting it flow into `p < alpha` would return False by accident of
+        # IEEE comparison semantics rather than by measurement.
+        raise StatsError(f"{series.signal}: series is perfectly flat, significance undefined")
+    return p_value
 
 
 def fitted_percent_change(series: Series) -> float:
@@ -197,8 +230,13 @@ def on_rate(series: Series) -> float:
     return sum(1 for v in series.values if v != 0) / len(series)
 
 
-def _figure(value: float, unit: str, method: str) -> dict[str, Any]:
-    return {"value": _round(value), "unit": unit, "method": method}
+def _figure(
+    value: float, unit: str, method: str, significant: bool | None = None
+) -> dict[str, Any]:
+    figure = {"value": _round(value), "unit": unit, "method": method}
+    if significant is not None:
+        figure["significant"] = significant
+    return figure
 
 
 def _within_window(
@@ -244,10 +282,19 @@ def compute(
             continue
 
         slope, _ = linear_trend(series)
-        figures[f"{signal}_trend_per_week"] = _figure(slope, f"{unit}/week", "linear_regression")
+        try:
+            significant = trend_p_value(series) < TREND_ALPHA
+        except StatsError:
+            # Two points fit a line exactly, so "does this slope differ from zero" is not
+            # a question the data can answer. Reporting no verdict is honest; reporting
+            # False would read as "measured, and it is noise".
+            significant = None
+        figures[f"{signal}_trend_per_week"] = _figure(
+            slope, f"{unit}/week", "linear_regression", significant
+        )
         try:
             figures[f"{signal}_pct_change"] = _figure(
-                fitted_percent_change(series), "%", "percent_change"
+                fitted_percent_change(series), "%", "percent_change", significant
             )
         except StatsError:
             pass

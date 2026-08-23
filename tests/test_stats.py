@@ -309,3 +309,81 @@ def test_no_llm_dependency_reaches_the_engine():
     source = Path(engine.__file__).read_text(encoding="utf-8")
     assert "openai" not in source
     assert "llm" not in source.replace("llm may appear", "").replace("No LLM", "")
+
+
+# --------------------------------------------------------------------------------------
+# Significance (Step 7): the verdict the first version of this engine computed and discarded
+# --------------------------------------------------------------------------------------
+
+
+def test_regression_figures_carry_a_significance_verdict():
+    """Without this the engine hands Node 5 noise and signal as equally reportable facts."""
+    from eval import generator
+
+    case = next(c for c in generator.load_cases() if c.case_id == "agree_01")
+    out = engine.compute(case.device_slice, None, 4)
+
+    regression = {
+        k: v
+        for k, v in out["figures"].items()
+        if v["method"] in ("linear_regression", "percent_change")
+    }
+    assert regression
+    assert all("significant" in v for v in regression.values()), sorted(regression)
+    assert any(v["significant"] is True for v in regression.values())
+
+
+def test_significance_recovers_the_hidden_latent_state_on_every_case():
+    """The result the abstention metric rests on.
+
+    The generator decides whether a decline exists before any data is synthesised. Requiring
+    p < 0.05 on a fitted slope reproduces that decision exactly across the eval set: both
+    null cases contain no significant figure, and all ten cases carrying a real decline
+    contain at least one. That correspondence is what makes `insufficient_data` a function
+    of the statistics rather than a judgement call.
+    """
+    from eval import generator
+
+    for case in generator.load_cases():
+        out = engine.compute(case.device_slice, None, 4)
+        measured = any(f.get("significant") is True for f in out["figures"].values())
+        decline = case.latent.hearing_decline_present or case.latent.vision_decline_present
+        assert measured is decline, f"{case.case_id}: measured={measured} latent={decline}"
+
+
+def test_a_flat_series_has_no_significance_verdict():
+    """Zero residual variance makes the t-statistic 0/0, so the honest answer is "unknown".
+
+    Someone who never once changes their volume produces this. Returning NaN and letting it
+    fall through `p < alpha` would answer "not significant" by accident of IEEE comparison
+    rules rather than by measurement, so the engine refuses instead and the figure carries
+    no verdict.
+    """
+    series = engine.Series("volume", (0.0, 1.0, 2.0, 3.0), (5.0, 5.0, 5.0, 5.0))
+    with pytest.raises(engine.StatsError, match="perfectly flat"):
+        engine.trend_p_value(series)
+
+
+def test_a_flat_signal_produces_a_figure_with_no_significance_key():
+    """The refusal above has to survive `compute`, not just the helper."""
+    events = [
+        {"ts": f"2026-08-{1 + 7 * i:02d}T12:00:00+00:00", "signal": "volume", "value": 5.0}
+        for i in range(4)
+    ]
+    out = engine.compute({"events": events}, None, 4)
+
+    trend = out["figures"].get("volume_trend_per_week")
+    assert trend is not None
+    assert "significant" not in trend
+
+
+def test_a_clean_ramp_is_significant():
+    series = engine.Series("volume", (0.0, 1.0, 2.0, 3.0), (5.0, 6.0, 7.0, 8.0))
+    assert engine.trend_p_value(series) < engine.TREND_ALPHA
+
+
+def test_two_points_cannot_be_judged_significant():
+    """A line through two points fits exactly, so 'is this slope real' has no answer."""
+    series = engine.Series("volume", (0.0, 1.0), (5.0, 9.0))
+    with pytest.raises(engine.StatsError):
+        engine.trend_p_value(series)
