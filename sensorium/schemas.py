@@ -95,3 +95,62 @@ def is_valid(name: str, instance: Any) -> bool:
 def _describe(error: ValidationError) -> str:
     location = "/".join(str(p) for p in error.path) or "<root>"
     return f"at {location}: {error.message}"
+
+
+#: Keys that describe the schema to tooling rather than describing the data. Shown to a
+#: model they are noise at best; ``$id`` actively invites it to echo the filename back.
+_METADATA_KEYS = frozenset({"$schema", "$id", "title"})
+
+
+def _resolve(node: Any, stack: tuple[str, ...]) -> Any:
+    """Inline every ``$ref`` so the result is readable without the registry."""
+    if isinstance(node, list):
+        return [_resolve(item, stack) for item in node]
+    if not isinstance(node, dict):
+        return node
+
+    ref = node.get("$ref")
+    if isinstance(ref, str):
+        if ref in stack:
+            # Nothing in schemas/ is recursive today; degrade rather than hang if that
+            # changes, since a truncated contract still beats a stalled build.
+            return {"description": f"recursive reference to {ref}"}
+        target = _lookup(ref)
+        merged = {k: v for k, v in node.items() if k != "$ref"}
+        resolved = _resolve(target, stack + (ref,))
+        if isinstance(resolved, dict):
+            return {**resolved, **merged}
+        return resolved
+
+    return {k: _resolve(v, stack) for k, v in node.items() if k not in _METADATA_KEYS}
+
+
+def _lookup(ref: str) -> Any:
+    """Resolve ``file.json#/$defs/name`` or a bare ``#/$defs/name`` fragment."""
+    filename, _, pointer = ref.partition("#")
+    target: Any = get_schema(filename) if filename else None
+    if target is None:
+        raise SchemaError(f"cannot resolve local $ref {ref!r} without a base schema")
+    for token in (p for p in pointer.split("/") if p):
+        token = token.replace("~1", "/").replace("~0", "~")
+        try:
+            target = target[token]
+        except (KeyError, TypeError) as exc:
+            raise SchemaError(f"$ref {ref!r} does not resolve at {token!r}") from exc
+    return target
+
+
+@lru_cache(maxsize=None)
+def contract_text(name: str) -> str:
+    """``name`` as self-contained JSON, for embedding in a system prompt.
+
+    Generated from the schema that validates the reply, rather than written by hand
+    alongside it. That is the point: a hand-written contract is free to drift from its
+    validator, and this project has now been bitten by that twice -- Node 2's prompt
+    inviting a paraphrase the schema forbids, and every prompt omitting its output shape
+    entirely, which made the first live call return prose.
+
+    ``$ref``s are inlined so enum members are visible; a model shown
+    ``{"$ref": "common.json#/$defs/modality"}`` has been told nothing at all.
+    """
+    return json.dumps(_resolve(get_schema(name), ()), indent=2, ensure_ascii=False)
