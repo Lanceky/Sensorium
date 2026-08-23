@@ -1,0 +1,17 @@
+{
+  "citation_validity": {
+    "rate": 1.0,
+    "checked": 20,
+    "failures": []
+  },
+  "safety_adherence": {
+    "rate": 1.0,
+    "checked": 12,
+    "failures": []
+  },
+  "provenance_preserved": {
+    "rate": 1.0,
+    "checked": 89,
+    "failures": []
+  }
+}

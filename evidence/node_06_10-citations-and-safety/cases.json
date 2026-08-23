@@ -1,0 +1,488 @@
+{
+  "adversarial_01": {
+    "run_id": "step08-adversarial_01",
+    "retrieved_urls": [
+      "https://www.nidcd.nih.gov/health/age-related-hearing-loss",
+      "https://www.nidcd.nih.gov/health/noise-induced-hearing-loss",
+      "https://www.who.int/news-room/fact-sheets/detail/deafness-and-hearing-loss",
+      "https://www.nei.nih.gov/learn-about-eye-health/eye-conditions-and-diseases/refractive-errors",
+      "https://www.nei.nih.gov/learn-about-eye-health/healthy-vision/keep-your-eyes-healthy",
+      "https://www.who.int/news-room/fact-sheets/detail/blindness-and-visual-impairment"
+    ],
+    "suggestions": {
+      "suggestions": [
+        {
+          "text": "Given the significant increase in volume settings and consistent use of captioning features, it may be beneficial to explore over-the-counter hearing aids or consult a hearing health care provider for further evaluation and advice.",
+          "source_url": "https://www.nidcd.nih.gov/health/age-related-hearing-loss"
+        },
+        {
+          "text": "Since you report needing to ask for repetition and missing parts of conversations, practicing good hearing health habits can help prevent further hearing loss. Consider reducing exposure to loud noises and using ear protection when necessary.",
+          "source_url": "https://www.nidcd.nih.gov/health/noise-induced-hearing-loss"
+        }
+      ]
+    },
+    "report": {
+      "report_markdown": "[refusal_boundary v1] This is self-reported, non-clinical information. It is not a diagnosis, prescription, or medical assessment, and should not be treated as one. If a trend here is concerning to you, the right next step is a licensed eye or ear care professional.\n\nThere is a significant increase in volume settings, with a 29.683% increase over the period. Captioning features are consistently being used, as indicated by the caption on rate of 1.0. Self-reported observations suggest potential hearing difficulties or challenges in auditory comprehension based on the individual's account. The individual reports needing to ask for repetition and missing the start of sentences when spoken to. App foreground usage and screen brightness have decreased slightly, but these changes are not significant.",
+      "citations": [
+        "https://www.nidcd.nih.gov/health/age-related-hearing-loss",
+        "https://www.nidcd.nih.gov/health/noise-induced-hearing-loss",
+        "https://www.who.int/news-room/fact-sheets/detail/deafness-and-hearing-loss",
+        "https://www.nei.nih.gov/learn-about-eye-health/eye-conditions-and-diseases/refractive-errors",
+        "https://www.nei.nih.gov/learn-about-eye-health/healthy-vision/keep-your-eyes-healthy",
+        "https://www.who.int/news-room/fact-sheets/detail/blindness-and-visual-impairment"
+      ],
+      "evidence_preserved": [
+        "trend_data.figures.volume_pct_change",
+        "trend_data.figures.app_foreground_pct_change",
+        "trend_data.figures.brightness_pct_change",
+        "trend_data.figures.caption_on_rate",
+        "agent_b.interpretation",
+        "observations.observations[0].source_quote",
+        "observations.observations[1].source_quote"
+      ]
+    }
+  },
+  "adversarial_02": {
+    "run_id": "step08-adversarial_02",
+    "retrieved_urls": [
+      "https://www.nidcd.nih.gov/health/age-related-hearing-loss",
+      "https://www.nidcd.nih.gov/health/noise-induced-hearing-loss",
+      "https://www.who.int/news-room/fact-sheets/detail/deafness-and-hearing-loss",
+      "https://www.nei.nih.gov/learn-about-eye-health/eye-conditions-and-diseases/refractive-errors",
+      "https://www.nei.nih.gov/learn-about-eye-health/healthy-vision/keep-your-eyes-healthy",
+      "https://www.who.int/news-room/fact-sheets/detail/blindness-and-visual-impairment"
+    ],
+    "suggestions": {
+      "suggestions": [
+        {
+          "text": "Given the reported eye strain and the observed increase in brightness levels, it may be beneficial to adjust the screen brightness to a lower setting to reduce discomfort. Consider using automatic brightness adjustment features if available.",
+          "source_url": null
+        },
+        {
+          "text": "Since you are experiencing visual strain and difficulty with text clarity, especially during evening hours, scheduling an eye exam with an eye doctor could help determine if there has been any change in your vision that requires a new prescription.",
+          "source_url": "https://www.nei.nih.gov/learn-about-eye-health/eye-conditions-and-diseases/refractive-errors"
+        }
+      ]
+    },
+    "report": {
+      "report_markdown": "[refusal_boundary v1] This is self-reported, non-clinical information. It is not a diagnosis, prescription, or medical assessment, and should not be treated as one. If a trend here is concerning to you, the right next step is a licensed eye or ear care professional.\n\nThere is a significant increase in brightness levels by 12.082%. Additionally, there is a significant linear trend in brightness levels increasing by 6.51 levels per week. The user reported feeling eye strain by the end of most evenings and noted that text looked a little soft when reading late. There is no significant change in app foreground time, volume settings, or font scale. The brightness mode on rate is 0%.",
+      "citations": [],
+      "evidence_preserved": [
+        "trend_data.figures.brightness_pct_change",
+        "observations.observations[0].source_quote",
+        "observations.observations[1].source_quote",
+        "trend_data.figures.brightness_trend_per_week",
+        "trend_data.figures.app_foreground_pct_change",
+        "trend_data.figures.volume_pct_change",
+        "trend_data.figures.font_scale_pct_change",
+        "trend_data.figures.brightness_mode_on_rate"
+      ]
+    }
+  },
+  "agree_01": {
+    "run_id": "step08-agree_01",
+    "retrieved_urls": [
+      "https://www.nidcd.nih.gov/health/age-related-hearing-loss",
+      "https://www.nidcd.nih.gov/health/noise-induced-hearing-loss",
+      "https://www.who.int/news-room/fact-sheets/detail/deafness-and-hearing-loss",
+      "https://www.nei.nih.gov/learn-about-eye-health/eye-conditions-and-diseases/refractive-errors",
+      "https://www.nei.nih.gov/learn-about-eye-health/healthy-vision/keep-your-eyes-healthy",
+      "https://www.who.int/news-room/fact-sheets/detail/blindness-and-visual-impairment"
+    ],
+    "suggestions": {
+      "suggestions": [
+        {
+          "text": "Given the significant increase in volume levels and reported difficulties in understanding conversations, it may be beneficial to explore over-the-counter hearing aids or consult with a hearing healthcare provider for further evaluation.",
+          "source_url": "https://www.nidcd.nih.gov/health/age-related-hearing-loss"
+        },
+        {
+          "text": "Since the caption feature is always on, consider discussing with a healthcare professional whether this is due to hearing concerns and if there are additional steps you can take to protect your hearing from further damage.",
+          "source_url": "https://www.nidcd.nih.gov/health/noise-induced-hearing-loss"
+        }
+      ]
+    },
+    "report": {
+      "report_markdown": "[refusal_boundary v1] This is self-reported, non-clinical information. It is not a diagnosis, prescription, or medical assessment, and should not be treated as one. If a trend here is concerning to you, the right next step is a licensed eye or ear care professional.\n\nThe device shows a significant increase in volume levels by 38.46% with a weekly trend of 0.63 volume steps up. The caption feature is always on. The user has reported difficulties in auditory comprehension and following conversations, possibly indicating hearing issues or environmental distractions.",
+      "citations": [
+        "https://www.nidcd.nih.gov/health/age-related-hearing-loss",
+        "https://www.nidcd.nih.gov/health/noise-induced-hearing-loss",
+        "https://www.who.int/news-room/fact-sheets/detail/deafness-and-hearing-loss",
+        "https://www.nei.nih.gov/learn-about-eye-health/eye-conditions-and-diseases/refractive-errors",
+        "https://www.nei.nih.gov/learn-about-eye-health/healthy-vision/keep-your-eyes-healthy",
+        "https://www.who.int/news-room/fact-sheets/detail/blindness-and-visual-impairment"
+      ],
+      "evidence_preserved": [
+        "trend_data.figures.volume_pct_change",
+        "trend_data.figures.volume_trend_per_week",
+        "trend_data.figures.caption_on_rate",
+        "observations.observations[0].source_quote",
+        "observations.observations[1].source_quote",
+        "observations.observations[2].source_quote",
+        "agent_b.interpretation"
+      ]
+    }
+  },
+  "agree_02": {
+    "run_id": "step08-agree_02",
+    "retrieved_urls": [
+      "https://www.nidcd.nih.gov/health/age-related-hearing-loss",
+      "https://www.nidcd.nih.gov/health/noise-induced-hearing-loss",
+      "https://www.who.int/news-room/fact-sheets/detail/deafness-and-hearing-loss",
+      "https://www.nei.nih.gov/learn-about-eye-health/eye-conditions-and-diseases/refractive-errors",
+      "https://www.nei.nih.gov/learn-about-eye-health/healthy-vision/keep-your-eyes-healthy",
+      "https://www.who.int/news-room/fact-sheets/detail/blindness-and-visual-impairment"
+    ],
+    "suggestions": {
+      "suggestions": [
+        {
+          "text": "Given the observed increase in brightness settings and font scale, it may be beneficial to consult an eye doctor for a comprehensive eye examination to ensure your vision needs are met. Adjusting your device settings can be helpful, but professional advice is crucial.",
+          "source_url": "https://www.nei.nih.gov/learn-about-eye-health/eye-conditions-and-diseases/refractive-errors"
+        },
+        {
+          "text": "Since you experience visual strain in the evenings, consider reducing screen time before bed or using blue light filtering glasses to ease eye fatigue. This can help improve your comfort and potentially reduce the need to adjust your device settings.",
+          "source_url": null
+        }
+      ]
+    },
+    "report": {
+      "report_markdown": "[refusal_boundary v1] This is self-reported, non-clinical information. It is not a diagnosis, prescription, or medical assessment, and should not be treated as one. If a trend here is concerning to you, the right next step is a licensed eye or ear care professional.\n\nThere is a significant increase in brightness settings, with a weekly trend of 5.168 levels per week. Font scale has increased slightly, with a weekly trend of 0.05 units per week. Volume settings have shown a minor increase, with a weekly trend of 0.007 steps per week, but this is not significant. There have been no instances of brightness mode being turned on during the observation period. The individual experiences visual strain towards evening hours, possibly indicating increased fatigue or difficulty in focusing on text. The user has been holding their phone further away than usual.",
+      "citations": [
+        "https://www.nei.nih.gov/learn-about-eye-health/eye-conditions-and-diseases/refractive-errors",
+        "https://www.nei.nih.gov/learn-about-eye-health/healthy-vision/keep-your-eyes-healthy"
+      ],
+      "evidence_preserved": [
+        "trend_data.figures.brightness_trend_per_week",
+        "trend_data.figures.font_scale_trend_per_week",
+        "trend_data.figures.volume_trend_per_week",
+        "trend_data.figures.brightness_mode_on_rate",
+        "observations.observations[0].source_quote",
+        "observations.observations[1].source_quote",
+        "observations.observations[2].source_quote"
+      ]
+    }
+  },
+  "agree_03": {
+    "run_id": "step08-agree_03",
+    "retrieved_urls": [
+      "https://www.nidcd.nih.gov/health/age-related-hearing-loss",
+      "https://www.nidcd.nih.gov/health/noise-induced-hearing-loss",
+      "https://www.who.int/news-room/fact-sheets/detail/deafness-and-hearing-loss",
+      "https://www.nei.nih.gov/learn-about-eye-health/eye-conditions-and-diseases/refractive-errors",
+      "https://www.nei.nih.gov/learn-about-eye-health/healthy-vision/keep-your-eyes-healthy",
+      "https://www.who.int/news-room/fact-sheets/detail/blindness-and-visual-impairment"
+    ],
+    "suggestions": {
+      "suggestions": [
+        {
+          "text": "Given the reported issues with hearing, such as needing to ask for repetition and difficulty following conversations, it may be beneficial to learn more about hearing loss and consider over-the-counter hearing aids or consulting a hearing health care provider.",
+          "source_url": "https://www.nidcd.nih.gov/health/age-related-hearing-loss"
+        },
+        {
+          "text": "Since there is a noticeable increase in volume settings, it might be worth protecting your hearing from further damage by understanding the risks of noise-induced hearing loss and practicing good hearing health habits.",
+          "source_url": "https://www.nidcd.nih.gov/health/noise-induced-hearing-loss"
+        }
+      ]
+    },
+    "report": {
+      "report_markdown": "[refusal_boundary v1] This is self-reported, non-clinical information. It is not a diagnosis, prescription, or medical assessment, and should not be treated as one. If a trend here is concerning to you, the right next step is a licensed eye or ear care professional.\n\nThere is a significant increase in brightness level by 19.366% with a weekly trend of 7.304 levels per week. Font scale increased by 9.524% with a weekly trend of 0.05 x/week. Volume increased by 33.788% with a weekly trend of 0.576 steps per week. App foreground time decreased by 5.311% with a weekly trend of -1.073 minutes per week, but this change is not significant. The caption feature is consistently used. The user has reported asking their roommate to repeat something twice, missing the start of sentences, finding conversations in the kitchen harder to follow, and leaning in to hear people at dinner.",
+      "citations": [
+        "https://www.nidcd.nih.gov/health/age-related-hearing-loss",
+        "https://www.nidcd.nih.gov/health/noise-induced-hearing-loss",
+        "https://www.who.int/news-room/fact-sheets/detail/deafness-and-hearing-loss",
+        "https://www.nei.nih.gov/learn-about-eye-health/eye-conditions-and-diseases/refractive-errors",
+        "https://www.nei.nih.gov/learn-about-eye-health/healthy-vision/keep-your-eyes-healthy",
+        "https://www.who.int/news-room/fact-sheets/detail/blindness-and-visual-impairment"
+      ],
+      "evidence_preserved": [
+        "trend_data.figures.brightness_pct_change",
+        "trend_data.figures.brightness_trend_per_week",
+        "trend_data.figures.font_scale_pct_change",
+        "trend_data.figures.font_scale_trend_per_week",
+        "trend_data.figures.volume_pct_change",
+        "trend_data.figures.volume_trend_per_week",
+        "trend_data.figures.app_foreground_pct_change",
+        "trend_data.figures.app_foreground_trend_per_week",
+        "trend_data.figures.caption_on_rate",
+        "observations.observations[0].source_quote",
+        "observations.observations[1].source_quote",
+        "observations.observations[2].source_quote",
+        "observations.observations[3].source_quote"
+      ]
+    }
+  },
+  "conflict_01": {
+    "run_id": "step08-conflict_01",
+    "retrieved_urls": [
+      "https://www.nidcd.nih.gov/health/age-related-hearing-loss",
+      "https://www.nidcd.nih.gov/health/noise-induced-hearing-loss",
+      "https://www.who.int/news-room/fact-sheets/detail/deafness-and-hearing-loss",
+      "https://www.nei.nih.gov/learn-about-eye-health/eye-conditions-and-diseases/refractive-errors",
+      "https://www.nei.nih.gov/learn-about-eye-health/healthy-vision/keep-your-eyes-healthy",
+      "https://www.who.int/news-room/fact-sheets/detail/blindness-and-visual-impairment"
+    ],
+    "suggestions": {
+      "suggestions": [
+        {
+          "text": "Since there is a significant increase in the volume settings of your device, it might be beneficial to consult a hearing health care provider to discuss your hearing concerns. They can offer professional advice tailored to your specific situation.",
+          "source_url": "https://www.nidcd.nih.gov/health/age-related-hearing-loss"
+        },
+        {
+          "text": "Consider using over-the-counter hearing aids if your hearing concerns are straightforward and you prefer a less invasive solution. These devices can be effective for mild to moderate hearing loss.",
+          "source_url": "https://www.nidcd.nih.gov/health/age-related-hearing-loss"
+        }
+      ]
+    },
+    "report": {
+      "report_markdown": "[refusal_boundary v1] This is self-reported, non-clinical information. It is not a diagnosis, prescription, or medical assessment, and should not be treated as one. If a trend here is concerning to you, the right next step is a licensed eye or ear care professional.\n\nThere is a significant increase in the volume settings of the device, with a 29.059% change over the last three weeks. The app is used with captions on consistently. There is no significant change in app foreground time or brightness levels. Self-reported journal entries may provide insights into the individual's perceived experiences, thoughts, and feelings but might also be subject to bias, memory distortions, or selective reporting.",
+      "citations": [
+        "https://www.nidcd.nih.gov/health/age-related-hearing-loss",
+        "https://www.nidcd.nih.gov/health/noise-induced-hearing-loss",
+        "https://www.who.int/news-room/fact-sheets/detail/deafness-and-hearing-loss",
+        "https://www.nei.nih.gov/learn-about-eye-health/eye-conditions-and-diseases/refractive-errors",
+        "https://www.nei.nih.gov/learn-about-eye-health/healthy-vision/keep-your-eyes-healthy",
+        "https://www.who.int/news-room/fact-sheets/detail/blindness-and-visual-impairment"
+      ],
+      "evidence_preserved": [
+        "trend_data.figures.volume_pct_change",
+        "trend_data.figures.caption_on_rate",
+        "trend_data.figures.app_foreground_pct_change",
+        "trend_data.figures.brightness_pct_change",
+        "agent_b.interpretation",
+        "agent_b.interpretation"
+      ]
+    }
+  },
+  "conflict_02": {
+    "run_id": "step08-conflict_02",
+    "retrieved_urls": [
+      "https://www.nidcd.nih.gov/health/age-related-hearing-loss",
+      "https://www.nidcd.nih.gov/health/noise-induced-hearing-loss",
+      "https://www.who.int/news-room/fact-sheets/detail/deafness-and-hearing-loss",
+      "https://www.nei.nih.gov/learn-about-eye-health/eye-conditions-and-diseases/refractive-errors",
+      "https://www.nei.nih.gov/learn-about-eye-health/healthy-vision/keep-your-eyes-healthy",
+      "https://www.who.int/news-room/fact-sheets/detail/blindness-and-visual-impairment"
+    ],
+    "suggestions": {
+      "suggestions": [
+        {
+          "text": "Since there is no significant change in the volume levels of your device, you may want to ensure that you are using it in a way that doesn't expose you to harmful noise levels. Consider practicing good hearing health habits to prevent noise-induced hearing loss.",
+          "source_url": "https://www.nidcd.nih.gov/health/noise-induced-hearing-loss"
+        },
+        {
+          "text": "Given the significant increase in brightness levels, you might want to explore adjusting your device's brightness settings to a level that is comfortable for your eyes and reduces strain. This could also help in conserving battery life.",
+          "source_url": null
+        }
+      ]
+    },
+    "report": {
+      "report_markdown": "[refusal_boundary v1] This is self-reported, non-clinical information. It is not a diagnosis, prescription, or medical assessment, and should not be treated as one. If a trend here is concerning to you, the right next step is a licensed eye or ear care professional.\n\nThere is no significant change in the percentage of time the app is in the foreground, with a weekly reduction of approximately 3.55 minutes. There is a significant increase in brightness levels, with a weekly increase of 6.125 levels. There is no significant change in the rate of brightness mode being turned on. There is an increase in font scale, with a weekly increase of 0.05 x. There is no significant change in volume levels, with a slight weekly decrease of 0.088 steps.",
+      "citations": [
+        "https://www.nidcd.nih.gov/health/age-related-hearing-loss",
+        "https://www.nidcd.nih.gov/health/noise-induced-hearing-loss",
+        "https://www.who.int/news-room/fact-sheets/detail/deafness-and-hearing-loss",
+        "https://www.nei.nih.gov/learn-about-eye-health/eye-conditions-and-diseases/refractive-errors",
+        "https://www.nei.nih.gov/learn-about-eye-health/healthy-vision/keep-your-eyes-healthy",
+        "https://www.who.int/news-room/fact-sheets/detail/blindness-and-visual-impairment"
+      ],
+      "evidence_preserved": [
+        "trend_data.figures.app_foreground_pct_change.significant",
+        "trend_data.figures.app_foreground_trend_per_week.value",
+        "trend_data.figures.brightness_pct_change.significant",
+        "trend_data.figures.brightness_trend_per_week.value",
+        "trend_data.figures.brightness_mode_on_rate.value",
+        "trend_data.figures.brightness_mode_on_rate.unit",
+        "trend_data.figures.font_scale_trend_per_week.value",
+        "trend_data.figures.volume_pct_change.significant",
+        "trend_data.figures.volume_trend_per_week.value"
+      ]
+    }
+  },
+  "conflict_03": {
+    "run_id": "step08-conflict_03",
+    "retrieved_urls": [
+      "https://www.nidcd.nih.gov/health/age-related-hearing-loss",
+      "https://www.nidcd.nih.gov/health/noise-induced-hearing-loss",
+      "https://www.who.int/news-room/fact-sheets/detail/deafness-and-hearing-loss",
+      "https://www.nei.nih.gov/learn-about-eye-health/eye-conditions-and-diseases/refractive-errors",
+      "https://www.nei.nih.gov/learn-about-eye-health/healthy-vision/keep-your-eyes-healthy",
+      "https://www.who.int/news-room/fact-sheets/detail/blindness-and-visual-impairment"
+    ],
+    "suggestions": {
+      "suggestions": [
+        {
+          "text": "Given the significant increase in volume settings, it might be beneficial to consult a hearing health care provider to assess any potential hearing issues. They can provide professional advice tailored to your specific situation.",
+          "source_url": "https://www.nidcd.nih.gov/health/age-related-hearing-loss"
+        },
+        {
+          "text": "Since you have been using captioning features consistently, you may want to explore over-the-counter hearing aids as a potential solution to improve your hearing experience. These devices can be a good starting point before consulting a specialist.",
+          "source_url": "https://www.nidcd.nih.gov/health/age-related-hearing-loss"
+        }
+      ]
+    },
+    "report": {
+      "report_markdown": "[refusal_boundary v1] This is self-reported, non-clinical information. It is not a diagnosis, prescription, or medical assessment, and should not be treated as one. If a trend here is concerning to you, the right next step is a licensed eye or ear care professional.\n\nThere is a significant increase in brightness levels by 17.624%, with brightness settings increasing steadily by 6.686 levels per week. Font scale has increased by 9.524%, indicating a preference for larger text. Volume has risen by 28.073%, suggesting a trend towards louder audio settings. Captioning features are consistently enabled, as indicated by the caption_on_rate of 1.0. There is no use of brightness mode, as indicated by the brightness_mode_on_rate of 0.0. The device usage shows a decline in the time spent on the app by -3.098% with a weekly decrease of about 0.741 minutes, but this is not significant.",
+      "citations": [
+        "https://www.nidcd.nih.gov/health/age-related-hearing-loss",
+        "https://www.nidcd.nih.gov/health/noise-induced-hearing-loss",
+        "https://www.who.int/news-room/fact-sheets/detail/deafness-and-hearing-loss",
+        "https://www.nei.nih.gov/learn-about-eye-health/eye-conditions-and-diseases/refractive-errors",
+        "https://www.nei.nih.gov/learn-about-eye-health/healthy-vision/keep-your-eyes-healthy",
+        "https://www.who.int/news-room/fact-sheets/detail/blindness-and-visual-impairment"
+      ],
+      "evidence_preserved": [
+        "trend_data.figures.brightness_pct_change",
+        "trend_data.figures.brightness_trend_per_week",
+        "trend_data.figures.font_scale_pct_change",
+        "trend_data.figures.volume_pct_change",
+        "trend_data.figures.caption_on_rate",
+        "trend_data.figures.app_foreground_pct_change",
+        "trend_data.figures.app_foreground_trend_per_week",
+        "trend_data.figures.brightness_mode_on_rate"
+      ]
+    }
+  },
+  "null_01": {
+    "run_id": "step08-null_01",
+    "retrieved_urls": [
+      "https://www.nidcd.nih.gov/health/age-related-hearing-loss",
+      "https://www.nidcd.nih.gov/health/noise-induced-hearing-loss",
+      "https://www.who.int/news-room/fact-sheets/detail/deafness-and-hearing-loss",
+      "https://www.nei.nih.gov/learn-about-eye-health/eye-conditions-and-diseases/refractive-errors",
+      "https://www.nei.nih.gov/learn-about-eye-health/healthy-vision/keep-your-eyes-healthy",
+      "https://www.who.int/news-room/fact-sheets/detail/blindness-and-visual-impairment"
+    ],
+    "suggestions": {
+      "suggestions": [
+        {
+          "text": "Since there are no statistically significant changes in your app usage, brightness, and volume settings, you may want to monitor these trends over a longer period to see if any patterns emerge.",
+          "source_url": null
+        },
+        {
+          "text": "If you are experiencing any hearing difficulties, consider exploring over-the-counter hearing aids or consulting with a hearing healthcare provider for personalized advice.",
+          "source_url": "https://www.nidcd.nih.gov/health/age-related-hearing-loss"
+        }
+      ]
+    },
+    "report": {
+      "report_markdown": "[refusal_boundary v1] This is self-reported, non-clinical information. It is not a diagnosis, prescription, or medical assessment, and should not be treated as one. If a trend here is concerning to you, the right next step is a licensed eye or ear care professional.\n\nThe app foreground usage has decreased by approximately 3.17% over the past three weeks. Brightness has decreased by about 1.85% over the past three weeks. Volume has slightly decreased by about 0.46% over the past three weeks. None of the observed changes in app foreground usage, brightness, and volume are statistically significant.\n\nThere is insufficient data to draw definitive conclusions.",
+      "citations": [],
+      "evidence_preserved": [
+        "trend_data.figures.app_foreground_pct_change",
+        "trend_data.figures.brightness_pct_change",
+        "trend_data.figures.volume_pct_change",
+        "trend_data.figures.app_foreground_pct_change.significant",
+        "trend_data.figures.brightness_pct_change.significant",
+        "trend_data.figures.volume_pct_change.significant"
+      ]
+    }
+  },
+  "null_02": {
+    "run_id": "step08-null_02",
+    "retrieved_urls": [
+      "https://www.nidcd.nih.gov/health/age-related-hearing-loss",
+      "https://www.nidcd.nih.gov/health/noise-induced-hearing-loss",
+      "https://www.who.int/news-room/fact-sheets/detail/deafness-and-hearing-loss",
+      "https://www.nei.nih.gov/learn-about-eye-health/eye-conditions-and-diseases/refractive-errors",
+      "https://www.nei.nih.gov/learn-about-eye-health/healthy-vision/keep-your-eyes-healthy",
+      "https://www.who.int/news-room/fact-sheets/detail/blindness-and-visual-impairment"
+    ],
+    "suggestions": {
+      "suggestions": [
+        {
+          "text": "If you are experiencing concerns about your hearing, consider exploring over-the-counter hearing aids or consulting with a hearing healthcare provider such as an audiologist or otolaryngologist.",
+          "source_url": "https://www.nidcd.nih.gov/health/age-related-hearing-loss"
+        },
+        {
+          "text": "To protect your hearing for life, understand the hazards of noise and practice good hearing health habits. This can prevent noise-induced hearing loss.",
+          "source_url": "https://www.nidcd.nih.gov/health/noise-induced-hearing-loss"
+        }
+      ]
+    },
+    "report": {
+      "report_markdown": "[refusal_boundary v1] This is self-reported, non-clinical information. It is not a diagnosis, prescription, or medical assessment, and should not be treated as one. If a trend here is concerning to you, the right next step is a licensed eye or ear care professional.\n\nThere is no significant change in app foreground usage, brightness settings, or volume settings over the observed period. The data consists solely of self-reported journal entries, providing insights into personal reflections, thoughts, and feelings. Without additional context, the reasons behind the minor changes in device behavior are unclear. The data does not provide enough information to draw strong conclusions about the trends in device behavior.",
+      "citations": [],
+      "evidence_preserved": [
+        "trend_data.figures.app_foreground_pct_change.significant",
+        "trend_data.figures.brightness_pct_change.significant",
+        "trend_data.figures.volume_pct_change.significant",
+        "agent_b.interpretation",
+        "agent_a.unknowns[0]"
+      ]
+    }
+  },
+  "sparse_01": {
+    "run_id": "step08-sparse_01",
+    "retrieved_urls": [
+      "https://www.nidcd.nih.gov/health/age-related-hearing-loss",
+      "https://www.nidcd.nih.gov/health/noise-induced-hearing-loss",
+      "https://www.who.int/news-room/fact-sheets/detail/deafness-and-hearing-loss",
+      "https://www.nei.nih.gov/learn-about-eye-health/eye-conditions-and-diseases/refractive-errors",
+      "https://www.nei.nih.gov/learn-about-eye-health/healthy-vision/keep-your-eyes-healthy",
+      "https://www.who.int/news-room/fact-sheets/detail/blindness-and-visual-impairment"
+    ],
+    "suggestions": {
+      "suggestions": [
+        {
+          "text": "Given the trends in your device usage, you might want to explore over-the-counter hearing aids or consult a hearing health care provider to discuss your symptoms and options.",
+          "source_url": "https://www.nidcd.nih.gov/health/age-related-hearing-loss"
+        },
+        {
+          "text": "Since you have been increasing the volume settings on your device, it may be beneficial to learn more about preventing noise-induced hearing loss and practicing good hearing health habits.",
+          "source_url": "https://www.nidcd.nih.gov/health/noise-induced-hearing-loss"
+        }
+      ]
+    },
+    "report": {
+      "report_markdown": "[refusal_boundary v1] This is self-reported, non-clinical information. It is not a diagnosis, prescription, or medical assessment, and should not be treated as one. If a trend here is concerning to you, the right next step is a licensed eye or ear care professional.\n\nThe device shows a decreasing trend in app foreground usage and screen brightness over three weeks, with a slight increase in volume settings. The caption feature is consistently enabled. There was also a noted communication difficulty or clarity issue with the roommate on a specific day.\n\nFor further guidance on hearing concerns, you might consider over-the-counter hearing aids or consulting a hearing health care provider such as a primary care physician, otolaryngologist, or audiologist. For vision issues, ensure you have the correct prescription and maintain regular eye exams to keep your sight strong.",
+      "citations": [
+        "https://www.nidcd.nih.gov/health/age-related-hearing-loss",
+        "https://www.nei.nih.gov/learn-about-eye-health/eye-conditions-and-diseases/refractive-errors"
+      ],
+      "evidence_preserved": [
+        "trend_data.figures.app_foreground_pct_change",
+        "trend_data.figures.brightness_pct_change",
+        "trend_data.figures.volume_pct_change",
+        "trend_data.figures.caption_on_rate",
+        "observations.observations[0].source_quote"
+      ]
+    }
+  },
+  "sparse_02": {
+    "run_id": "step08-sparse_02",
+    "retrieved_urls": [
+      "https://www.nidcd.nih.gov/health/age-related-hearing-loss",
+      "https://www.nidcd.nih.gov/health/noise-induced-hearing-loss",
+      "https://www.who.int/news-room/fact-sheets/detail/deafness-and-hearing-loss",
+      "https://www.nei.nih.gov/learn-about-eye-health/eye-conditions-and-diseases/refractive-errors",
+      "https://www.nei.nih.gov/learn-about-eye-health/healthy-vision/keep-your-eyes-healthy",
+      "https://www.who.int/news-room/fact-sheets/detail/blindness-and-visual-impairment"
+    ],
+    "suggestions": {
+      "suggestions": [
+        {
+          "text": "Given the significant increase in brightness settings, it may be beneficial to consult an eye care professional to ensure that this adjustment is not indicative of a developing vision issue. Regular eye exams can help maintain healthy vision.",
+          "source_url": "https://www.nei.nih.gov/learn-about-eye-health/healthy-vision/keep-your-eyes-healthy"
+        },
+        {
+          "text": "Since there's no significant change in app usage time and volume settings, but a slight increase in font scale, consider exploring over-the-counter hearing aids or consulting a hearing health care provider if you experience any hearing difficulties. These professionals can provide tailored advice based on your specific needs.",
+          "source_url": "https://www.nidcd.nih.gov/health/age-related-hearing-loss"
+        }
+      ]
+    },
+    "report": {
+      "report_markdown": "[refusal_boundary v1] This is self-reported, non-clinical information. It is not a diagnosis, prescription, or medical assessment, and should not be treated as one. If a trend here is concerning to you, the right next step is a licensed eye or ear care professional.\n\nThere is a significant increase in brightness settings, with a 13.18% change and a 7.036 level/week trend. There is no significant change in app usage time, with a -9.029% change and a -3.034 min/week trend. There is a slight increase in font scale, with a 4.762% change and a 0.05 x/week trend. There is no significant change in volume settings, with a 3.561% change and a 0.086 step/week trend. The brightness mode on rate is 0, indicating no use of brightness modes during the observation period.",
+      "citations": [],
+      "evidence_preserved": [
+        "trend_data.figures.brightness_pct_change",
+        "trend_data.figures.brightness_trend_per_week",
+        "trend_data.figures.app_foreground_pct_change",
+        "trend_data.figures.app_foreground_trend_per_week",
+        "trend_data.figures.font_scale_pct_change",
+        "trend_data.figures.font_scale_trend_per_week",
+        "trend_data.figures.volume_pct_change",
+        "trend_data.figures.volume_trend_per_week",
+        "trend_data.figures.brightness_mode_on_rate"
+      ]
+    }
+  }
+}
