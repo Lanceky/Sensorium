@@ -92,6 +92,10 @@ class MetricReport:
             return 0.0
         return (self.checked - len(self.failures)) / self.checked
 
+    def as_dict(self) -> dict:
+        """Serialisable form, denominator included. The rate never travels alone."""
+        return {"rate": self.rate, "checked": self.checked, "failures": list(self.failures)}
+
 
 def resolve_path(payload: Any, path: str) -> Any:
     """Follow a dotted, optionally indexed path; raise :class:`EvidenceError` if it breaks.

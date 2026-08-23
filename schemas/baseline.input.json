@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "baseline.input.json",
+  "title": "Single-prompt baseline input",
+  "description": "The union of every input the pipeline distributes across its nodes, in one object. Node 4's agents each see one half of the evidence by design; the baseline sees both halves, the engine's figures with their significance flags, the retrieved sources and the user's question at once. Written as an enforced contract rather than an assembled dict so that quietly starving the baseline of context would fail validation instead of showing up as a favourable number.",
+  "type": "object",
+  "properties": {
+    "trend_data": { "$ref": "node_03.output.json" },
+    "journal": {
+      "type": "object",
+      "properties": {
+        "conversation": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "role": { "enum": ["user", "agent"] },
+              "text": { "type": "string" }
+            },
+            "required": ["role", "text"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["conversation"]
+    },
+    "device_events": {
+      "description": "Raw samples, unsummarised. The pipeline never shows a model this.",
+      "type": "object"
+    },
+    "self_check": { "type": "object" },
+    "retrieved_sources": {
+      "type": "array",
+      "items": { "$ref": "common.json#/$defs/retrieved_source" }
+    },
+    "user_question": { "type": ["string", "null"] }
+  },
+  "required": [
+    "trend_data",
+    "journal",
+    "device_events",
+    "self_check",
+    "retrieved_sources",
+    "user_question"
+  ],
+  "additionalProperties": false
+}

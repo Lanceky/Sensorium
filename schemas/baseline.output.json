@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "baseline.output.json",
+  "title": "Single-prompt baseline output",
+  "description": "The union of node_05, node_06 and node_10 outputs, field for field. Deliberately identical so both systems are scored by the same validator code with no adapter in between - a comparison where the two arms are measured by different functions is not a comparison. Also an advantage handed to the baseline: the schema is appended to its prompt as a contract, so it is told exactly what shape is expected.",
+  "type": "object",
+  "properties": {
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "text": { "type": "string", "minLength": 1 },
+          "evidence": {
+            "type": "array",
+            "items": { "$ref": "common.json#/$defs/evidence_ref" },
+            "minItems": 1
+          }
+        },
+        "required": ["text", "evidence"],
+        "additionalProperties": false
+      }
+    },
+    "figures_cited": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+          "value": { "type": "number" }
+        },
+        "required": ["key", "value"],
+        "additionalProperties": false
+      }
+    },
+    "agreement": { "type": "string" },
+    "disagreement": { "type": ["string", "null"] },
+    "confidence": {
+      "type": "object",
+      "properties": {
+        "trend": { "$ref": "common.json#/$defs/confidence_level" },
+        "cause": { "$ref": "common.json#/$defs/confidence_level" }
+      },
+      "required": ["trend", "cause"],
+      "additionalProperties": false
+    },
+    "insufficient_data": { "type": "boolean" },
+    "suggestions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "text": { "type": "string", "minLength": 1 },
+          "source_url": { "type": ["string", "null"], "format": "uri" }
+        },
+        "required": ["text", "source_url"],
+        "additionalProperties": false
+      },
+      "maxItems": 3
+    },
+    "report_markdown": { "type": "string", "minLength": 1 },
+    "citations": {
+      "type": "array",
+      "items": { "type": "string", "format": "uri" }
+    },
+    "evidence_preserved": {
+      "type": "array",
+      "items": { "$ref": "common.json#/$defs/evidence_ref" }
+    }
+  },
+  "required": [
+    "claims",
+    "figures_cited",
+    "agreement",
+    "disagreement",
+    "confidence",
+    "insufficient_data",
+    "suggestions",
+    "report_markdown",
+    "citations",
+    "evidence_preserved"
+  ],
+  "additionalProperties": false
+}
