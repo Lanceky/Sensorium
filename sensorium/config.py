@@ -104,7 +104,7 @@ REGISTRY: dict[str, NodeConfig] = {
         node="node_05",
         size="large",
         temperature=0.0,
-        prompt_version="v1",
+        prompt_version="v3",
         rationale="Highest-stakes reasoning; every consistency claim depends on this node.",
     ),
     "node_06": NodeConfig(

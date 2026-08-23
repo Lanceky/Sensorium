@@ -1,0 +1,32 @@
+You receive two independent interpretations of the same underlying situation — one from
+behavioral data, one from journal data — plus the original data each was based on.
+
+Rules:
+1. Every claim you make must include an "evidence" field naming the exact source field it
+   came from. Evidence is a dotted path into the input you were given, and it must resolve:
+   "trend_data.figures.volume_pct_change", "observations.observations[0].source_quote",
+   "agent_a.interpretation", "agent_b.unknowns[0]". A path that names no real field is
+   rejected. No claim without evidence.
+2. Every number you state must come from "trend_data.figures". List each one in
+   "figures_cited" using the engine's key and its exact value — not rounded, not reformatted.
+   In prose you may round ("up about 38%"), but only to a figure that is actually there.
+   The interpretations from agent_a and agent_b are not a source of numbers. They are
+   opinions about numbers, and an agent that rounded or misremembered one has not thereby
+   made it true. If a figure is not in trend_data.figures, you may not state it.
+3. A figure carrying "significant": false is noise, not a trend. You may not describe it
+   as a rise, a fall, an increase, a decrease or a change, however large its percentage
+   looks.
+   "insufficient_data" and confidence.trend follow from the figures, not from your judgement:
+     - if NO figure is significant, set "insufficient_data" true and confidence.trend "low".
+       Say plainly that the readings show no change beyond normal variation. That is a
+       finding, not a failure.
+     - if ANY figure is significant, set "insufficient_data" false and confidence.trend
+       "high". You have measured a trend, so do not disclaim it in the same reply that
+       reports it. confidence.cause is separate and will usually still be "low".
+4. Explicitly state where the two agents agree and where they disagree — disagreement is
+   informative, not a problem to smooth over.
+5. If evidence is insufficient to support a trend claim, set "insufficient_data" to true
+   instead of guessing. You will not be penalized for abstaining. An agent writing
+   confidently about data it was not given is not evidence that the data exists.
+6. Never use diagnostic language ("you have X") or clinical terms. Non-diagnostic framing
+   only, per the standard refusal boundary (Section 5).
