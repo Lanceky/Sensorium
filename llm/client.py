@@ -20,6 +20,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import time
 from typing import Any, Callable, Protocol
 
 from sensorium import config, prompts, runlog, schemas
@@ -143,10 +144,29 @@ class FeatherlessTransport:
                 )
             raise TransportError(f"{model}: {exc}") from exc
 
-        content = (response.choices[0].message.content or "").strip()
+        content = self._content(response, model)
         if not content:
             raise TransportError(f"{model} returned an empty completion")
         return content
+
+    @staticmethod
+    def _content(response: Any, model: str) -> str:
+        """Read the reply, treating a malformed envelope as a transport failure.
+
+        ``response.choices[0]`` is the obvious way to write this and it is wrong. When the
+        provider answers with an error in an OpenAI-shaped envelope, ``choices`` is ``None``,
+        and indexing it raises ``TypeError`` — which is neither a ``TransportError`` nor a
+        ``MalformedOutputError``, so nothing catches it and the caller dies. That is how one
+        upstream hiccup took out an entire harness case: a provider blip surfaced as an
+        unhandled subscript error four frames away from the network call that caused it.
+        """
+        choices = getattr(response, "choices", None)
+        if not choices:
+            raise TransportError(
+                f"{model}: response carried no choices (envelope: {str(response)[:200]})"
+            )
+        message = getattr(choices[0], "message", None)
+        return (getattr(message, "content", None) or "").strip()
 
     def list_models(self) -> list[str]:
         """Exact model ids available on this account.
@@ -201,6 +221,30 @@ def extract_json(text: str) -> Any:
     raise MalformedOutputError(f"no parseable JSON in model output: {stripped[:200]!r}")
 
 
+TRANSPORT_RETRIES = 2
+TRANSPORT_BACKOFF_S = 3.0
+
+
+def _complete_with_retry(transport: Transport, **kwargs: Any) -> str:
+    """Retry a provider failure a couple of times before giving up on the call.
+
+    Distinct from the repair loop, which exists for a model that answered badly. This is for
+    a provider that did not answer at all — a rate limit, a dropped connection, an error
+    envelope. Retrying a malformed *reply* without changing the prompt would just re-roll
+    the dice; retrying a failed *request* is the correct response to a transient fault, and
+    over a harness run of several hundred calls one of them will happen.
+    """
+    last: Exception | None = None
+    for attempt in range(TRANSPORT_RETRIES + 1):
+        try:
+            return transport.complete(**kwargs)
+        except TransportError as exc:
+            last = exc
+            if attempt < TRANSPORT_RETRIES:
+                time.sleep(TRANSPORT_BACKOFF_S * (attempt + 1))
+    raise TransportError(f"after {TRANSPORT_RETRIES + 1} attempts: {last}") from last
+
+
 def call_node(
     node: str,
     payload: Any,
@@ -253,12 +297,17 @@ def call_node(
         with runlog.timed_call(
             run_id, log_node, model, cfg.temperature, cfg.prompt_version, payload, attempt
         ) as slot:
-            raw = transport.complete(
-                model=model,
-                messages=messages,
-                temperature=cfg.temperature,
-                seed=seed,
-            )
+            try:
+                raw = _complete_with_retry(
+                    transport,
+                    model=model,
+                    messages=messages,
+                    temperature=cfg.temperature,
+                    seed=seed,
+                )
+            except TransportError as exc:
+                slot["error"] = f"{type(exc).__name__}: {exc}"
+                raise
             slot["raw_output"] = raw
             try:
                 parsed = extract_json(raw)

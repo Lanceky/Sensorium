@@ -254,17 +254,42 @@ def test_repair_budget_is_configurable(pinned_models, run_id):
     assert len(runlog.load_calls(run_id, "node_01")) == 3
 
 
+
+@pytest.fixture
+def no_sleep(monkeypatch):
+    """Transport backoff is real time; tests should not spend it."""
+    monkeypatch.setattr(client.time, "sleep", lambda _s: None)
+
+
 # ------------------------------------------------------------------------------ failure
 
 
-def test_transport_failure_is_not_repaired(pinned_models, run_id):
+def test_transport_failure_is_not_repaired(pinned_models, run_id, no_sleep):
     """Re-prompting a provider outage would fill the iteration log with failures the
-    prompt never caused."""
+    prompt never caused.
+
+    A 503 is retried as the *identical* request, which is the correct response to a
+    transient fault and is not the same thing as repairing. Nothing is appended to the
+    conversation: the model is never shown an error it did not cause, and the retry does
+    not become a second logged attempt.
+    """
     transport = ScriptedTransport(client.TransportError("503 upstream"), VALID_01)
+    client.call_node("node_01", _payload_01(), run_id=run_id, transport=transport)
+
+    assert len(transport.calls) == 2
+    first, second = transport.calls
+    assert first["messages"] == second["messages"], "the retry must not re-prompt"
+    (call,) = runlog.load_calls(run_id, "node_01")
+    assert call.error is None
+
+
+def test_a_persistent_outage_surfaces(pinned_models, run_id, no_sleep):
+    """Retrying is bounded; a provider that is genuinely down must fail loudly."""
+    transport = ScriptedTransport(*[client.TransportError("503 upstream")] * 5)
     with pytest.raises(client.TransportError, match="503 upstream"):
         client.call_node("node_01", _payload_01(), run_id=run_id, transport=transport)
 
-    assert len(transport.calls) == 1
+    assert len(transport.calls) == client.TRANSPORT_RETRIES + 1
     (call,) = runlog.load_calls(run_id, "node_01")
     assert "503 upstream" in call.error
 
@@ -382,7 +407,7 @@ def test_the_verbatim_prompt_survives_alongside_the_contract(pinned_models, run_
 
 def test_each_node_is_shown_its_own_contract(pinned_models, run_id):
     """A node shown the wrong schema would be corrected toward the wrong shape."""
-    transport = ScriptedTransport('{"observations": []}')
+    transport = ScriptedTransport(json.dumps({"observations": [], "no_symptom_statements": []}))
     client.call_node(
         "node_02", {"conversation": []}, run_id=run_id, transport=transport
     )
@@ -404,3 +429,81 @@ def test_the_contract_names_no_schema_file(pinned_models, run_id):
     transport = ScriptedTransport(VALID_01)
     client.call_node("node_01", _payload_01(), run_id=run_id, transport=transport)
     assert "node_01.output.json" not in transport.calls[0]["messages"][0]["content"]
+
+
+# --------------------------------------------------------------------------------------
+# Transport robustness (Step 9)
+# --------------------------------------------------------------------------------------
+
+
+class _Envelope:
+    """An OpenAI-shaped response whose ``choices`` came back empty."""
+
+    def __init__(self, choices):
+        self.choices = choices
+
+
+def test_missing_choices_is_a_transport_error_not_a_type_error():
+    """The bug that killed a harness case.
+
+    ``response.choices[0]`` raises TypeError when the provider answers with an error in an
+    OpenAI-shaped envelope. TypeError is neither a TransportError nor a MalformedOutputError,
+    so nothing catches it and the run dies four frames from the network call.
+    """
+    for choices in (None, []):
+        with pytest.raises(client.TransportError) as info:
+            client.FeatherlessTransport._content(_Envelope(choices), "some/model")
+        assert "no choices" in str(info.value)
+
+
+def test_a_null_message_content_is_empty_rather_than_an_exception():
+    class Msg:
+        content = None
+
+    class Choice:
+        message = Msg()
+
+    assert client.FeatherlessTransport._content(_Envelope([Choice()]), "m") == ""
+
+
+def test_transport_failures_are_retried(no_sleep):
+    calls = []
+
+    class Flaky:
+        def complete(self, **kwargs):
+            calls.append(kwargs)
+            if len(calls) < 3:
+                raise client.TransportError("rate limited")
+            return '{"ok": true}'
+
+    assert client._complete_with_retry(Flaky()) == '{"ok": true}'
+    assert len(calls) == 3
+
+
+def test_transport_retries_are_bounded(no_sleep):
+    """A provider that is down must not be retried forever."""
+
+    class Dead:
+        def complete(self, **kwargs):
+            raise client.TransportError("down")
+
+    with pytest.raises(client.TransportError) as info:
+        client._complete_with_retry(Dead())
+    assert "after 3 attempts" in str(info.value)
+
+
+def test_a_bad_reply_is_not_retried_as_a_transport_fault():
+    """Repairing a bad answer and retrying a failed request are different problems.
+
+    Re-rolling the dice on identical input is not a fix; the repair loop exists to send the
+    error back to the model, and that path must not be short-circuited here.
+    """
+    calls = []
+
+    class Chatty:
+        def complete(self, **kwargs):
+            calls.append(1)
+            return "I'm afraid I can't do that."
+
+    assert client._complete_with_retry(Chatty()) == "I'm afraid I can't do that."
+    assert len(calls) == 1
