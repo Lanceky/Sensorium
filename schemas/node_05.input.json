@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "node_05.input.json",
+  "title": "Node 5 - Synthesis input",
+  "description": "The first node permitted to see both data slices. Everything upstream of here is blind by construction.",
+  "type": "object",
+  "properties": {
+    "agent_a": { "$ref": "node_04.output.json" },
+    "agent_b": { "$ref": "node_04.output.json" },
+    "trend_data": { "$ref": "node_03.output.json" },
+    "observations": { "$ref": "node_02.output.json" }
+  },
+  "required": ["agent_a", "agent_b", "trend_data", "observations"],
+  "additionalProperties": false
+}

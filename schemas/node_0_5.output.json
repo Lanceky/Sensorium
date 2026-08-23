@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "node_0_5.output.json",
+  "title": "Node 0.5 - Relative Self-Check output",
+  "description": "Relative direction only. A Snellen fraction or diopter value here is a contract violation (context.md 4, Node 0.5).",
+  "type": "object",
+  "properties": {
+    "direction": { "enum": ["improved", "stable", "declined", "insufficient_data"] },
+    "steps_moved": { "type": "integer" },
+    "session_count": { "type": "integer", "minimum": 0 }
+  },
+  "required": ["direction", "steps_moved", "session_count"],
+  "additionalProperties": false
+}

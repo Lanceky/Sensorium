@@ -1,0 +1,15 @@
+# Step 1 - contracts, config, run log
+# format-nongpl pulls rfc3339-validator / rfc3986-validator so `format` is actually
+# enforced; the plain `format` extra would pull GPL'd rfc3987 into an MIT project.
+jsonschema[format-nongpl]>=4.21
+referencing>=0.33
+pytest>=8.0
+python-dotenv>=1.0
+
+# Step 3 - Featherless is OpenAI-compatible, so the LLM layer is a base_url swap
+openai>=1.40
+
+# Steps 4 and 8 - statistics engine and retrieval
+requests>=2.31
+scipy>=1.11
+ruptures>=1.1

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "node_01.output.json",
+  "title": "Node 1 - Conversational Check-In output",
+  "type": "object",
+  "properties": {
+    "message": { "type": "string", "minLength": 1 },
+    "done": { "type": "boolean" }
+  },
+  "required": ["message", "done"],
+  "additionalProperties": false
+}

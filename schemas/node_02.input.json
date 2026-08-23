@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "node_02.input.json",
+  "title": "Node 2 - Journal Signal Extractor input",
+  "type": "object",
+  "properties": {
+    "conversation": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "role": { "enum": ["user", "agent"] },
+          "text": { "type": "string" }
+        },
+        "required": ["role", "text"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["conversation"],
+  "additionalProperties": false
+}

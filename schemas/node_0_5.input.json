@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "node_0_5.input.json",
+  "title": "Node 0.5 - Relative Self-Check input",
+  "description": "Verbatim from context.md 4: {\"sessions\": [{\"date\": str, \"step_reached\": int, \"modality\": \"vision\"|\"hearing\"}]}",
+  "type": "object",
+  "properties": {
+    "sessions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "date": { "type": "string", "format": "date" },
+          "step_reached": { "type": "integer", "minimum": 0 },
+          "modality": { "$ref": "common.json#/$defs/modality" }
+        },
+        "required": ["date", "step_reached", "modality"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["sessions"],
+  "additionalProperties": false
+}

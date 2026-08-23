@@ -1,0 +1,24 @@
+# Secrets - never commit real keys
+.env
+*.key
+
+# Run logs are evidence, but they are large and regenerable; keep the ones you cite.
+runs/*
+!runs/.gitkeep
+
+# Cached third-party responses (Step 8)
+.cache/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/

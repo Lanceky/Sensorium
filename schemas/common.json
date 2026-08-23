@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "common.json",
+  "title": "Sensorium shared definitions",
+  "$defs": {
+    "modality": {
+      "enum": ["vision", "hearing"]
+    },
+    "modality_or_unclear": {
+      "enum": ["vision", "hearing", "unclear"]
+    },
+    "confidence_level": {
+      "enum": ["high", "low"]
+    },
+    "signal_kind": {
+      "description": "Passive signals from context.md 3.5. Each maps to a non-elevated Android API.",
+      "enum": [
+        "volume",
+        "brightness",
+        "brightness_mode",
+        "font_scale",
+        "caption",
+        "app_foreground"
+      ]
+    },
+    "stat_method": {
+      "description": "Deterministic method that produced a figure. No LLM may appear here.",
+      "enum": [
+        "linear_regression",
+        "percent_change",
+        "event_rate",
+        "changepoint_detection",
+        "session_count"
+      ]
+    },
+    "retrieved_source": {
+      "description": "A source actually returned by Firecrawl during this run. Node 6/10 may only cite URLs present here.",
+      "type": "object",
+      "properties": {
+        "url": { "type": "string", "format": "uri" },
+        "excerpt": { "type": "string", "minLength": 1 }
+      },
+      "required": ["url", "excerpt"],
+      "additionalProperties": false
+    },
+    "evidence_ref": {
+      "description": "Dotted path naming the exact input field a claim came from, e.g. wolfram.volume_pct_change_3w or journal.observations[2].",
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "node_03.input.json",
+  "title": "Node 3 - Statistical Trend Engine input (deterministic, Wolfram|One)",
+  "type": "object",
+  "properties": {
+    "signals": { "$ref": "node_00.output.json" },
+    "self_check": {
+      "description": "Node 0.5 session history where available; null when the user has not opted in.",
+      "oneOf": [
+        { "$ref": "node_0_5.input.json" },
+        { "type": "null" }
+      ]
+    },
+    "window_weeks": { "type": "integer", "minimum": 1 }
+  },
+  "required": ["signals", "self_check", "window_weeks"],
+  "additionalProperties": false
+}

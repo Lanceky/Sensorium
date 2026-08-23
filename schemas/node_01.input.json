@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "node_01.input.json",
+  "title": "Node 1 - Conversational Check-In input",
+  "type": "object",
+  "properties": {
+    "user_reply": { "type": ["string", "null"] },
+    "turn": { "enum": [1, 2] }
+  },
+  "required": ["user_reply", "turn"],
+  "additionalProperties": false
+}

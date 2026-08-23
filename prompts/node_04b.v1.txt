@@ -1,0 +1,2 @@
+You see only self-reported journal observations — no device data. Describe what this alone
+suggests, and explicitly state what you cannot know without behavioral trend data.

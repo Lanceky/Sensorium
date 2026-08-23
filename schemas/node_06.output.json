@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "node_06.output.json",
+  "title": "Node 6 - Grounded Recommendation Generator output",
+  "description": "source_url null is legal and expected: it is how the node says 'the retrieved sources do not cover this' instead of filling the gap from training data.",
+  "type": "object",
+  "properties": {
+    "suggestions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "text": { "type": "string", "minLength": 1 },
+          "source_url": { "type": ["string", "null"], "format": "uri" }
+        },
+        "required": ["text", "source_url"],
+        "additionalProperties": false
+      },
+      "maxItems": 3
+    }
+  },
+  "required": ["suggestions"],
+  "additionalProperties": false
+}

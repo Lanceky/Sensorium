@@ -1,0 +1,13 @@
+[project]
+name = "sensorium"
+version = "0.1.0"
+description = "A multi-agent LLM workflow for passive vision/hearing trend reasoning"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100

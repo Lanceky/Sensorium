@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "node_10.output.json",
+  "title": "Node 10 - Doctor-Shareable Report Generator output",
+  "description": "report_markdown must OPEN with the refusal boundary string verbatim. Asserted byte-for-byte in code at Step 8 rather than by a schema pattern, since escaping a multi-line literal into a regex is brittle.",
+  "type": "object",
+  "properties": {
+    "report_markdown": { "type": "string", "minLength": 1 },
+    "citations": {
+      "type": "array",
+      "items": { "type": "string", "format": "uri" }
+    },
+    "evidence_preserved": {
+      "description": "Evidence refs carried through from the synthesis input. Node 10 compiles; it must not drop provenance.",
+      "type": "array",
+      "items": { "$ref": "common.json#/$defs/evidence_ref" }
+    }
+  },
+  "required": ["report_markdown", "citations", "evidence_preserved"],
+  "additionalProperties": false
+}

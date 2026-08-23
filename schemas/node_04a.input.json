@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "node_04a.input.json",
+  "title": "Node 4A - Behavioral-signal agent input (BLIND: no journal data)",
+  "description": "additionalProperties:false is load-bearing. It is the schema-level half of the independence guarantee in context.md 4; the runtime half is assert_blind() at Step 6.",
+  "type": "object",
+  "properties": {
+    "trend_data": { "$ref": "node_03.output.json" }
+  },
+  "required": ["trend_data"],
+  "additionalProperties": false
+}

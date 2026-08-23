@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "node_04b.input.json",
+  "title": "Node 4B - Narrative agent input (BLIND: no trend data)",
+  "description": "additionalProperties:false is load-bearing. It is the schema-level half of the independence guarantee in context.md 4; the runtime half is assert_blind() at Step 6.",
+  "type": "object",
+  "properties": {
+    "observations": { "$ref": "node_02.output.json" }
+  },
+  "required": ["observations"],
+  "additionalProperties": false
+}

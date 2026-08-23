@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "node_04.output.json",
+  "title": "Node 4 - Independent agent output (shared by 4A and 4B)",
+  "description": "Both agents share one output shape so their interpretations are directly comparable at Node 5.",
+  "type": "object",
+  "properties": {
+    "interpretation": { "type": "string", "minLength": 1 },
+    "unknowns": {
+      "description": "What this agent cannot know without the other agent's data slice. Required non-empty: an agent claiming no blind spots has overstepped its slice.",
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1
+    }
+  },
+  "required": ["interpretation", "unknowns"],
+  "additionalProperties": false
+}

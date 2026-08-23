@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "node_06.input.json",
+  "title": "Node 6 - Grounded Recommendation Generator input",
+  "description": "retrieved_sources is supplied by Firecrawl retrieval run immediately before this node. Node 6 may cite nothing outside it.",
+  "type": "object",
+  "properties": {
+    "synthesis": { "$ref": "node_05.output.json" },
+    "retrieved_sources": {
+      "type": "array",
+      "items": { "$ref": "common.json#/$defs/retrieved_source" }
+    }
+  },
+  "required": ["synthesis", "retrieved_sources"],
+  "additionalProperties": false
+}

@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "node_05.output.json",
+  "title": "Node 5 - Synthesis & Confidence Assessment output",
+  "description": "Extends the context.md 4 schema with `figures_cited` (implementation.md Step 7). Forcing quantitative claims into a structured field makes Metric 1 exact instead of regex-scanning prose, where dates and list ordinals produce false positives.",
+  "type": "object",
+  "properties": {
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "text": { "type": "string", "minLength": 1 },
+          "evidence": {
+            "description": "Never empty. A claim without evidence is rejected by the evidence-binding validator (Step 7).",
+            "type": "array",
+            "items": { "$ref": "common.json#/$defs/evidence_ref" },
+            "minItems": 1
+          }
+        },
+        "required": ["text", "evidence"],
+        "additionalProperties": false
+      }
+    },
+    "figures_cited": {
+      "description": "Every number this node states. `key` must exist in Node 3's figures and `value` must match it after normalisation.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+          "value": { "type": "number" }
+        },
+        "required": ["key", "value"],
+        "additionalProperties": false
+      }
+    },
+    "agreement": { "type": "string" },
+    "disagreement": { "type": ["string", "null"] },
+    "confidence": {
+      "type": "object",
+      "properties": {
+        "trend": { "$ref": "common.json#/$defs/confidence_level" },
+        "cause": { "$ref": "common.json#/$defs/confidence_level" }
+      },
+      "required": ["trend", "cause"],
+      "additionalProperties": false
+    },
+    "insufficient_data": { "type": "boolean" }
+  },
+  "required": [
+    "claims",
+    "figures_cited",
+    "agreement",
+    "disagreement",
+    "confidence",
+    "insufficient_data"
+  ],
+  "additionalProperties": false
+}
