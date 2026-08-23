@@ -17,6 +17,19 @@ RUNS_DIR = REPO_ROOT / "runs"
 
 FEATHERLESS_BASE_URL = "https://api.featherless.ai/v1"
 
+#: Loaded once, here, because this is the module that reads the environment. ``override``
+#: stays False so a real environment variable always beats the file: a developer exporting
+#: a key for a single command should not be silently overruled by a stale ``.env``, and CI
+#: must never pick up a file that happens to be lying in the working tree.
+_ENV_PATH = REPO_ROOT / ".env"
+if _ENV_PATH.exists():  # pragma: no cover - import side effect, exercised end to end
+    try:
+        from dotenv import load_dotenv
+
+        load_dotenv(_ENV_PATH, override=False)
+    except ImportError:
+        pass
+
 
 class ConfigError(Exception):
     """Raised when configuration is missing or internally inconsistent."""
@@ -33,13 +46,22 @@ class NodeConfig:
     rationale: str
 
 
-#: Size -> exact Featherless model id. Pinned in Step 3 against a live ``/v1/models``
-#: response; ids are deliberately empty here rather than guessed, because citing a model
-#: that does not exist on the account is worse than admitting it is not yet chosen.
+#: Size -> exact Featherless model id, pinned against a live ``/v1/models`` response and
+#: then verified with a real completion, because being listed and being callable are
+#: different things: every ``meta-llama/*`` and ``google/gemma-*`` id returns 403 "This
+#: model is gated" on this account, so the Llama-3.1 family named in the design doc was
+#: never actually available to cite.
+#:
+#: All three tiers are the same family on purpose. Node 4's two agents must differ only in
+#: the data they see, and the report compares nodes across sizes; sharing a tokenizer and
+#: chat template means an observed difference is attributable to size, not to a change of
+#: training lineage. QwQ-32B was rejected despite being callable — it emitted its JSON
+#: object twice in a row, which is the reasoning-model failure mode that structured output
+#: cannot tolerate.
 MODEL_BY_SIZE: dict[str, str] = {
-    "small": "",
-    "mid": "",
-    "large": "",
+    "small": "Qwen/Qwen2.5-7B-Instruct",
+    "mid": "Qwen/Qwen2.5-32B-Instruct",
+    "large": "Qwen/Qwen2.5-72B-Instruct",
 }
 
 REGISTRY: dict[str, NodeConfig] = {
