@@ -215,6 +215,67 @@ significant increase in brightness settings", cited the figure behind it, and se
 itself, of the kind Node 10 would hand to a clinician. Checking one direction had also left
 the metric with a denominator of 4 instead of 24.
 
+## A citation nobody could use
+
+The retrieval layer scores passages from six health-authority pages and passes the best
+excerpt from each to Node 6. On the first live run the WHO vision page's winning passage was
+a bibliography entry — a Lancet DOI. It is long, link-free prose, so it cleared every
+structural filter written to remove navigation and headings.
+
+That citation would have scored perfectly. The URL was retrieved, so set membership passes;
+the excerpt was real, so nothing was fabricated. It is also completely useless to the person
+reading the report, which is the failure citation-checking exists to prevent — reproduced by
+the citation-checking pipeline itself. Reference-shaped blocks are now dropped before
+scoring, and the test that pins it uses the exact block that broke it.
+
+Only `{url, excerpt}` ever reaches the model. Page metadata and canonical links would supply
+plausible URLs that were never retrieved, and the citation check is only meaningful if the
+model's sole route to a URL is the set it was handed.
+
+## The safety metric that measured line breaks
+
+Node 10's report must open with a fixed non-diagnostic clause, verbatim. The first live run
+scored **0/12** on that check.
+
+The model was not at fault. It had reproduced the clause exactly, as one unbroken markdown
+line — and `prompts/refusal_boundary.v1.txt` is hard-wrapped at column 90. A byte-for-byte
+`startswith` was testing whether a language model reproduces its author's column width. The
+check now collapses whitespace runs on both sides and is relaxed in no other way: hedging it,
+truncating it, paraphrasing "licensed eye or ear care professional" to "doctor", stripping
+the version tag, or flipping "is not a diagnosis" to "is a diagnosis" each still fail.
+
+Node 10's v1 prompt had a second problem, and it is the fourth of its kind in this project:
+it ordered the model to reproduce the clause "(Section 5, refusal boundary) verbatim" while
+never showing it the clause. Section 5 is a heading in a design document the model has never
+read. The clause is now substituted into the prompt from the same file the validator compares
+against, so the text shown and the text enforced cannot drift apart.
+
+The clause is validated, not prepended. Concatenating it in code would guarantee the string
+and destroy the measurement — "did the model reproduce the safety clause" cannot be answered
+by an author who pasted it in. With the check corrected, all twelve reports opened correctly
+on the first attempt, with zero repairs.
+
+## What 1.000 does not mean
+
+Citation validity, safety adherence and provenance preservation all scored 1.000 across the
+twelve cases. Three things are worth saying about that.
+
+The citation validator **never fired**. Across 24 live Node 6 calls the model did not
+fabricate a single URL, so the repair loop never caught one. A validator that has never
+rejected anything looks exactly like a validator that cannot reject anything, so its catching
+power is established by mutation instead: a trailing slash, a dropped `www.`, `http` for
+`https`, a truncated path and an uppercased URL are each rejected, and deliberately loosening
+the comparison is caught by the suite.
+
+Abstentions are **excluded from the denominator**, not counted as passes. `source_url: null`
+is a legal answer — it is how the node says the sources do not cover something instead of
+reaching for the nearest plausible link. Scoring it as a pass would let a node reach 100% by
+citing nothing at all. Four of the twelve cases used it; the 20 in the table are 20 real
+citations.
+
+And 1.000 on safety is twelve ordinary reports, not a red team. The diagnosis-baiting
+pressure test belongs to the next step and is not claimed yet.
+
 ## Layout
 
 ```
@@ -224,7 +285,7 @@ sensorium/    schemas.py (validation) · config.py (model routing) · prompts.py
 nodes/        One module per node
 llm/          Featherless client + repair retry
 stats/        engine.py · deterministic trend and change-point maths
-retrieval/    Firecrawl client + response cache
+retrieval/    Firecrawl client · committed snapshot · cache (gitignored)
 eval/         generator.py · cases/ · validators, harness, fair baseline
 runs/         Append-only call logs — the submission's evidence (gitignored)
 evidence/     The run logs the iteration log cites, kept so they can be read

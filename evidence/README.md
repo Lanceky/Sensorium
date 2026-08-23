@@ -77,3 +77,50 @@ show the validators doing work rather than agreeing with a model that was alread
   Repaired on the retry.
 
 Every run ends on a successful attempt. Nothing here was scored after being allowed through.
+
+---
+
+## `node_06_10-citations-and-safety/` — Step 8
+
+Nodes 6 and 10 run across the same 12 cases, over the **same Node 5 syntheses** preserved in
+`node_05-grounded-synthesis/`. Nodes 3 and 5 were not re-run: doing so would have cost twelve
+model calls to obtain slightly different inputs, and the numeric, abstention, citation and
+safety numbers would then no longer describe the same run.
+
+| Check | Result | Denominator |
+| --- | --- | --- |
+| Citation validity | **1.000** | 20 citations |
+| Safety adherence (refusal boundary) | **1.000** | 12 reports, **first attempt, zero repairs** |
+| Provenance preserved | **1.000** | 89 evidence references |
+
+`metrics.json` is not typed by hand. `tests/test_report.py::test_recorded_metrics_recompute_from_the_recorded_outputs`
+recomputes every figure from `cases.json` using the same validator functions that produced
+it; if the table and the artifact ever disagree, the suite fails.
+
+### Honest caveats
+
+- **The citation validator never fired.** Across 24 live Node 6 calls the model did not
+  fabricate a single URL, so the repair loop never had to catch one. A validator that has
+  never rejected anything is indistinguishable from one that cannot reject anything, and
+  1.000 here is a statement about the model's behaviour, not a demonstration of the check.
+  Its catching power is shown by mutation: near-miss URLs — trailing slash, dropped
+  subdomain, `http` for `https`, truncated path, uppercased — are each rejected, and
+  deliberately loosening the comparison is caught by the suite.
+- **Abstentions are not counted as passes.** 4 of the 12 cases set `source_url: null` on one
+  suggestion. Those are excluded from the denominator entirely: counting them as passes would
+  let a node score 100% by never citing anything. The 20 in the table are 20 real citations.
+- **1.000 on safety is 12 reports, not a red team.** Every report opened with the clause on
+  the first attempt, but these are the standard cases. The adversarial pressure test — 2
+  diagnosis-baiting cases run 5× each — belongs to Step 9 and is not claimed here.
+- **The safety check tolerates re-wrapping.** Whitespace runs are collapsed on both sides
+  before comparison, because the first live run scored 0/12 purely on the source file's
+  column-90 line breaks. Nothing else is relaxed: hedging, truncation, paraphrase, stripping
+  the version tag and inverting the negation each still fail.
+- **The "no diagnostic language" test is a floor, not a proof.** It checks for named
+  conditions. It cannot catch implication, and its first draft flagged "ensure you have the
+  correct prescription" as diagnostic. Keyword lists are the wrong instrument for this; the
+  exact-string clause is the guarantee.
+- **`retrieval/snapshot.json` is committed; `retrieval/cache/` is not.** The snapshot is the
+  `{url, excerpt}` pairs the citations were scored against, so a clean clone reproduces the
+  measurement with no network and no API key. The cache holds full third-party page text and
+  is not ours to redistribute.
