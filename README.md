@@ -80,6 +80,28 @@ findings:
   position, brings it to one detection, with a **4.7% false-positive rate on noise against
   a nominal 5%** while still recovering **96%** of genuine breaks.
 
+## Quotes as evidence
+
+Node 2 turns a check-in conversation into observations, each carrying a `source_quote`
+that Node 5 later cites as its evidence. That makes Node 2 the point where an invented
+detail would enter the pipeline already dressed as testimony — quoted, attributed, and
+from then on indistinguishable from something the person actually said.
+
+The defence is one substring check with a deliberate restriction: the quote must appear in
+a line the **user** spoke. Agent turns are excluded because the transcript is full of
+leading questions — *"Was that in a quiet room or somewhere noisy?"* — and a model that
+answers its own prompt by quoting it produces an observation that looks perfectly sourced
+while resting on nothing the user said.
+
+It runs inside the repair loop, so a bad quote costs one retry naming the offending text
+rather than failing the run, and both attempts stay in the log.
+
+Writing that check surfaced a conflict in our own prompt: v1 told the model it could
+"quote or closely paraphrase" the source line, which is licence to produce exactly what
+the validator has to reject. v2 asks for a verbatim substring. v1 stays on disk — the
+disagreement between a contract and the instructions meant to satisfy it is worth keeping
+in the iteration log.
+
 ## Layout
 
 ```
