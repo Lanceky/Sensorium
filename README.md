@@ -98,9 +98,26 @@ rather than failing the run, and both attempts stay in the log.
 
 Writing that check surfaced a conflict in our own prompt: v1 told the model it could
 "quote or closely paraphrase" the source line, which is licence to produce exactly what
-the validator has to reject. v2 asks for a verbatim substring. v1 stays on disk — the
-disagreement between a contract and the instructions meant to satisfy it is worth keeping
-in the iteration log.
+the validator has to reject. v2 asks for a verbatim substring. Measured against v1 on the
+same twelve cases, it changed nothing — same extractions, same zero repair calls — so it
+is kept as a closed contradiction rather than claimed as an improvement. Both versions
+stay on disk; the negative result is in the iteration log.
+
+## Prompts state their contract
+
+The system prompts in `prompts/` are transcribed verbatim from the design doc and describe
+behaviour: tone, how many questions, what never to say. None of them described an output
+shape, and the first live call showed why that matters — Node 1 returned a well-formed
+check-in question as plain prose, then, asked to repair it, invented a schema by echoing
+the input keys back (`{"turn": 1, "user_reply": null, "question": ...}`, where the contract
+says `message`). It was guessing, because nothing had told it. Both attempts are preserved
+verbatim in `evidence/node_01-missing-output-contract/`.
+
+The output contract is now generated from the JSON Schema that validates the reply and
+appended to every system prompt, with `$ref`s inlined so enum members are actually visible.
+Two of the three prompt defects found so far were a prompt disagreeing with its own
+validator, so the fix is structural rather than editorial: derive the instruction from the
+schema, and the text the model is held to cannot drift from the check that holds it there.
 
 ## Layout
 
@@ -113,9 +130,35 @@ llm/          Featherless client + repair retry
 stats/        engine.py · deterministic trend and change-point maths
 retrieval/    Firecrawl client + response cache
 eval/         generator.py · cases/ · validators, harness, fair baseline
-runs/         Append-only call logs — the submission's evidence
+runs/         Append-only call logs — the submission's evidence (gitignored)
+evidence/     The run logs the iteration log cites, kept so they can be read
 tests/        Contract tests + hand-written fixtures
 ```
+
+## Models
+
+Every node's routing lives in `sensorium/config.py`, which is the single source of truth
+for the workflow diagram and this table.
+
+| Tier | Model | Nodes |
+|---|---|---|
+| small | `Qwen/Qwen2.5-7B-Instruct` | 0.5, 1 |
+| mid | `Qwen/Qwen2.5-32B-Instruct` | 2, 4A, 4B, 6, 10 |
+| large | `Qwen/Qwen2.5-72B-Instruct` | 5 |
+
+Nodes 0, 3 and 7 call no model at all and are listed in `DETERMINISTIC_NODES`, so the
+diagram cannot quietly imply that arithmetic is reasoning.
+
+Ids were pinned from a live `/v1/models` response and then **verified with a real
+completion**, because listed and callable are different things: every `meta-llama/*` and
+`google/gemma-*` id returns `403 This model is gated` on this account, so the Llama-3.1
+models the design doc originally named were never available to cite. `QwQ-32B` was
+callable and still rejected — it emitted its JSON object twice in one reply, which is the
+reasoning-model failure mode structured output cannot absorb.
+
+All three tiers are one family on purpose. Node 4's two agents must differ only in the
+data they see, so sharing a tokenizer and chat template keeps an observed difference
+attributable to size rather than to a change of training lineage.
 
 ## Setup
 
