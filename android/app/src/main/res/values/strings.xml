@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sensorium</string>
+
+    <string name="section_signals">What this device reports right now</string>
+    <string name="signals_note">Read without a single permission prompt. Nothing is stored until you press Record.</string>
+    <string name="refresh">Refresh</string>
+    <string name="record">Record today</string>
+
+    <string name="section_history">Recorded history</string>
+    <string name="history_summary">%1$d recorded · %2$d seeded</string>
+    <string name="history_note">A trend needs weeks. Seeded samples are generated from this device\'s real current readings and are counted separately — the engine still decides on its own whether anything is significant.</string>
+    <string name="seed">Seed 4 weeks</string>
+    <string name="seed_shape">Shape of the seeded history</string>
+    <string name="clear">Clear</string>
+
+    <string name="section_checkin">This week\'s check-in</string>
+    <string name="checkin_note">Answer in your own words. Quotes are matched back to what you actually typed.</string>
+
+    <string name="section_result">What the workflow concluded</string>
+    <string name="analyse">Analyse</string>
+    <string name="analysing">Running the workflow…</string>
+    <string name="analysis_refused">The workflow refused to produce a report:\n\n%1$s\n\nThat is the intended behaviour. A node could not satisfy its contract, so nothing was shown rather than something unverified.</string>
+
+    <string name="verdict_trend">A measured change</string>
+    <string name="verdict_no_trend">No change beyond normal variation</string>
+    <string name="section_disagreement">The two agents disagree</string>
+    <string name="section_figures">Figures from the statistics engine</string>
+    <string name="section_suggestions">Suggestions, each tied to a retrieved source</string>
+    <string name="section_report">Shareable report</string>
+    <string name="significant">significant</string>
+    <string name="not_significant">not significant</string>
+    <string name="untested">not testable in this window</string>
+    <string name="no_source">(no source covered this — deliberately left uncited)</string>
+    <string name="run_id">run %1$s</string>
+
+    <string name="service_ready">Reasoning service reachable</string>
+    <string name="service_missing">Reasoning service unreachable — run `python -m serve.api` and `adb reverse tcp:8765 tcp:8765`</string>
+
+    <string-array name="checkin_questions">
+        <item>Anything felt off with your eyes or ears lately?</item>
+        <item>Was that once, or has it come up a few times?</item>
+        <item>Was that in a quiet room or somewhere noisy?</item>
+    </string-array>
+</resources>

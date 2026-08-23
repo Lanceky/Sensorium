@@ -1,0 +1,25 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Three rising bars: the trend the engine is looking for. -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M36,66h7v12h-7z" />
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M50.5,56h7v22h-7z" />
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M65,44h7v34h-7z" />
+    <path
+        android:fillColor="#FFB9E4DC"
+        android:pathData="M33,42a1,1 0,1 1,0.001 0zM36,36.5m-4.5,0a4.5,4.5 0,1 1,9 0a4.5,4.5 0,1 1,-9 0" />
+    <path
+        android:fillColor="#FFB9E4DC"
+        android:pathData="M54,36.5m-4.5,0a4.5,4.5 0,1 1,9 0a4.5,4.5 0,1 1,-9 0" />
+    <path
+        android:fillColor="#FFB9E4DC"
+        android:pathData="M72,36.5m-4.5,0a4.5,4.5 0,1 1,9 0a4.5,4.5 0,1 1,-9 0" />
+</vector>
