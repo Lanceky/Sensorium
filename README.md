@@ -55,6 +55,31 @@ python -m eval.generator           # regenerate and write
 python -m eval.generator --check   # verify committed cases match the generator
 ```
 
+## The number registry
+
+Node 3 is deterministic — no model is consulted — and it is the only place in the system
+where a number may originate. It emits an addressable registry rather than prose:
+
+```json
+"volume_pct_change": { "value": 29.059, "unit": "%", "method": "linear_regression" }
+```
+
+Every figure cited downstream must resolve to a key here, which is what makes numeric
+fidelity an exact lookup instead of a judgement call.
+
+Two choices in that engine are worth naming, because both guard against inventing
+findings:
+
+- **Percent change is read off the fitted line, not the endpoints.** With six to eight
+  samples per signal, `(last - first) / first` is at the mercy of whichever two readings
+  land at the window edges.
+- **A change point must survive a significance test.** Two lines always fit better than
+  one, so a residual-improvement threshold reports breaks in pure noise — measured, it
+  fired 15 times across the 12 cases, including on the null cases that exist to catch
+  exactly that. A nested-model F-test, Bonferroni-corrected for having tried every split
+  position, brings it to one detection, with a **4.7% false-positive rate on noise against
+  a nominal 5%** while still recovering **96%** of genuine breaks.
+
 ## Layout
 
 ```
@@ -63,7 +88,7 @@ prompts/      Verbatim, versioned system prompts (v1 -> v2 -> v3 feeds the itera
 sensorium/    schemas.py (validation) · config.py (model routing) · prompts.py · runlog.py
 nodes/        One module per node
 llm/          Featherless client + repair retry
-stats/        Wolfram|One client, scipy fallback
+stats/        engine.py · deterministic trend and change-point maths
 retrieval/    Firecrawl client + response cache
 eval/         generator.py · cases/ · validators, harness, fair baseline
 runs/         Append-only call logs — the submission's evidence
