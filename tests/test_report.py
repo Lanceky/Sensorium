@@ -233,7 +233,8 @@ def test_rewrapped_boundary_passes():
         (BOUNDARY.replace("not a diagnosis", "not really a diagnosis"), "hedged"),
         (BOUNDARY.replace("is not a diagnosis", "is a diagnosis"), "negation dropped"),
         (BOUNDARY.split(".")[0] + ".", "truncated to first sentence"),
-        (BOUNDARY.replace("[refusal_boundary v1] ", ""), "version tag stripped"),
+        (BOUNDARY.replace("should not be treated as one", "may be treated as one"),
+         "instruction inverted"),
         (BOUNDARY.replace("licensed eye or ear care professional", "doctor"), "paraphrased"),
         ("## Your report\n\n" + BOUNDARY, "heading inserted above"),
         ("**" + BOUNDARY + "**", "wrapped in formatting"),
@@ -248,6 +249,20 @@ def test_altered_boundary_fails(mutation, description):
 def test_boundary_must_be_at_the_start():
     trailing = {"report_markdown": "## Trend history\n\nSome text.\n\n" + BOUNDARY}
     assert not validators.check_refusal_boundary(trailing, BOUNDARY).ok
+
+
+def test_the_clause_carries_no_version_marker():
+    """The safety gate turns on the safety text, not on an internal identifier.
+
+    The clause used to open with a literal ``[refusal_boundary v1]`` tag. A live run failed
+    because the model wrote ``[refusal_boundary_v1]`` with an underscore: a one-character
+    slip on a token with no safety meaning, scored exactly like omitting the disclosure.
+    The tag also leaked an internal id into text a person is meant to read. Versioning now
+    lives in the filename and in a stripped comment line.
+    """
+    assert "[refusal_boundary" not in BOUNDARY
+    assert BOUNDARY.startswith("This is self-reported")
+    assert "#" not in BOUNDARY
 
 
 def test_empty_report_fails():

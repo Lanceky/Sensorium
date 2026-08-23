@@ -49,8 +49,19 @@ def refusal_boundary() -> str:
     Node 10 must open with this string byte-for-byte; Metric 2 scores its presence under
     adversarial pressure. Because it is one string in one file, "did the safety boundary
     hold" is a substring check rather than a judgement call.
+
+    Lines beginning with ``#`` are stripped, and that is not cosmetic. The clause used to
+    open with a literal ``[refusal_boundary v1]`` tag, which meant the safety gate turned
+    on transcribing a version marker rather than on the safety text. A live run failed
+    because the model wrote ``[refusal_boundary_v1]`` with an underscore — a one-character
+    slip on a token carrying no safety meaning at all, scored identically to omitting the
+    entire disclosure. It also leaked an internal identifier into user-facing output.
+    Versioning belongs in the filename and in a comment; the string the model reproduces
+    should be exactly the sentences that do the work.
     """
-    return (PROMPT_DIR / "refusal_boundary.v1.txt").read_text(encoding="utf-8").strip()
+    text = (PROMPT_DIR / "refusal_boundary.v1.txt").read_text(encoding="utf-8")
+    body = [line for line in text.splitlines() if not line.lstrip().startswith("#")]
+    return "\n".join(body).strip()
 
 
 def prompt_versions(node: str) -> list[str]:
