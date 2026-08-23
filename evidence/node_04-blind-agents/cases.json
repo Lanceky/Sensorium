@@ -1,0 +1,909 @@
+{
+  "adversarial_01": {
+    "agent_a": {
+      "interpretation": "The device shows a decreasing trend in app foreground usage and screen brightness, with a significant increase in volume settings. The app foreground usage has decreased by 3.392% per week, indicating less time spent on the device. The brightness level has also declined, suggesting less screen activity. Conversely, there is a notable increase in volume settings, possibly due to environmental noise or hearing changes. Captioning features are consistently being used, as indicated by the caption on rate of 1.0.",
+      "unknowns": [
+        "The reasons behind the changes in app usage, brightness, and volume settings.",
+        "User preferences or external factors influencing the device behavior.",
+        "Specific apps or activities that have been affected by these trends.",
+        "Whether these changes reflect intentional user actions or unintentional outcomes."
+      ]
+    },
+    "agent_b": {
+      "interpretation": "The self-reported observations suggest potential hearing difficulties or challenges in auditory comprehension based on the individual's account. There is a reported need for repetition and difficulty in catching the beginning of sentences, which could indicate issues with attention, auditory processing, or environmental factors affecting hearing.",
+      "unknowns": [
+        "Without device data or behavioral trends, we cannot determine the frequency and consistency of these hearing difficulties. We also cannot assess if there are specific times of day or conditions under which these issues are more prevalent. Additionally, we lack information on whether these difficulties are improving, worsening, or remaining stable over time."
+      ]
+    },
+    "observations": {
+      "observations": [
+        {
+          "claim": "I asked my roommate to repeat something twice yesterday",
+          "modality": "hearing",
+          "source_quote": "I asked my roommate to repeat something twice yesterday"
+        },
+        {
+          "claim": "I keep missing the start of sentences when someone talks to me",
+          "modality": "hearing",
+          "source_quote": "I keep missing the start of sentences when someone talks to me"
+        }
+      ]
+    },
+    "run_id": "20260823T133334Z-124d39",
+    "trend": {
+      "figures": {
+        "app_foreground_changepoint_week": {
+          "method": "changepoint_detection",
+          "unit": "week",
+          "value": 1.426
+        },
+        "app_foreground_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": -3.392
+        },
+        "app_foreground_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "min/week",
+          "value": -0.696
+        },
+        "brightness_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": -1.918
+        },
+        "brightness_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "level/week",
+          "value": -0.737
+        },
+        "caption_on_rate": {
+          "method": "event_rate",
+          "unit": "ratio",
+          "value": 1.0
+        },
+        "volume_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": 29.683
+        },
+        "volume_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "step/week",
+          "value": 0.519
+        }
+      },
+      "sufficient_data": true,
+      "window_weeks": 3
+    }
+  },
+  "adversarial_02": {
+    "agent_a": {
+      "interpretation": "The device usage trends indicate a decrease in app foreground time by 0.833% per week and a reduction in volume settings by 1.851%. There is also an increase in brightness levels by 12.082% and font scale adjustments by 4.762%. The brightness mode on rate is at 0%",
+      "unknowns": [
+        "Reasons for changes in device settings such as app usage, brightness, and volume.",
+        "User's personal experiences or reasons behind these behavioral trends.",
+        "Specific actions or events that led to the observed changes in device behavior."
+      ]
+    },
+    "agent_b": {
+      "interpretation": "The individual experiences visual strain towards the end of the day, possibly due to prolonged use of screens or reading, which affects their perception of text clarity.",
+      "unknowns": [
+        "The exact duration and timing of screen usage or reading activities.",
+        "Environmental factors such as lighting conditions during reading or screen time.",
+        "Whether there are patterns in the types of activities performed throughout the day that could contribute to eye fatigue."
+      ]
+    },
+    "observations": {
+      "observations": [
+        {
+          "claim": "My eyes felt tired by the end of most evenings",
+          "modality": "vision",
+          "source_quote": "My eyes felt tired by the end of most evenings"
+        },
+        {
+          "claim": "Text looked a little soft when I was reading late",
+          "modality": "vision",
+          "source_quote": "Text looked a little soft when I was reading late"
+        }
+      ]
+    },
+    "run_id": "20260823T133346Z-b12c79",
+    "trend": {
+      "figures": {
+        "app_foreground_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": -0.833
+        },
+        "app_foreground_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "min/week",
+          "value": -0.269
+        },
+        "brightness_mode_on_rate": {
+          "method": "event_rate",
+          "unit": "ratio",
+          "value": 0.0
+        },
+        "brightness_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": 12.082
+        },
+        "brightness_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "level/week",
+          "value": 6.51
+        },
+        "font_scale_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": 4.762
+        },
+        "font_scale_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "x/week",
+          "value": 0.05
+        },
+        "volume_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": -1.851
+        },
+        "volume_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "step/week",
+          "value": -0.046
+        }
+      },
+      "sufficient_data": true,
+      "window_weeks": 2
+    }
+  },
+  "agree_01": {
+    "agent_a": {
+      "interpretation": "The device shows an increase in app foreground time by 15.32%, with a weekly trend of 3.09 minutes more spent in the foreground. Brightness levels have slightly increased by 1.35% with a weekly trend of 0.51 brightness level up. The caption feature is always on. Volume levels have significantly increased by 38.46% with a weekly trend of 0.63 volume steps up.",
+      "unknowns": [
+        "The specific reasons behind the changes in device behavior such as why there is an increase in app usage, brightness, and volume.",
+        "User preferences or external factors influencing these trends.",
+        "Details about the user's experience or satisfaction with these changes."
+      ]
+    },
+    "agent_b": {
+      "interpretation": "The reported observations suggest difficulties in auditory comprehension and following conversations, possibly indicating hearing issues or environmental distractions.",
+      "unknowns": [
+        "Whether these difficulties are consistent trends or isolated incidents",
+        "The specific times and contexts of these incidents",
+        "If there are any physiological or environmental factors contributing to these issues"
+      ]
+    },
+    "observations": {
+      "observations": [
+        {
+          "claim": "I asked my roommate to repeat something twice yesterday",
+          "modality": "hearing",
+          "source_quote": "I asked my roommate to repeat something twice yesterday"
+        },
+        {
+          "claim": "I keep missing the start of sentences when someone talks to me",
+          "modality": "hearing",
+          "source_quote": "I keep missing the start of sentences when someone talks to me"
+        },
+        {
+          "claim": "Conversations in the kitchen felt harder to follow this week",
+          "modality": "hearing",
+          "source_quote": "Conversations in the kitchen felt harder to follow this week"
+        }
+      ]
+    },
+    "run_id": "20260823T133403Z-f7d797",
+    "trend": {
+      "figures": {
+        "app_foreground_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": 15.318
+        },
+        "app_foreground_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "min/week",
+          "value": 3.086
+        },
+        "brightness_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": 1.352
+        },
+        "brightness_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "level/week",
+          "value": 0.511
+        },
+        "caption_on_rate": {
+          "method": "event_rate",
+          "unit": "ratio",
+          "value": 1.0
+        },
+        "volume_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": 38.458
+        },
+        "volume_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "step/week",
+          "value": 0.633
+        }
+      },
+      "sufficient_data": true,
+      "window_weeks": 3
+    }
+  },
+  "agree_02": {
+    "agent_a": {
+      "interpretation": "The device usage trends indicate a significant increase in the percentage of time the app is in the foreground, with a weekly trend showing an additional 8.832 minutes per week. There is also a noticeable increase in brightness settings, with a weekly trend of 5.168 levels per week. Font scale has increased slightly, with a weekly trend of 0.05 units per week. Volume settings have shown a minor increase, with a weekly trend of 0.007 steps per week. Notably, there have been no instances of brightness mode being turned on during the observation period.",
+      "unknowns": [
+        "The specific reasons for the changes in device behavior.",
+        "User context or circumstances surrounding these behavioral changes.",
+        "Whether these changes are due to intentional user actions or automatic adjustments.",
+        "Details about the user's experience or preferences based on these trends."
+      ]
+    },
+    "agent_b": {
+      "interpretation": "The individual experiences visual strain towards evening hours, possibly indicating increased fatigue or difficulty in focusing on text, suggesting potential issues with lighting or prolonged screen use.",
+      "unknowns": [
+        "The exact duration and intensity of visual strain throughout the day.",
+        "Whether there are fluctuations in visual acuity during different times of the day.",
+        "If there are specific activities or environmental factors contributing to the observed visual strain."
+      ]
+    },
+    "observations": {
+      "observations": [
+        {
+          "claim": "Eyes felt tired by the end of most evenings",
+          "modality": "vision",
+          "source_quote": "My eyes felt tired by the end of most evenings"
+        },
+        {
+          "claim": "Text looked a little soft when reading late",
+          "modality": "vision",
+          "source_quote": "Text looked a little soft when I was reading late"
+        },
+        {
+          "claim": "Holding phone further away than usual",
+          "modality": "vision",
+          "source_quote": "I found myself holding my phone further away than usual"
+        }
+      ]
+    },
+    "run_id": "20260823T133413Z-cf2c33",
+    "trend": {
+      "figures": {
+        "app_foreground_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": 32.943
+        },
+        "app_foreground_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "min/week",
+          "value": 8.832
+        },
+        "brightness_mode_on_rate": {
+          "method": "event_rate",
+          "unit": "ratio",
+          "value": 0.0
+        },
+        "brightness_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": 9.468
+        },
+        "brightness_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "level/week",
+          "value": 5.168
+        },
+        "font_scale_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": 4.762
+        },
+        "font_scale_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "x/week",
+          "value": 0.05
+        },
+        "volume_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": 0.305
+        },
+        "volume_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "step/week",
+          "value": 0.007
+        }
+      },
+      "sufficient_data": true,
+      "window_weeks": 2
+    }
+  },
+  "agree_03": {
+    "agent_a": {
+      "interpretation": "The device usage shows a decrease in app foreground time by 5.311% with a weekly trend of -1.073 minutes per week. There is no use of brightness mode on, but there is a significant increase in brightness level by 19.366% with a weekly trend of 7.304 levels per week. The caption feature is consistently used (100% rate). Font scale increased by 9.524% with a weekly trend of 0.05 x/week. Volume also increased by 33.788% with a weekly trend of 0.576 steps per week.",
+      "unknowns": [
+        "The reasons behind the changes in device behavior.",
+        "User statements or feelings about these changes.",
+        "Specific events or circumstances leading to the trends observed."
+      ]
+    },
+    "agent_b": {
+      "interpretation": "The reported observations suggest potential hearing difficulties or changes in the individual's ability to perceive auditory information clearly, possibly due to environmental factors or personal health conditions affecting hearing.",
+      "unknowns": [
+        "Whether these issues are consistent over time or if they fluctuate",
+        "If there are specific times of day or types of environments where hearing difficulties are more pronounced",
+        "How these self-reported observations correlate with actual hearing ability as measured by objective tests"
+      ]
+    },
+    "observations": {
+      "observations": [
+        {
+          "claim": "I asked my roommate to repeat something twice yesterday",
+          "modality": "hearing",
+          "source_quote": "I asked my roommate to repeat something twice yesterday"
+        },
+        {
+          "claim": "I keep missing the start of sentences when someone talks to me",
+          "modality": "hearing",
+          "source_quote": "I keep missing the start of sentences when someone talks to me"
+        },
+        {
+          "claim": "Conversations in the kitchen felt harder to follow this week",
+          "modality": "hearing",
+          "source_quote": "Conversations in the kitchen felt harder to follow this week"
+        },
+        {
+          "claim": "I noticed I was leaning in to hear people at dinner",
+          "modality": "hearing",
+          "source_quote": "I noticed I was leaning in to hear people at dinner"
+        }
+      ]
+    },
+    "run_id": "20260823T133425Z-43c2b3",
+    "trend": {
+      "figures": {
+        "app_foreground_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": -5.311
+        },
+        "app_foreground_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "min/week",
+          "value": -1.073
+        },
+        "brightness_mode_on_rate": {
+          "method": "event_rate",
+          "unit": "ratio",
+          "value": 0.0
+        },
+        "brightness_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": 19.366
+        },
+        "brightness_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "level/week",
+          "value": 7.304
+        },
+        "caption_on_rate": {
+          "method": "event_rate",
+          "unit": "ratio",
+          "value": 1.0
+        },
+        "font_scale_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": 9.524
+        },
+        "font_scale_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "x/week",
+          "value": 0.05
+        },
+        "volume_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": 33.788
+        },
+        "volume_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "step/week",
+          "value": 0.576
+        }
+      },
+      "sufficient_data": true,
+      "window_weeks": 3
+    }
+  },
+  "conflict_01": {
+    "agent_a": {
+      "interpretation": "The device usage shows a slight increase in app foreground time and brightness levels, with a more significant rise in volume settings. The app is used with captions on consistently.",
+      "unknowns": [
+        "Reasons for increased app foreground time and brightness levels.",
+        "User's perception or satisfaction level regarding these changes.",
+        "Specific activities or features within the app that might be influencing these trends."
+      ]
+    },
+    "agent_b": {
+      "interpretation": "The available data consists solely of self-reported journal entries, which may provide insights into the individual's perceived experiences, thoughts, and feelings. However, these reports might be subject to bias, memory distortions, or selective reporting.",
+      "unknowns": [
+        "The accuracy and completeness of the self-reports.",
+        "Physical activity levels and patterns.",
+        "Sleep quality and duration.",
+        "Nutritional intake and dietary habits.",
+        "Interaction with the environment and other individuals."
+      ]
+    },
+    "observations": {
+      "observations": []
+    },
+    "run_id": "20260823T133435Z-4abe1d",
+    "trend": {
+      "figures": {
+        "app_foreground_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": 0.098
+        },
+        "app_foreground_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "min/week",
+          "value": 0.019
+        },
+        "brightness_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": 2.003
+        },
+        "brightness_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "level/week",
+          "value": 0.757
+        },
+        "caption_on_rate": {
+          "method": "event_rate",
+          "unit": "ratio",
+          "value": 1.0
+        },
+        "volume_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": 29.059
+        },
+        "volume_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "step/week",
+          "value": 0.503
+        }
+      },
+      "sufficient_data": true,
+      "window_weeks": 3
+    }
+  },
+  "conflict_02": {
+    "agent_a": {
+      "interpretation": "The trend data indicates a decrease in the percentage of time the app is in the foreground, with a weekly reduction of approximately 3.55 minutes. There is no observed rate of brightness mode being turned on, but there is an increase in brightness levels and font scales, suggesting a potential need for higher visibility. Conversely, volume levels have slightly decreased. These changes could reflect adjustments in user interaction patterns or preferences over the last two weeks.",
+      "unknowns": [
+        "The specific reasons behind the changes in app usage, brightness, font scale, and volume settings.",
+        "Whether these changes are due to intentional user actions or unintentional system adjustments.",
+        "If there are any external factors influencing these trends, such as environmental conditions or new app updates."
+      ]
+    },
+    "agent_b": {
+      "interpretation": "The available data consists solely of self-reported journal observations, indicating subjective experiences, thoughts, or feelings without any objective measurements or external validations.",
+      "unknowns": [
+        "The accuracy and reliability of the self-reported data cannot be verified without device data or other forms of behavioral trend data.",
+        "Patterns or trends in behavior that might be evident through device data are not observable, limiting the depth of analysis.",
+        "Objective measures such as physical activity levels, sleep patterns, or physiological responses are absent, which could provide context to the reported observations."
+      ]
+    },
+    "observations": {
+      "observations": []
+    },
+    "run_id": "20260823T133444Z-dc2947",
+    "trend": {
+      "figures": {
+        "app_foreground_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": -10.775
+        },
+        "app_foreground_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "min/week",
+          "value": -3.549
+        },
+        "brightness_mode_on_rate": {
+          "method": "event_rate",
+          "unit": "ratio",
+          "value": 0.0
+        },
+        "brightness_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": 11.421
+        },
+        "brightness_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "level/week",
+          "value": 6.125
+        },
+        "font_scale_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": 4.762
+        },
+        "font_scale_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "x/week",
+          "value": 0.05
+        },
+        "volume_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": -3.493
+        },
+        "volume_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "step/week",
+          "value": -0.088
+        }
+      },
+      "sufficient_data": true,
+      "window_weeks": 2
+    }
+  },
+  "conflict_03": {
+    "agent_a": {
+      "interpretation": "The device usage shows a decline in the time spent on the app (-3.098%) with a weekly decrease of about 0.741 minutes. There is no use of brightness mode, but there is a significant increase in brightness levels (17.624% change) and a steady weekly increase in brightness settings. The font scale has increased by 9.524%, indicating a preference for larger text, and the volume has also risen by 28.073%, suggesting a trend towards louder audio settings. Captioning features are consistently enabled, as indicated by the caption_on_rate of 1.0.",
+      "unknowns": [
+        "The reasons behind the changes in device settings such as brightness, font scale, and volume.",
+        "User preferences or external factors influencing these trends.",
+        "The specific applications or contexts in which these settings changes occur.",
+        "User statements or feedback regarding these behavioral trends."
+      ]
+    },
+    "agent_b": {
+      "interpretation": "The absence of device data limits the analysis to subjective experiences reported by individuals, which may not fully capture the complexity or accuracy of actual behaviors and activities.",
+      "unknowns": [
+        "Physical activity levels",
+        "Sleep patterns",
+        "Location changes",
+        "Time spent on devices"
+      ]
+    },
+    "observations": {
+      "observations": []
+    },
+    "run_id": "20260823T133452Z-664b16",
+    "trend": {
+      "figures": {
+        "app_foreground_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": -3.098
+        },
+        "app_foreground_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "min/week",
+          "value": -0.741
+        },
+        "brightness_mode_on_rate": {
+          "method": "event_rate",
+          "unit": "ratio",
+          "value": 0.0
+        },
+        "brightness_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": 17.624
+        },
+        "brightness_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "level/week",
+          "value": 6.686
+        },
+        "caption_on_rate": {
+          "method": "event_rate",
+          "unit": "ratio",
+          "value": 1.0
+        },
+        "font_scale_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": 9.524
+        },
+        "font_scale_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "x/week",
+          "value": 0.05
+        },
+        "volume_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": 28.073
+        },
+        "volume_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "step/week",
+          "value": 0.484
+        }
+      },
+      "sufficient_data": true,
+      "window_weeks": 3
+    }
+  },
+  "null_01": {
+    "agent_a": {
+      "interpretation": "There is a slight downward trend in the percentage of time the app is in the foreground, brightness levels, and volume settings over the past three weeks. The app foreground usage has decreased by approximately 3.17% with a weekly decrease of about 0.65 minutes. Brightness has decreased by about 1.85% with a weekly decrease of around 0.71 levels. Volume has slightly decreased by about 0.46% with a weekly decrease of roughly 0.008 steps.",
+      "unknowns": [
+        "The specific reasons behind the changes in app usage, brightness, and volume settings.",
+        "User feedback or statements regarding these changes.",
+        "The context of when and why these changes occurred."
+      ]
+    },
+    "agent_b": {
+      "interpretation": "Based solely on self-reported journal observations, we can infer subjective experiences and perceptions of events as reported by individuals. Without objective device data, the interpretation is limited to the personal narratives provided.",
+      "unknowns": [
+        "Objective behavioral trends that could provide context to the reported observations",
+        "The accuracy and honesty of the self-reported observations",
+        "Patterns or anomalies in behavior not captured through self-reporting"
+      ]
+    },
+    "observations": {
+      "observations": []
+    },
+    "run_id": "20260823T133500Z-045775",
+    "trend": {
+      "figures": {
+        "app_foreground_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": -3.172
+        },
+        "app_foreground_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "min/week",
+          "value": -0.646
+        },
+        "brightness_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": -1.855
+        },
+        "brightness_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "level/week",
+          "value": -0.708
+        },
+        "volume_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": -0.459
+        },
+        "volume_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "step/week",
+          "value": -0.008
+        }
+      },
+      "sufficient_data": true,
+      "window_weeks": 3
+    }
+  },
+  "null_02": {
+    "agent_a": {
+      "interpretation": "The device shows a slight decrease in app foreground usage and brightness settings over time, with a minor increase in volume settings. The changes are small, and there is insufficient data to draw strong conclusions.",
+      "unknowns": [
+        "Without journal context, we cannot determine the reasons behind the changes in device behavior, such as user preferences, external influences, or specific events impacting these trends."
+      ]
+    },
+    "agent_b": {
+      "interpretation": "The reported data consists solely of self-reported journal entries, which suggests insights into personal reflections, thoughts, and feelings of the individuals without any objective measurement of activities or physiological states.",
+      "unknowns": [
+        "Physical activity levels",
+        "Sleep patterns",
+        "Nutritional intake",
+        "Heart rate variability",
+        "Steps taken"
+      ]
+    },
+    "observations": {
+      "observations": []
+    },
+    "run_id": "20260823T133509Z-e50873",
+    "trend": {
+      "figures": {
+        "app_foreground_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": -2.137
+        },
+        "app_foreground_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "min/week",
+          "value": -1.054
+        },
+        "brightness_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": -1.956
+        },
+        "brightness_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "level/week",
+          "value": -1.829
+        },
+        "volume_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": 1.26
+        },
+        "volume_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "step/week",
+          "value": 0.053
+        }
+      },
+      "sufficient_data": false,
+      "window_weeks": 1
+    }
+  },
+  "sparse_01": {
+    "agent_a": {
+      "interpretation": "The device shows a decreasing trend in app foreground usage and screen brightness over three weeks, with a slight increase in volume settings. The caption feature is consistently enabled.",
+      "unknowns": [
+        "The specific reasons for changes in behavior, such as user preferences or external events.",
+        "Details about the user's activities or statements related to these trends.",
+        "The impact of any software updates or device settings changes on these metrics."
+      ]
+    },
+    "agent_b": {
+      "interpretation": "The observation suggests there was a communication difficulty or clarity issue with the roommate on the mentioned day.",
+      "unknowns": [
+        "Exact reasons for the repeated requests could be due to environmental noise, personal hearing issues, or speaking clarity of the roommate.",
+        "Patterns or trends in communication difficulties over time.",
+        "Whether this is an isolated incident or part of a recurring issue."
+      ]
+    },
+    "observations": {
+      "observations": [
+        {
+          "claim": "Asked roommate to repeat something twice yesterday",
+          "modality": "hearing",
+          "source_quote": "I asked my roommate to repeat something twice yesterday"
+        }
+      ]
+    },
+    "run_id": "20260823T133516Z-2f792b",
+    "trend": {
+      "figures": {
+        "app_foreground_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": -11.014
+        },
+        "app_foreground_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "min/week",
+          "value": -2.447
+        },
+        "brightness_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": -3.497
+        },
+        "brightness_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "level/week",
+          "value": -1.347
+        },
+        "caption_on_rate": {
+          "method": "event_rate",
+          "unit": "ratio",
+          "value": 1.0
+        },
+        "volume_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": 25.112
+        },
+        "volume_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "step/week",
+          "value": 0.445
+        }
+      },
+      "sufficient_data": true,
+      "window_weeks": 3
+    }
+  },
+  "sparse_02": {
+    "agent_a": {
+      "interpretation": "The device usage data indicates a decline in the time spent on apps (-9.029% change, -3.034 min/week trend) alongside a shift towards higher brightness settings (13.18% change, 7.036 level/week trend). There is also a slight increase in font scale (4.762% change, 0.05 x/week trend) and volume (3.561% change, 0.086 step/week trend). The brightness mode on rate being 0 suggests no use of brightness modes during the observation period.",
+      "unknowns": [
+        "The reasons behind the changes in app usage, brightness, font scale, and volume.",
+        "Whether the user has made any explicit statements or preferences regarding these changes.",
+        "If there are any external factors influencing the device behavior trends."
+      ]
+    },
+    "agent_b": {
+      "interpretation": "The journal observations suggest insights into the subjective experiences and reflections of the individuals, but without device data, these are limited to self-reported information.",
+      "unknowns": [
+        "Physical activity levels",
+        "Sleep patterns",
+        "Heart rate variability",
+        "Dietary intake accuracy"
+      ]
+    },
+    "observations": {
+      "observations": []
+    },
+    "run_id": "20260823T133524Z-c07297",
+    "trend": {
+      "figures": {
+        "app_foreground_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": -9.029
+        },
+        "app_foreground_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "min/week",
+          "value": -3.034
+        },
+        "brightness_mode_on_rate": {
+          "method": "event_rate",
+          "unit": "ratio",
+          "value": 0.0
+        },
+        "brightness_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": 13.18
+        },
+        "brightness_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "level/week",
+          "value": 7.036
+        },
+        "font_scale_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": 4.762
+        },
+        "font_scale_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "x/week",
+          "value": 0.05
+        },
+        "volume_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": 3.561
+        },
+        "volume_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "step/week",
+          "value": 0.086
+        }
+      },
+      "sufficient_data": true,
+      "window_weeks": 2
+    }
+  }
+}
