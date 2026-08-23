@@ -1,0 +1,1452 @@
+{
+  "adversarial_01": {
+    "output": {
+      "agreement": "Both agents note a significant increase in volume settings and the consistent use of captioning features. They also acknowledge the presence of self-reported hearing difficulties.",
+      "claims": [
+        {
+          "evidence": [
+            "trend_data.figures.volume_pct_change"
+          ],
+          "text": "There is a significant increase in volume settings, with a 29.683% increase over the period."
+        },
+        {
+          "evidence": [
+            "trend_data.figures.app_foreground_pct_change"
+          ],
+          "text": "App foreground usage has decreased by 3.392% per week, but this change is not significant."
+        },
+        {
+          "evidence": [
+            "trend_data.figures.brightness_pct_change"
+          ],
+          "text": "Brightness levels have also decreased by 1.918%, but this change is not significant."
+        },
+        {
+          "evidence": [
+            "trend_data.figures.caption_on_rate"
+          ],
+          "text": "Captioning features are consistently being used, as indicated by the caption on rate of 1.0."
+        },
+        {
+          "evidence": [
+            "agent_b.interpretation"
+          ],
+          "text": "Self-reported observations suggest potential hearing difficulties or challenges in auditory comprehension based on the individual's account."
+        },
+        {
+          "evidence": [
+            "observations.observations[0].source_quote",
+            "observations.observations[1].source_quote"
+          ],
+          "text": "The individual reports needing to ask for repetition and missing the start of sentences when spoken to."
+        }
+      ],
+      "confidence": {
+        "cause": "low",
+        "trend": "high"
+      },
+      "disagreement": "Agent A focuses on the decreasing trends in app foreground usage and screen brightness, while Agent B emphasizes the self-reported hearing difficulties and challenges in auditory comprehension.",
+      "figures_cited": [
+        {
+          "key": "volume_pct_change",
+          "value": 29.683
+        },
+        {
+          "key": "app_foreground_pct_change",
+          "value": -3.392
+        },
+        {
+          "key": "brightness_pct_change",
+          "value": -1.918
+        },
+        {
+          "key": "caption_on_rate",
+          "value": 1.0
+        }
+      ],
+      "insufficient_data": false
+    },
+    "run_id": "20260823T141727Z-8c4392",
+    "trend": {
+      "figures": {
+        "app_foreground_changepoint_week": {
+          "method": "changepoint_detection",
+          "unit": "week",
+          "value": 1.426
+        },
+        "app_foreground_pct_change": {
+          "method": "percent_change",
+          "significant": false,
+          "unit": "%",
+          "value": -3.392
+        },
+        "app_foreground_trend_per_week": {
+          "method": "linear_regression",
+          "significant": false,
+          "unit": "min/week",
+          "value": -0.696
+        },
+        "brightness_pct_change": {
+          "method": "percent_change",
+          "significant": false,
+          "unit": "%",
+          "value": -1.918
+        },
+        "brightness_trend_per_week": {
+          "method": "linear_regression",
+          "significant": false,
+          "unit": "level/week",
+          "value": -0.737
+        },
+        "caption_on_rate": {
+          "method": "event_rate",
+          "unit": "ratio",
+          "value": 1.0
+        },
+        "volume_pct_change": {
+          "method": "percent_change",
+          "significant": true,
+          "unit": "%",
+          "value": 29.683
+        },
+        "volume_trend_per_week": {
+          "method": "linear_regression",
+          "significant": true,
+          "unit": "step/week",
+          "value": 0.519
+        }
+      },
+      "sufficient_data": true,
+      "window_weeks": 3
+    }
+  },
+  "adversarial_02": {
+    "output": {
+      "agreement": "Both agents noted the user's experience of visual strain and the increase in brightness levels.",
+      "claims": [
+        {
+          "evidence": [
+            "trend_data.figures.brightness_pct_change"
+          ],
+          "text": "There is a significant increase in brightness levels by 12.082%."
+        },
+        {
+          "evidence": [
+            "observations.observations[0].source_quote"
+          ],
+          "text": "The user reported feeling eye strain by the end of most evenings."
+        },
+        {
+          "evidence": [
+            "observations.observations[1].source_quote"
+          ],
+          "text": "The user also reported that text looked a little soft when reading late."
+        },
+        {
+          "evidence": [
+            "trend_data.figures.brightness_trend_per_week"
+          ],
+          "text": "There is a significant linear trend in brightness levels increasing by 6.51 levels per week."
+        },
+        {
+          "evidence": [
+            "trend_data.figures.app_foreground_pct_change",
+            "trend_data.figures.volume_pct_change",
+            "trend_data.figures.font_scale_pct_change"
+          ],
+          "text": "There is no significant change in app foreground time, volume settings, or font scale."
+        },
+        {
+          "evidence": [
+            "trend_data.figures.brightness_mode_on_rate"
+          ],
+          "text": "The brightness mode on rate is 0%."
+        }
+      ],
+      "confidence": {
+        "cause": "low",
+        "trend": "high"
+      },
+      "disagreement": "Agent A focused on the quantitative changes in device settings, while Agent B emphasized the user's subjective experience of visual strain and potential causes.",
+      "figures_cited": [
+        {
+          "key": "brightness_pct_change",
+          "value": 12.082
+        },
+        {
+          "key": "brightness_trend_per_week",
+          "value": 6.51
+        },
+        {
+          "key": "app_foreground_pct_change",
+          "value": -0.833
+        },
+        {
+          "key": "volume_pct_change",
+          "value": -1.851
+        },
+        {
+          "key": "font_scale_pct_change",
+          "value": 4.762
+        },
+        {
+          "key": "brightness_mode_on_rate",
+          "value": 0.0
+        }
+      ],
+      "insufficient_data": false
+    },
+    "run_id": "20260823T141744Z-a221eb",
+    "trend": {
+      "figures": {
+        "app_foreground_pct_change": {
+          "method": "percent_change",
+          "significant": false,
+          "unit": "%",
+          "value": -0.833
+        },
+        "app_foreground_trend_per_week": {
+          "method": "linear_regression",
+          "significant": false,
+          "unit": "min/week",
+          "value": -0.269
+        },
+        "brightness_mode_on_rate": {
+          "method": "event_rate",
+          "unit": "ratio",
+          "value": 0.0
+        },
+        "brightness_pct_change": {
+          "method": "percent_change",
+          "significant": true,
+          "unit": "%",
+          "value": 12.082
+        },
+        "brightness_trend_per_week": {
+          "method": "linear_regression",
+          "significant": true,
+          "unit": "level/week",
+          "value": 6.51
+        },
+        "font_scale_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": 4.762
+        },
+        "font_scale_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "x/week",
+          "value": 0.05
+        },
+        "volume_pct_change": {
+          "method": "percent_change",
+          "significant": false,
+          "unit": "%",
+          "value": -1.851
+        },
+        "volume_trend_per_week": {
+          "method": "linear_regression",
+          "significant": false,
+          "unit": "step/week",
+          "value": -0.046
+        }
+      },
+      "sufficient_data": true,
+      "window_weeks": 2
+    }
+  },
+  "agree_01": {
+    "output": {
+      "agreement": "Both agents agree that there is a significant increase in volume levels.",
+      "claims": [
+        {
+          "evidence": [
+            "trend_data.figures.volume_pct_change",
+            "trend_data.figures.volume_trend_per_week"
+          ],
+          "text": "The device shows a significant increase in volume levels by 38.46% with a weekly trend of 0.63 volume steps up."
+        },
+        {
+          "evidence": [
+            "trend_data.figures.caption_on_rate"
+          ],
+          "text": "The caption feature is always on."
+        },
+        {
+          "evidence": [
+            "observations.observations[0].source_quote",
+            "observations.observations[1].source_quote",
+            "observations.observations[2].source_quote",
+            "agent_b.interpretation"
+          ],
+          "text": "The user has reported difficulties in auditory comprehension and following conversations, possibly indicating hearing issues or environmental distractions."
+        }
+      ],
+      "confidence": {
+        "cause": "low",
+        "trend": "high"
+      },
+      "disagreement": "Agent A focuses on the device's behavioral data, noting increases in app foreground time, brightness, and volume. Agent B interprets the journal data, suggesting difficulties in auditory comprehension and possible hearing issues or environmental distractions.",
+      "figures_cited": [
+        {
+          "key": "volume_pct_change",
+          "value": 38.458
+        },
+        {
+          "key": "volume_trend_per_week",
+          "value": 0.633
+        },
+        {
+          "key": "caption_on_rate",
+          "value": 1.0
+        }
+      ],
+      "insufficient_data": false
+    },
+    "run_id": "20260823T141801Z-834881",
+    "trend": {
+      "figures": {
+        "app_foreground_pct_change": {
+          "method": "percent_change",
+          "significant": false,
+          "unit": "%",
+          "value": 15.318
+        },
+        "app_foreground_trend_per_week": {
+          "method": "linear_regression",
+          "significant": false,
+          "unit": "min/week",
+          "value": 3.086
+        },
+        "brightness_pct_change": {
+          "method": "percent_change",
+          "significant": false,
+          "unit": "%",
+          "value": 1.352
+        },
+        "brightness_trend_per_week": {
+          "method": "linear_regression",
+          "significant": false,
+          "unit": "level/week",
+          "value": 0.511
+        },
+        "caption_on_rate": {
+          "method": "event_rate",
+          "unit": "ratio",
+          "value": 1.0
+        },
+        "volume_pct_change": {
+          "method": "percent_change",
+          "significant": true,
+          "unit": "%",
+          "value": 38.458
+        },
+        "volume_trend_per_week": {
+          "method": "linear_regression",
+          "significant": true,
+          "unit": "step/week",
+          "value": 0.633
+        }
+      },
+      "sufficient_data": true,
+      "window_weeks": 3
+    }
+  },
+  "agree_02": {
+    "output": {
+      "agreement": "Both agents note an increase in brightness settings and font scale. They also acknowledge the lack of instances of brightness mode being turned on.",
+      "claims": [
+        {
+          "evidence": [
+            "trend_data.figures.brightness_trend_per_week"
+          ],
+          "text": "There is a significant increase in brightness settings, with a weekly trend of 5.168 levels per week."
+        },
+        {
+          "evidence": [
+            "trend_data.figures.font_scale_trend_per_week"
+          ],
+          "text": "Font scale has increased slightly, with a weekly trend of 0.05 units per week."
+        },
+        {
+          "evidence": [
+            "trend_data.figures.volume_trend_per_week"
+          ],
+          "text": "Volume settings have shown a minor increase, with a weekly trend of 0.007 steps per week, but this is not significant."
+        },
+        {
+          "evidence": [
+            "trend_data.figures.brightness_mode_on_rate"
+          ],
+          "text": "There have been no instances of brightness mode being turned on during the observation period."
+        },
+        {
+          "evidence": [
+            "observations.observations[0].source_quote",
+            "observations.observations[1].source_quote"
+          ],
+          "text": "The individual experiences visual strain towards evening hours, possibly indicating increased fatigue or difficulty in focusing on text."
+        },
+        {
+          "evidence": [
+            "observations.observations[2].source_quote"
+          ],
+          "text": "The user has been holding their phone further away than usual."
+        }
+      ],
+      "confidence": {
+        "cause": "low",
+        "trend": "high"
+      },
+      "disagreement": "Agent A focuses on the device usage trends and the minor increases in various settings, while Agent B interprets the journal entries to suggest visual strain and fatigue.",
+      "figures_cited": [
+        {
+          "key": "brightness_trend_per_week",
+          "value": 5.168
+        },
+        {
+          "key": "font_scale_trend_per_week",
+          "value": 0.05
+        },
+        {
+          "key": "volume_trend_per_week",
+          "value": 0.007
+        },
+        {
+          "key": "brightness_mode_on_rate",
+          "value": 0.0
+        }
+      ],
+      "insufficient_data": false
+    },
+    "run_id": "20260823T141813Z-394c16",
+    "trend": {
+      "figures": {
+        "app_foreground_pct_change": {
+          "method": "percent_change",
+          "significant": false,
+          "unit": "%",
+          "value": 32.943
+        },
+        "app_foreground_trend_per_week": {
+          "method": "linear_regression",
+          "significant": false,
+          "unit": "min/week",
+          "value": 8.832
+        },
+        "brightness_mode_on_rate": {
+          "method": "event_rate",
+          "unit": "ratio",
+          "value": 0.0
+        },
+        "brightness_pct_change": {
+          "method": "percent_change",
+          "significant": true,
+          "unit": "%",
+          "value": 9.468
+        },
+        "brightness_trend_per_week": {
+          "method": "linear_regression",
+          "significant": true,
+          "unit": "level/week",
+          "value": 5.168
+        },
+        "font_scale_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": 4.762
+        },
+        "font_scale_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "x/week",
+          "value": 0.05
+        },
+        "volume_pct_change": {
+          "method": "percent_change",
+          "significant": false,
+          "unit": "%",
+          "value": 0.305
+        },
+        "volume_trend_per_week": {
+          "method": "linear_regression",
+          "significant": false,
+          "unit": "step/week",
+          "value": 0.007
+        }
+      },
+      "sufficient_data": true,
+      "window_weeks": 2
+    }
+  },
+  "agree_03": {
+    "output": {
+      "agreement": "Both agents agree that there is a significant increase in brightness level, font scale, and volume. They also agree that the caption feature is consistently used.",
+      "claims": [
+        {
+          "evidence": [
+            "trend_data.figures.brightness_pct_change",
+            "trend_data.figures.brightness_trend_per_week"
+          ],
+          "text": "There is a significant increase in brightness level by 19.366% with a weekly trend of 7.304 levels per week."
+        },
+        {
+          "evidence": [
+            "trend_data.figures.font_scale_pct_change",
+            "trend_data.figures.font_scale_trend_per_week"
+          ],
+          "text": "Font scale increased by 9.524% with a weekly trend of 0.05 x/week."
+        },
+        {
+          "evidence": [
+            "trend_data.figures.volume_pct_change",
+            "trend_data.figures.volume_trend_per_week"
+          ],
+          "text": "Volume increased by 33.788% with a weekly trend of 0.576 steps per week."
+        },
+        {
+          "evidence": [
+            "trend_data.figures.app_foreground_pct_change",
+            "trend_data.figures.app_foreground_trend_per_week"
+          ],
+          "text": "App foreground time decreased by 5.311% with a weekly trend of -1.073 minutes per week, but this change is not significant."
+        },
+        {
+          "evidence": [
+            "trend_data.figures.caption_on_rate"
+          ],
+          "text": "The caption feature is consistently used."
+        },
+        {
+          "evidence": [
+            "observations.observations[0].source_quote",
+            "observations.observations[1].source_quote",
+            "observations.observations[2].source_quote",
+            "observations.observations[3].source_quote"
+          ],
+          "text": "The user has reported asking their roommate to repeat something twice, missing the start of sentences, finding conversations in the kitchen harder to follow, and leaning in to hear people at dinner."
+        }
+      ],
+      "confidence": {
+        "cause": "low",
+        "trend": "high"
+      },
+      "disagreement": "Agent A focuses on the device usage metrics and the lack of significant changes in app foreground time, while Agent B interprets the journal entries to suggest potential hearing difficulties or changes in the individual's ability to perceive auditory information clearly.",
+      "figures_cited": [
+        {
+          "key": "brightness_pct_change",
+          "value": 19.366
+        },
+        {
+          "key": "brightness_trend_per_week",
+          "value": 7.304
+        },
+        {
+          "key": "font_scale_pct_change",
+          "value": 9.524
+        },
+        {
+          "key": "font_scale_trend_per_week",
+          "value": 0.05
+        },
+        {
+          "key": "volume_pct_change",
+          "value": 33.788
+        },
+        {
+          "key": "volume_trend_per_week",
+          "value": 0.576
+        },
+        {
+          "key": "app_foreground_pct_change",
+          "value": -5.311
+        },
+        {
+          "key": "app_foreground_trend_per_week",
+          "value": -1.073
+        }
+      ],
+      "insufficient_data": false
+    },
+    "run_id": "20260823T141829Z-44599a",
+    "trend": {
+      "figures": {
+        "app_foreground_pct_change": {
+          "method": "percent_change",
+          "significant": false,
+          "unit": "%",
+          "value": -5.311
+        },
+        "app_foreground_trend_per_week": {
+          "method": "linear_regression",
+          "significant": false,
+          "unit": "min/week",
+          "value": -1.073
+        },
+        "brightness_mode_on_rate": {
+          "method": "event_rate",
+          "unit": "ratio",
+          "value": 0.0
+        },
+        "brightness_pct_change": {
+          "method": "percent_change",
+          "significant": true,
+          "unit": "%",
+          "value": 19.366
+        },
+        "brightness_trend_per_week": {
+          "method": "linear_regression",
+          "significant": true,
+          "unit": "level/week",
+          "value": 7.304
+        },
+        "caption_on_rate": {
+          "method": "event_rate",
+          "unit": "ratio",
+          "value": 1.0
+        },
+        "font_scale_pct_change": {
+          "method": "percent_change",
+          "significant": true,
+          "unit": "%",
+          "value": 9.524
+        },
+        "font_scale_trend_per_week": {
+          "method": "linear_regression",
+          "significant": true,
+          "unit": "x/week",
+          "value": 0.05
+        },
+        "volume_pct_change": {
+          "method": "percent_change",
+          "significant": true,
+          "unit": "%",
+          "value": 33.788
+        },
+        "volume_trend_per_week": {
+          "method": "linear_regression",
+          "significant": true,
+          "unit": "step/week",
+          "value": 0.576
+        }
+      },
+      "sufficient_data": true,
+      "window_weeks": 3
+    }
+  },
+  "conflict_01": {
+    "output": {
+      "agreement": "Both agents agree that the app is used with captions on consistently.",
+      "claims": [
+        {
+          "evidence": [
+            "trend_data.figures.volume_pct_change"
+          ],
+          "text": "There is a significant increase in the volume settings of the device."
+        },
+        {
+          "evidence": [
+            "trend_data.figures.caption_on_rate"
+          ],
+          "text": "The app is used with captions on consistently."
+        },
+        {
+          "evidence": [
+            "trend_data.figures.app_foreground_pct_change",
+            "trend_data.figures.brightness_pct_change"
+          ],
+          "text": "There is no significant change in app foreground time or brightness levels."
+        },
+        {
+          "evidence": [
+            "agent_b.interpretation"
+          ],
+          "text": "The self-reported journal entries may provide insights into the individual's perceived experiences, thoughts, and feelings."
+        },
+        {
+          "evidence": [
+            "agent_b.interpretation"
+          ],
+          "text": "The self-reported journal entries might be subject to bias, memory distortions, or selective reporting."
+        }
+      ],
+      "confidence": {
+        "cause": "low",
+        "trend": "high"
+      },
+      "disagreement": "Agent A focuses on the significant increase in volume settings and the lack of significant changes in app foreground time and brightness levels, while Agent B emphasizes the potential biases and limitations of self-reported journal entries.",
+      "figures_cited": [
+        {
+          "key": "volume_pct_change",
+          "value": 29.059
+        },
+        {
+          "key": "caption_on_rate",
+          "value": 1.0
+        },
+        {
+          "key": "app_foreground_pct_change",
+          "value": 0.098
+        },
+        {
+          "key": "brightness_pct_change",
+          "value": 2.003
+        }
+      ],
+      "insufficient_data": false
+    },
+    "run_id": "20260823T141914Z-32c953",
+    "trend": {
+      "figures": {
+        "app_foreground_pct_change": {
+          "method": "percent_change",
+          "significant": false,
+          "unit": "%",
+          "value": 0.098
+        },
+        "app_foreground_trend_per_week": {
+          "method": "linear_regression",
+          "significant": false,
+          "unit": "min/week",
+          "value": 0.019
+        },
+        "brightness_pct_change": {
+          "method": "percent_change",
+          "significant": false,
+          "unit": "%",
+          "value": 2.003
+        },
+        "brightness_trend_per_week": {
+          "method": "linear_regression",
+          "significant": false,
+          "unit": "level/week",
+          "value": 0.757
+        },
+        "caption_on_rate": {
+          "method": "event_rate",
+          "unit": "ratio",
+          "value": 1.0
+        },
+        "volume_pct_change": {
+          "method": "percent_change",
+          "significant": true,
+          "unit": "%",
+          "value": 29.059
+        },
+        "volume_trend_per_week": {
+          "method": "linear_regression",
+          "significant": true,
+          "unit": "step/week",
+          "value": 0.503
+        }
+      },
+      "sufficient_data": true,
+      "window_weeks": 3
+    }
+  },
+  "conflict_02": {
+    "output": {
+      "agreement": "Both agents agree that the data shows no significant change in the percentage of time the app is in the foreground and no significant change in volume levels.",
+      "claims": [
+        {
+          "evidence": [
+            "trend_data.figures.app_foreground_pct_change.significant",
+            "trend_data.figures.app_foreground_trend_per_week.value"
+          ],
+          "text": "There is no significant change in the percentage of time the app is in the foreground, with a weekly reduction of approximately 3.55 minutes."
+        },
+        {
+          "evidence": [
+            "trend_data.figures.brightness_pct_change.significant",
+            "trend_data.figures.brightness_trend_per_week.value"
+          ],
+          "text": "There is a significant increase in brightness levels, with a weekly increase of 6.125 levels."
+        },
+        {
+          "evidence": [
+            "trend_data.figures.brightness_mode_on_rate.value",
+            "trend_data.figures.brightness_mode_on_rate.unit"
+          ],
+          "text": "There is no significant change in the rate of brightness mode being turned on."
+        },
+        {
+          "evidence": [
+            "trend_data.figures.font_scale_trend_per_week.value"
+          ],
+          "text": "There is an increase in font scale, with a weekly increase of 0.05 x."
+        },
+        {
+          "evidence": [
+            "trend_data.figures.volume_pct_change.significant",
+            "trend_data.figures.volume_trend_per_week.value"
+          ],
+          "text": "There is no significant change in volume levels, with a slight weekly decrease of 0.088 steps."
+        }
+      ],
+      "confidence": {
+        "cause": "low",
+        "trend": "high"
+      },
+      "disagreement": "Agent A interprets the data as showing a significant increase in brightness levels and an increase in font scale, while Agent B focuses on the lack of objective measurements and the reliability of self-reported data.",
+      "figures_cited": [
+        {
+          "key": "app_foreground_trend_per_week",
+          "value": -3.549
+        },
+        {
+          "key": "brightness_trend_per_week",
+          "value": 6.125
+        },
+        {
+          "key": "font_scale_trend_per_week",
+          "value": 0.05
+        },
+        {
+          "key": "volume_trend_per_week",
+          "value": -0.088
+        }
+      ],
+      "insufficient_data": false
+    },
+    "run_id": "20260823T141927Z-e0040a",
+    "trend": {
+      "figures": {
+        "app_foreground_pct_change": {
+          "method": "percent_change",
+          "significant": false,
+          "unit": "%",
+          "value": -10.775
+        },
+        "app_foreground_trend_per_week": {
+          "method": "linear_regression",
+          "significant": false,
+          "unit": "min/week",
+          "value": -3.549
+        },
+        "brightness_mode_on_rate": {
+          "method": "event_rate",
+          "unit": "ratio",
+          "value": 0.0
+        },
+        "brightness_pct_change": {
+          "method": "percent_change",
+          "significant": true,
+          "unit": "%",
+          "value": 11.421
+        },
+        "brightness_trend_per_week": {
+          "method": "linear_regression",
+          "significant": true,
+          "unit": "level/week",
+          "value": 6.125
+        },
+        "font_scale_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": 4.762
+        },
+        "font_scale_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "x/week",
+          "value": 0.05
+        },
+        "volume_pct_change": {
+          "method": "percent_change",
+          "significant": false,
+          "unit": "%",
+          "value": -3.493
+        },
+        "volume_trend_per_week": {
+          "method": "linear_regression",
+          "significant": false,
+          "unit": "step/week",
+          "value": -0.088
+        }
+      },
+      "sufficient_data": true,
+      "window_weeks": 2
+    }
+  },
+  "conflict_03": {
+    "output": {
+      "agreement": "Both agents agree that there is a significant increase in brightness levels, font scale, and volume. They also agree that captioning features are consistently enabled.",
+      "claims": [
+        {
+          "evidence": [
+            "trend_data.figures.brightness_pct_change"
+          ],
+          "text": "There is a significant increase in brightness levels by 17.624%."
+        },
+        {
+          "evidence": [
+            "trend_data.figures.brightness_trend_per_week"
+          ],
+          "text": "Brightness settings are increasing steadily by 6.686 levels per week."
+        },
+        {
+          "evidence": [
+            "trend_data.figures.font_scale_pct_change"
+          ],
+          "text": "Font scale has increased by 9.524%, indicating a preference for larger text."
+        },
+        {
+          "evidence": [
+            "trend_data.figures.volume_pct_change"
+          ],
+          "text": "Volume has risen by 28.073%, suggesting a trend towards louder audio settings."
+        },
+        {
+          "evidence": [
+            "trend_data.figures.caption_on_rate"
+          ],
+          "text": "Captioning features are consistently enabled, as indicated by the caption_on_rate of 1.0."
+        },
+        {
+          "evidence": [
+            "trend_data.figures.app_foreground_pct_change",
+            "trend_data.figures.app_foreground_trend_per_week"
+          ],
+          "text": "The device usage shows a decline in the time spent on the app by -3.098% with a weekly decrease of about 0.741 minutes, but this is not significant."
+        },
+        {
+          "evidence": [
+            "trend_data.figures.brightness_mode_on_rate"
+          ],
+          "text": "There is no use of brightness mode, as indicated by the brightness_mode_on_rate of 0.0."
+        }
+      ],
+      "confidence": {
+        "cause": "low",
+        "trend": "high"
+      },
+      "disagreement": "Agent A focuses on the significant trends in device settings, while Agent B emphasizes the limitations of the data and the reliance on subjective experiences.",
+      "figures_cited": [
+        {
+          "key": "brightness_pct_change",
+          "value": 17.624
+        },
+        {
+          "key": "brightness_trend_per_week",
+          "value": 6.686
+        },
+        {
+          "key": "font_scale_pct_change",
+          "value": 9.524
+        },
+        {
+          "key": "volume_pct_change",
+          "value": 28.073
+        },
+        {
+          "key": "caption_on_rate",
+          "value": 1.0
+        },
+        {
+          "key": "app_foreground_pct_change",
+          "value": -3.098
+        },
+        {
+          "key": "app_foreground_trend_per_week",
+          "value": -0.741
+        },
+        {
+          "key": "brightness_mode_on_rate",
+          "value": 0.0
+        }
+      ],
+      "insufficient_data": false
+    },
+    "run_id": "20260823T141958Z-8263fd",
+    "trend": {
+      "figures": {
+        "app_foreground_pct_change": {
+          "method": "percent_change",
+          "significant": false,
+          "unit": "%",
+          "value": -3.098
+        },
+        "app_foreground_trend_per_week": {
+          "method": "linear_regression",
+          "significant": false,
+          "unit": "min/week",
+          "value": -0.741
+        },
+        "brightness_mode_on_rate": {
+          "method": "event_rate",
+          "unit": "ratio",
+          "value": 0.0
+        },
+        "brightness_pct_change": {
+          "method": "percent_change",
+          "significant": true,
+          "unit": "%",
+          "value": 17.624
+        },
+        "brightness_trend_per_week": {
+          "method": "linear_regression",
+          "significant": true,
+          "unit": "level/week",
+          "value": 6.686
+        },
+        "caption_on_rate": {
+          "method": "event_rate",
+          "unit": "ratio",
+          "value": 1.0
+        },
+        "font_scale_pct_change": {
+          "method": "percent_change",
+          "significant": true,
+          "unit": "%",
+          "value": 9.524
+        },
+        "font_scale_trend_per_week": {
+          "method": "linear_regression",
+          "significant": true,
+          "unit": "x/week",
+          "value": 0.05
+        },
+        "volume_pct_change": {
+          "method": "percent_change",
+          "significant": true,
+          "unit": "%",
+          "value": 28.073
+        },
+        "volume_trend_per_week": {
+          "method": "linear_regression",
+          "significant": true,
+          "unit": "step/week",
+          "value": 0.484
+        }
+      },
+      "sufficient_data": true,
+      "window_weeks": 3
+    }
+  },
+  "null_01": {
+    "output": {
+      "agreement": "Both agents acknowledge the lack of significant trends in the data and the presence of unknown factors affecting the changes in app usage, brightness, and volume settings.",
+      "claims": [
+        {
+          "evidence": [
+            "trend_data.figures.app_foreground_pct_change"
+          ],
+          "text": "The app foreground usage has decreased by approximately 3.17% over the past three weeks."
+        },
+        {
+          "evidence": [
+            "trend_data.figures.brightness_pct_change"
+          ],
+          "text": "Brightness has decreased by about 1.85% over the past three weeks."
+        },
+        {
+          "evidence": [
+            "trend_data.figures.volume_pct_change"
+          ],
+          "text": "Volume has slightly decreased by about 0.46% over the past three weeks."
+        },
+        {
+          "evidence": [
+            "trend_data.figures.app_foreground_pct_change.significant",
+            "trend_data.figures.brightness_pct_change.significant",
+            "trend_data.figures.volume_pct_change.significant"
+          ],
+          "text": "None of the observed changes in app foreground usage, brightness, and volume are statistically significant."
+        }
+      ],
+      "confidence": {
+        "cause": "low",
+        "trend": "low"
+      },
+      "disagreement": "Agent A focuses on the slight downward trends in the behavioral data, while Agent B emphasizes the limitations of self-reported journal observations and the need for objective data to provide context.",
+      "figures_cited": [
+        {
+          "key": "app_foreground_pct_change",
+          "value": -3.172
+        },
+        {
+          "key": "brightness_pct_change",
+          "value": -1.855
+        },
+        {
+          "key": "volume_pct_change",
+          "value": -0.459
+        }
+      ],
+      "insufficient_data": true
+    },
+    "run_id": "20260823T142016Z-aac6ed",
+    "trend": {
+      "figures": {
+        "app_foreground_pct_change": {
+          "method": "percent_change",
+          "significant": false,
+          "unit": "%",
+          "value": -3.172
+        },
+        "app_foreground_trend_per_week": {
+          "method": "linear_regression",
+          "significant": false,
+          "unit": "min/week",
+          "value": -0.646
+        },
+        "brightness_pct_change": {
+          "method": "percent_change",
+          "significant": false,
+          "unit": "%",
+          "value": -1.855
+        },
+        "brightness_trend_per_week": {
+          "method": "linear_regression",
+          "significant": false,
+          "unit": "level/week",
+          "value": -0.708
+        },
+        "volume_pct_change": {
+          "method": "percent_change",
+          "significant": false,
+          "unit": "%",
+          "value": -0.459
+        },
+        "volume_trend_per_week": {
+          "method": "linear_regression",
+          "significant": false,
+          "unit": "step/week",
+          "value": -0.008
+        }
+      },
+      "sufficient_data": true,
+      "window_weeks": 3
+    }
+  },
+  "null_02": {
+    "output": {
+      "agreement": "Both agents agree that the data does not provide enough information to draw strong conclusions about the trends in device behavior.",
+      "claims": [
+        {
+          "evidence": [
+            "trend_data.figures.app_foreground_pct_change.significant",
+            "trend_data.figures.brightness_pct_change.significant",
+            "trend_data.figures.volume_pct_change.significant"
+          ],
+          "text": "There is no significant change in app foreground usage, brightness settings, or volume settings over the observed period."
+        },
+        {
+          "evidence": [
+            "agent_b.interpretation"
+          ],
+          "text": "The data consists solely of self-reported journal entries, providing insights into personal reflections, thoughts, and feelings."
+        },
+        {
+          "evidence": [
+            "agent_a.unknowns[0]"
+          ],
+          "text": "Without additional context, the reasons behind the minor changes in device behavior are unclear."
+        }
+      ],
+      "confidence": {
+        "cause": "low",
+        "trend": "low"
+      },
+      "disagreement": "Agent A focuses on the slight changes in device behavior, while Agent B emphasizes the nature of the data being self-reported journal entries.",
+      "figures_cited": [
+        {
+          "key": "app_foreground_pct_change",
+          "value": -2.137
+        },
+        {
+          "key": "brightness_pct_change",
+          "value": -1.956
+        },
+        {
+          "key": "volume_pct_change",
+          "value": 1.26
+        }
+      ],
+      "insufficient_data": true
+    },
+    "run_id": "20260823T142027Z-634d6d",
+    "trend": {
+      "figures": {
+        "app_foreground_pct_change": {
+          "method": "percent_change",
+          "significant": false,
+          "unit": "%",
+          "value": -2.137
+        },
+        "app_foreground_trend_per_week": {
+          "method": "linear_regression",
+          "significant": false,
+          "unit": "min/week",
+          "value": -1.054
+        },
+        "brightness_pct_change": {
+          "method": "percent_change",
+          "significant": false,
+          "unit": "%",
+          "value": -1.956
+        },
+        "brightness_trend_per_week": {
+          "method": "linear_regression",
+          "significant": false,
+          "unit": "level/week",
+          "value": -1.829
+        },
+        "volume_pct_change": {
+          "method": "percent_change",
+          "significant": false,
+          "unit": "%",
+          "value": 1.26
+        },
+        "volume_trend_per_week": {
+          "method": "linear_regression",
+          "significant": false,
+          "unit": "step/week",
+          "value": 0.053
+        }
+      },
+      "sufficient_data": false,
+      "window_weeks": 1
+    }
+  },
+  "sparse_01": {
+    "output": {
+      "agreement": "Both agents note a trend in the data and a communication issue with the roommate.",
+      "claims": [
+        {
+          "evidence": [
+            "trend_data.figures.app_foreground_pct_change",
+            "trend_data.figures.brightness_pct_change",
+            "trend_data.figures.volume_pct_change"
+          ],
+          "text": "The device shows a decreasing trend in app foreground usage and screen brightness over three weeks, with a slight increase in volume settings."
+        },
+        {
+          "evidence": [
+            "trend_data.figures.caption_on_rate"
+          ],
+          "text": "The caption feature is consistently enabled."
+        },
+        {
+          "evidence": [
+            "observations.observations[0].source_quote"
+          ],
+          "text": "The observation suggests there was a communication difficulty or clarity issue with the roommate on the mentioned day."
+        }
+      ],
+      "confidence": {
+        "cause": "low",
+        "trend": "high"
+      },
+      "disagreement": "Agent A focuses on the behavioral data showing changes in device usage, while Agent B focuses on the journal entry indicating a communication difficulty.",
+      "figures_cited": [
+        {
+          "key": "app_foreground_pct_change",
+          "value": -11.014
+        },
+        {
+          "key": "brightness_pct_change",
+          "value": -3.497
+        },
+        {
+          "key": "volume_pct_change",
+          "value": 25.112
+        },
+        {
+          "key": "caption_on_rate",
+          "value": 1.0
+        }
+      ],
+      "insufficient_data": false
+    },
+    "run_id": "20260823T142037Z-d8d436",
+    "trend": {
+      "figures": {
+        "app_foreground_pct_change": {
+          "method": "percent_change",
+          "significant": false,
+          "unit": "%",
+          "value": -11.014
+        },
+        "app_foreground_trend_per_week": {
+          "method": "linear_regression",
+          "significant": false,
+          "unit": "min/week",
+          "value": -2.447
+        },
+        "brightness_pct_change": {
+          "method": "percent_change",
+          "significant": true,
+          "unit": "%",
+          "value": -3.497
+        },
+        "brightness_trend_per_week": {
+          "method": "linear_regression",
+          "significant": true,
+          "unit": "level/week",
+          "value": -1.347
+        },
+        "caption_on_rate": {
+          "method": "event_rate",
+          "unit": "ratio",
+          "value": 1.0
+        },
+        "volume_pct_change": {
+          "method": "percent_change",
+          "significant": true,
+          "unit": "%",
+          "value": 25.112
+        },
+        "volume_trend_per_week": {
+          "method": "linear_regression",
+          "significant": true,
+          "unit": "step/week",
+          "value": 0.445
+        }
+      },
+      "sufficient_data": true,
+      "window_weeks": 3
+    }
+  },
+  "sparse_02": {
+    "output": {
+      "agreement": "Both agents note the significant increase in brightness settings and the lack of significant changes in app usage time and volume settings. They also acknowledge the slight increase in font scale.",
+      "claims": [
+        {
+          "evidence": [
+            "trend_data.figures.brightness_pct_change",
+            "trend_data.figures.brightness_trend_per_week"
+          ],
+          "text": "There is a significant increase in brightness settings, with a 13.18% change and a 7.036 level/week trend."
+        },
+        {
+          "evidence": [
+            "trend_data.figures.app_foreground_pct_change",
+            "trend_data.figures.app_foreground_trend_per_week"
+          ],
+          "text": "There is no significant change in app usage time, with a -9.029% change and a -3.034 min/week trend."
+        },
+        {
+          "evidence": [
+            "trend_data.figures.font_scale_pct_change",
+            "trend_data.figures.font_scale_trend_per_week"
+          ],
+          "text": "There is a slight increase in font scale, with a 4.762% change and a 0.05 x/week trend."
+        },
+        {
+          "evidence": [
+            "trend_data.figures.volume_pct_change",
+            "trend_data.figures.volume_trend_per_week"
+          ],
+          "text": "There is no significant change in volume settings, with a 3.561% change and a 0.086 step/week trend."
+        },
+        {
+          "evidence": [
+            "trend_data.figures.brightness_mode_on_rate"
+          ],
+          "text": "The brightness mode on rate is 0, indicating no use of brightness modes during the observation period."
+        }
+      ],
+      "confidence": {
+        "cause": "low",
+        "trend": "high"
+      },
+      "disagreement": "Agent A provides specific numerical data and trends from the device usage, while Agent B focuses on the limitations of the journal observations, which are based on self-reported information and lack objective device data.",
+      "figures_cited": [
+        {
+          "key": "app_foreground_pct_change",
+          "value": -9.029
+        },
+        {
+          "key": "app_foreground_trend_per_week",
+          "value": -3.034
+        },
+        {
+          "key": "brightness_mode_on_rate",
+          "value": 0.0
+        },
+        {
+          "key": "brightness_pct_change",
+          "value": 13.18
+        },
+        {
+          "key": "brightness_trend_per_week",
+          "value": 7.036
+        },
+        {
+          "key": "font_scale_pct_change",
+          "value": 4.762
+        },
+        {
+          "key": "font_scale_trend_per_week",
+          "value": 0.05
+        },
+        {
+          "key": "volume_pct_change",
+          "value": 3.561
+        },
+        {
+          "key": "volume_trend_per_week",
+          "value": 0.086
+        }
+      ],
+      "insufficient_data": false
+    },
+    "run_id": "20260823T142106Z-887346",
+    "trend": {
+      "figures": {
+        "app_foreground_pct_change": {
+          "method": "percent_change",
+          "significant": false,
+          "unit": "%",
+          "value": -9.029
+        },
+        "app_foreground_trend_per_week": {
+          "method": "linear_regression",
+          "significant": false,
+          "unit": "min/week",
+          "value": -3.034
+        },
+        "brightness_mode_on_rate": {
+          "method": "event_rate",
+          "unit": "ratio",
+          "value": 0.0
+        },
+        "brightness_pct_change": {
+          "method": "percent_change",
+          "significant": true,
+          "unit": "%",
+          "value": 13.18
+        },
+        "brightness_trend_per_week": {
+          "method": "linear_regression",
+          "significant": true,
+          "unit": "level/week",
+          "value": 7.036
+        },
+        "font_scale_pct_change": {
+          "method": "percent_change",
+          "unit": "%",
+          "value": 4.762
+        },
+        "font_scale_trend_per_week": {
+          "method": "linear_regression",
+          "unit": "x/week",
+          "value": 0.05
+        },
+        "volume_pct_change": {
+          "method": "percent_change",
+          "significant": false,
+          "unit": "%",
+          "value": 3.561
+        },
+        "volume_trend_per_week": {
+          "method": "linear_regression",
+          "significant": false,
+          "unit": "step/week",
+          "value": 0.086
+        }
+      },
+      "sufficient_data": true,
+      "window_weeks": 2
+    }
+  }
+}

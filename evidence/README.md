@@ -52,3 +52,28 @@ observations, Agent B still produced a confident paragraph *about* self-reported
 data it did not have. It invents no specific facts, but it does not say "nothing was
 provided" either. Node 5 must not read that fluency as evidence — which is what the
 evidence-binding validator is for.
+
+## `node_05-grounded-synthesis/`
+
+The live twelve-case Node 5 run behind Metrics 1, 2 and 3, including every repair attempt.
+`tests/test_synthesis.py` reads it directly, so the scores below are re-derived on every
+test run by the same functions that enforced them during the run.
+
+| Metric | Result | Denominator |
+| --- | --- | --- |
+| 1 — numeric pass-through | 1.000 | 104 numbers |
+| 2 — abstention matches significance | 1.000 | 24 checks |
+| 3 — evidence binding | 1.000 | 90 references |
+
+Two cases needed a repair, and they are the useful part of this directory, because they
+show the validators doing work rather than agreeing with a model that was already right:
+
+- **agree_03** — `NumericError: claims[4].text: the number '100' was not computed by the
+  statistics engine`. The engine reports `caption_on_rate` as `1.0`; the node wrote it as a
+  percentage. Repaired on the retry.
+- **conflict_02** — `EvidenceError: 'trend_data.figures.font_scale_pct_change.significant':
+  no field 'significant'`. That figure comes from a two-point series, so the engine returns
+  no significance verdict for it, and the citation pointed at a field that does not exist.
+  Repaired on the retry.
+
+Every run ends on a successful attempt. Nothing here was scored after being allowed through.
