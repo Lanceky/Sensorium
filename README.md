@@ -119,6 +119,58 @@ Two of the three prompt defects found so far were a prompt disagreeing with its 
 validator, so the fix is structural rather than editorial: derive the instruction from the
 schema, and the text the model is held to cannot drift from the check that holds it there.
 
+## Two blind agents, and the proof they are blind
+
+Node 4 runs the same question past two agents at once. Agent A sees the statistics with no
+story attached; Agent B sees the user's own words with no numbers attached. Neither is told
+the other exists. When they land in the same place, that agreement carries information,
+because neither could have reached it by reading the other's evidence.
+
+That argument is worth exactly as much as the blindness is real, so `eval/independence.py`
+measures it on every run: it rebuilds the full context window each agent actually received
+— system prompt, generated contract and payload — and searches each for the other's
+fingerprints.
+
+The obvious way to write that check is worthless:
+
+```python
+assert not any(term in payload_a for term in journal_terms)
+```
+
+If `journal_terms` comes back empty, that line passes while looking at nothing, and it
+passes brightly, in green. So every check here is two-sided: the terms that must be absent
+from one agent must be **found in the other**, and `assert_blind` refuses to return a
+passing report if the fingerprint list is empty or its positive control never fired.
+
+Across all twelve cases: **no journal phrase reached Agent A, no trend figure reached Agent
+B, and the controls fired.** The journal-side control fires on exactly the six cases where
+Node 2 extracted at least one observation — a correspondence predicted independently by the
+extraction counts, so the two measurements corroborate each other.
+
+There is a schema half to this too — `node_04a.input.json` sets `additionalProperties:
+false`, so journal text attached as a new field fails validation before any request is sent
+— but it is worth being precise about what that does and does not buy. It closes the
+accidental route. It cannot close every route, because some permitted fields are free-form
+strings: every figure carries a `unit`, and a journal sentence sitting in a `unit` is a
+perfectly schema-valid payload. The runtime check is what catches that, and the test suite
+pins the division of labour by running the same smuggled payload past both.
+
+The clearest evidence is in the replies themselves. On the conflict cases Agent B writes
+that "the available data consists solely of self-reported journal entries" and lists device
+data among its unknowns, while Agent A reasons about volume and brightness and never
+mentions a journal. The requests are committed under `evidence/node_04-blind-agents/`, and
+the test suite reads them from there, so the proof re-runs on every `pytest` rather than
+resting on a claim about a terminal I once had open.
+
+The first version of this check reported a leak on all twelve cases. Every one was false:
+it searched for rounded copies of each figure, which turned `caption_on_rate` of 1.0 into
+the term `"1"`, which duly matched `"minLength": 1` in the schema contract every agent is
+sent. A one-character fingerprint is not a fingerprint. Rounding tolerance belongs to Node
+5's output fidelity, not to an input window that contains the engine's exact values or
+nothing — and the same run demonstrates it there, with Agent A writing "38.46%" for a
+`volume_pct_change` of `38.458`. Both the degenerate terms and the three-word phrase floor
+are now pinned by mutation tests; restoring either mistake turns the suite red.
+
 ## Layout
 
 ```
