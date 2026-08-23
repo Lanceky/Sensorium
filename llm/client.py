@@ -35,6 +35,23 @@ REPAIR_INSTRUCTION = (
     "Return only the corrected JSON object. No prose, no explanation, no code fences."
 )
 
+#: Appended to every system prompt, generated from the schema that validates the reply.
+#: The prompts in ``prompts/`` are transcribed verbatim from the design doc and describe
+#: *behaviour* -- tone, question count, what never to say. None of them stated an output
+#: shape, because the design doc declared schemas in a separate section that never reached
+#: the model. The first live call returned a perfectly good check-in question as plain
+#: prose, and the repair attempt then invented a schema by echoing the input keys back.
+#:
+#: Generating this from the schema rather than writing it into each prompt keeps one
+#: source of truth: the text the model is held to and the validator that holds it there
+#: cannot disagree, however either changes.
+CONTRACT_INSTRUCTION = (
+    "\n\nRespond with a single JSON object that validates against this JSON Schema:\n"
+    "{schema}\n\n"
+    "Output only that JSON object. No prose before or after it, no code fences, and no "
+    "keys beyond those in the schema."
+)
+
 #: Node 4's two agents share one output schema on purpose: identical shape is what makes
 #: their conclusions comparable, and comparability is what turns disagreement into a
 #: measurable signal instead of a formatting difference.
@@ -224,6 +241,7 @@ def call_node(
         # Not the model's mistake, so it happens before the call and is never repaired.
         schemas.validate(in_schema, payload)
     out_schema = output_schema_for(node)
+    system_prompt += CONTRACT_INSTRUCTION.format(schema=schemas.contract_text(out_schema))
 
     messages: list[dict[str, str]] = [
         {"role": "system", "content": system_prompt},
