@@ -124,3 +124,49 @@ it; if the table and the artifact ever disagree, the suite fails.
   `{url, excerpt}` pairs the citations were scored against, so a clean clone reproduces the
   measurement with no network and no API key. The cache holds full third-party page text and
   is not ours to redistribute.
+- **This run was regenerated after the refusal clause changed.** The clause used to open
+  with a literal `[refusal_boundary v1]` tag, which meant the safety gate turned on
+  transcribing a version marker rather than on the safety text. Removing it invalidated
+  every stored report, so Nodes 6 and 10 were re-run rather than leaving evidence on disk
+  that the current code would score as failing.
+
+## `harness/` — Step 9
+
+The three-arm comparison: `baseline_plain` (one prompt), `baseline_checked` (one prompt plus
+the identical validators) and `pipeline` (the workflow). 72 measurements — 12 cases per arm,
+plus the 2 adversarial cases and 1 consistency case run 5× each.
+
+- `raw.json` — every measurement, with the payload it was scored against and the fingerprint
+  of the prompts and routing that produced it.
+- `metrics.json` — the aggregate scores.
+- `results.md` — the rendered table, including its own caveats.
+
+Read these alongside the caveats in the table itself:
+
+- **The middle arm exists to attack the headline claim.** "The workflow beats a single
+  prompt" is not a fair statement if the workflow also has validators and the single prompt
+  does not. `baseline_checked` is the same single prompt with the same checks, so the table
+  separates *what decomposition bought* from *what checking bought*. On this evidence most
+  of the difference is checking.
+- **Fairness is asserted in code, not in prose.** `tests/test_harness.py` fails if anyone
+  trims the baseline's inputs, downgrades its model, or drops a rule from its prompt. The
+  baseline is routed to the largest model, at temperature 0, and is handed the same engine
+  figures with the same significance flags.
+- **Evidence binding is not a clean head-to-head cell.** The pipeline has verified
+  intermediates to cite; the single prompt has none, because it makes one call. Each arm is
+  scored against the inputs it actually received, which favours the pipeline. The rendered
+  table says so rather than banking the difference.
+- **The single prompt's citation failure is not a hallucinated URL.** It cited
+  `https://www.nidcd.nih.gov/health/over-counter-hearing-aids`, a page that exists and is
+  on-topic, but that had not been retrieved that run. That is the harder failure to catch:
+  nothing in the prose distinguishes a source the model was handed from one it remembered,
+  and no claim resting on it was ever checked against its contents. The same prompt on the
+  same model scored 1.000 with the validator attached.
+- **The workflow loses coverage stability.** 0.657 against 0.900 and 1.000. Five runs of
+  one input mentioned 1, 1, 2, 2 and 7 figures. No verdict moved and no run contradicted
+  another, so nothing unsafe happened, but the pipeline is measurably more variable in how
+  much it says. It is in the table at full size.
+- **Cached measurements are fingerprinted.** An earlier table showed both baseline arms at
+  0/10 on safety adherence. They had not regressed — their cached replies predated a change
+  to the refusal clause and were being marked wrong for not anticipating it. The cache now
+  refuses to return an entry produced by different prompts, models or temperatures.

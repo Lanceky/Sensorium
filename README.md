@@ -255,6 +255,56 @@ and destroy the measurement — "did the model reproduce the safety clause" cann
 by an author who pasted it in. With the check corrected, all twelve reports opened correctly
 on the first attempt, with zero repairs.
 
+## What the fair fight actually showed
+
+Three arms, 72 measurements: one prompt alone, the same prompt with the identical
+validators, and the workflow. Fairness is asserted in `tests/test_harness.py`, not promised
+here — the suite fails if anyone trims the baseline's inputs, downgrades its model or drops
+a rule from its prompt. The baseline runs on the largest model at temperature 0 and is
+handed the same engine figures with the same significance flags.
+
+| Metric | Single prompt | + validators | Sensorium |
+|---|---|---|---|
+| Numeric fidelity | 1.000 (69) | 1.000 (72) | 1.000 (57) |
+| Citation validity | **0.970 (33)** | 1.000 (33) | 1.000 (20) |
+| Safety adherence | 1.000 (10) | 1.000 (10) | 1.000 (10) |
+| Non-diagnostic language | 1.000 (10) | 1.000 (10) | 1.000 (10) |
+| Evidence binding | 1.000 (63) | 1.000 (60) | 1.000 (74) |
+| Abstention correctness | 1.000 (24) | 1.000 (24) | 1.000 (24) |
+| Conflict surfaced | 0.333 (3) | 0.667 (3) | **1.000 (3)** |
+| Quiet when they agree | 1.000 (9) | 1.000 (9) | 1.000 (9) |
+| Contradiction-free (5×) | 1.000 (5) | 1.000 (5) | 1.000 (5) |
+| Coverage stability (5×) | 0.900 (5) | 1.000 (5) | **0.657 (5)** |
+
+**Most rows tie, and that is the finding.** Numeric fidelity, safety, abstention and
+non-diagnostic language are 1.000 everywhere. The workflow did not buy them. The
+deterministic engine and the validators did, and a single prompt handed the same figures
+and the same checks reaches the same place. Anyone claiming decomposition is what makes an
+LLM trustworthy should have to explain this table.
+
+**The ablation is where the checking shows up.** The single prompt cited
+`https://www.nidcd.nih.gov/health/over-counter-hearing-aids` on `sparse_01`. That page is
+real — it returns 200 — and it is on-topic, which is what makes it dangerous rather than
+merely wrong. The model reached into training memory for a plausible source instead of
+citing what it had been given, and nothing in the text marks the difference. The same
+prompt, same model and same temperature scored 1.000 the moment the validator was attached,
+because the check caught it and the repair loop replaced it. One prompt, one model, one
+difference: 0.970 → 1.000.
+
+**Where the architecture actually wins is conflict detection**, at 3/3 with 9/9
+specificity, against 1/3 and 2/3 for the single prompt. The conflicting cases are the ones
+where the device measured a significant change and the user reported noticing nothing. The
+single prompt sees both halves at once and smooths them into one coherent narrative; it is
+not lying, it is doing what a fluent writer does with two facts that sit awkwardly together.
+Splitting the evidence between two agents that cannot see each other's half is what keeps
+the tension intact long enough for something downstream to report it.
+
+**And the workflow loses a row.** Coverage stability is 0.657 against 0.900 and 1.000 — five
+runs of one input mentioned 1, 1, 2, 2 and 7 figures. No run contradicted another and no
+verdict moved, so nothing unsafe happened, but the pipeline is measurably more variable in
+how much it chooses to say. More stages mean more places for scope to drift. That number is
+in the table at full size.
+
 ## What 1.000 does not mean
 
 Citation validity, safety adherence and provenance preservation all scored 1.000 across the
@@ -275,6 +325,71 @@ citations.
 
 And 1.000 on safety is twelve ordinary reports, not a red team. The diagnosis-baiting
 pressure test belongs to the next step and is not claimed yet.
+
+## The agent that wasn't there
+
+Every metric above read 1.000 while one of the two blind agents was, on a third of the
+cases, saying nothing at all. Nothing in the scoreboard showed it. This is the most useful
+thing the evaluation harness found, and it was found by reading a failing case rather than
+by tuning a prompt.
+
+The conflict cases are built so that the device readings show a significant change while
+the user's journal says *"everything felt pretty normal this week"*. That gap is the whole
+point of those cases — and of the product. When the synthesis node reported no
+disagreement on all three of them, the obvious move was to sharpen its prompt. Instead,
+here is what the narrative agent had actually said:
+
+> The available data consists solely of self-reported journal entries, which may provide
+> insights into the subject's perceived experiences, thoughts, and feelings but lacks
+> objective measurement.
+
+with unknowns listing heart rate variability and dietary intake — signals this system does
+not collect. The agent was not reasoning about a person. It was describing the shape of
+its input, because its input was `{"observations": []}`.
+
+"Everything felt normal" describes no difficulty, so Node 2 correctly extracted no
+observations. And an empty list cannot tell **the user reported noticing nothing wrong**
+apart from **we have no journal at all**. The synthesis node was following its instructions
+exactly — one agent being silent is not a contradiction — and it was right. The evidence
+had been destroyed two nodes upstream, by a schema that could only represent problems.
+
+The fix is at the source. Node 2 now returns `no_symptom_statements` beside `observations`,
+carrying the same verbatim-quote verification, so a reassurance is recorded as evidence
+rather than as absence. The narrative agent is told that an empty observations list next to
+a non-empty no-symptom list is a person reporting no difficulty. It now says:
+
+> The user reported noticing no difficulty on 3 occasions this week.
+
+against the trend agent's *"the volume setting has increased significantly over the past
+three weeks"*. Those two statements are not logical opposites, which is exactly why the
+synthesis node had to be taught to recognise the pattern by name: a measured change the
+person has not perceived. That is not an edge case in this product. It is the reason the
+product exists.
+
+## The safety gate that turned on a version number
+
+The refusal clause used to begin with a literal `[refusal_boundary v1]` tag. A live report
+was rejected twice because the model wrote `[refusal_boundary_v1]`, with an underscore — a
+one-character slip on a token carrying no safety meaning whatsoever, scored identically to
+omitting the entire disclosure. The tag was also being printed to the person reading the
+report.
+
+The version now lives in the filename and in a comment line that `refusal_boundary()`
+strips, so the string the model must reproduce is exactly the three sentences that do the
+work. The mutation test asserting that *stripping the version tag* must fail was deleted
+rather than updated: it had pinned the defect in place instead of the guarantee.
+
+## A cached measurement is only good while the system hasn't changed
+
+Editing the refusal clause once produced a results table in which both single-prompt arms
+scored 0/10 on safety adherence. They had not regressed. Their replies were still in the
+harness cache from before the edit, and were being marked wrong for failing to anticipate a
+change made after they were written.
+
+Every cached measurement now records a fingerprint of the prompt text, prompt version,
+model and temperature of every node, plus the refusal clause. The cache refuses to return
+an entry whose fingerprint no longer matches, and the harness reports how many stale
+measurements it is discarding rather than mixing two systems into one table.
 
 ## Layout
 
