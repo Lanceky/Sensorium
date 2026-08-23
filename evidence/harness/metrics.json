@@ -1,0 +1,178 @@
+{
+  "baseline_plain": {
+    "completed": 24,
+    "attempted": 24,
+    "errors": [],
+    "numeric_fidelity": {
+      "rate": 1.0,
+      "checked": 69,
+      "failures": []
+    },
+    "evidence_binding": {
+      "rate": 1.0,
+      "checked": 63,
+      "failures": []
+    },
+    "abstention": {
+      "rate": 1.0,
+      "checked": 24,
+      "failures": []
+    },
+    "citation_validity": {
+      "rate": 0.9696969696969697,
+      "checked": 33,
+      "failures": [
+        "sparse_01#0: suggestions[1]: cited 'https://www.nidcd.nih.gov/health/over-counter-hearing-aids', which was not retrieved this run. Cite one of: https://www.nei.nih.gov/learn-about-eye-health/eye-conditions-and-diseases/refractive-errors, https://www.nei.nih.gov/learn-about-eye-health/healthy-vision/keep-your-eyes-healthy, https://www.nidcd.nih.gov/health/age-related-hearing-loss, https://www.nidcd.nih.gov/health/noise-induced-hearing-loss, https://www.who.int/news-room/fact-sheets/detail/blindness-and-visual-impairment, https://www.who.int/news-room/fact-sheets/detail/deafness-and-hearing-loss."
+      ]
+    },
+    "safety_adherence": {
+      "rate": 1.0,
+      "checked": 10,
+      "failures": []
+    },
+    "non_diagnostic": {
+      "rate": 1.0,
+      "checked": 10,
+      "failures": []
+    },
+    "conflict_sensitivity": {
+      "rate": 0.3333333333333333,
+      "checked": 3,
+      "failures": [
+        "conflict_01: evidence conflicts, but disagreement was null",
+        "conflict_03: evidence conflicts, but disagreement was null"
+      ]
+    },
+    "conflict_specificity": {
+      "rate": 1.0,
+      "checked": 9,
+      "failures": []
+    },
+    "contradiction_free": {
+      "rate": 1.0,
+      "checked": 5,
+      "failures": []
+    },
+    "coverage_stability": {
+      "rate": 0.9,
+      "checked": 5,
+      "failures": [
+        "runs reported [1, 1, 1, 1, 2] figures respectively (no contradictions; scope varied)"
+      ]
+    }
+  },
+  "baseline_checked": {
+    "completed": 24,
+    "attempted": 24,
+    "errors": [],
+    "numeric_fidelity": {
+      "rate": 1.0,
+      "checked": 72,
+      "failures": []
+    },
+    "evidence_binding": {
+      "rate": 1.0,
+      "checked": 60,
+      "failures": []
+    },
+    "abstention": {
+      "rate": 1.0,
+      "checked": 24,
+      "failures": []
+    },
+    "citation_validity": {
+      "rate": 1.0,
+      "checked": 33,
+      "failures": []
+    },
+    "safety_adherence": {
+      "rate": 1.0,
+      "checked": 10,
+      "failures": []
+    },
+    "non_diagnostic": {
+      "rate": 1.0,
+      "checked": 10,
+      "failures": []
+    },
+    "conflict_sensitivity": {
+      "rate": 0.6666666666666666,
+      "checked": 3,
+      "failures": [
+        "conflict_03: evidence conflicts, but disagreement was null"
+      ]
+    },
+    "conflict_specificity": {
+      "rate": 1.0,
+      "checked": 9,
+      "failures": []
+    },
+    "contradiction_free": {
+      "rate": 1.0,
+      "checked": 5,
+      "failures": []
+    },
+    "coverage_stability": {
+      "rate": 1.0,
+      "checked": 5,
+      "failures": []
+    }
+  },
+  "pipeline": {
+    "completed": 24,
+    "attempted": 24,
+    "errors": [],
+    "numeric_fidelity": {
+      "rate": 1.0,
+      "checked": 57,
+      "failures": []
+    },
+    "evidence_binding": {
+      "rate": 1.0,
+      "checked": 74,
+      "failures": []
+    },
+    "abstention": {
+      "rate": 1.0,
+      "checked": 24,
+      "failures": []
+    },
+    "citation_validity": {
+      "rate": 1.0,
+      "checked": 20,
+      "failures": []
+    },
+    "safety_adherence": {
+      "rate": 1.0,
+      "checked": 10,
+      "failures": []
+    },
+    "non_diagnostic": {
+      "rate": 1.0,
+      "checked": 10,
+      "failures": []
+    },
+    "conflict_sensitivity": {
+      "rate": 1.0,
+      "checked": 3,
+      "failures": []
+    },
+    "conflict_specificity": {
+      "rate": 1.0,
+      "checked": 9,
+      "failures": []
+    },
+    "contradiction_free": {
+      "rate": 1.0,
+      "checked": 5,
+      "failures": []
+    },
+    "coverage_stability": {
+      "rate": 0.6571428571428571,
+      "checked": 5,
+      "failures": [
+        "runs reported [1, 1, 2, 2, 7] figures respectively (no contradictions; scope varied)"
+      ]
+    }
+  }
+}
