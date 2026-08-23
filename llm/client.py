@@ -20,7 +20,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
-from typing import Any, Protocol
+from typing import Any, Callable, Protocol
 
 from sensorium import config, prompts, runlog, schemas
 
@@ -192,8 +192,23 @@ def call_node(
     transport: Transport,
     seed: int | None = DEFAULT_SEED,
     max_repairs: int = 1,
+    post_validate: Callable[[Any], None] | None = None,
+    log_as: str | None = None,
 ) -> Any:
     """Run one LLM node and return its validated output.
+
+    ``post_validate`` carries the checks JSON Schema cannot express — that a quote really
+    appears in the source, that a cited figure really exists in Node 3's registry. It runs
+    *inside* the repair loop and must raise ``MalformedOutputError`` on failure, because a
+    fabricated quote is malformed output in every sense that matters here. Putting it
+    inside means a semantic violation earns the same repair attempt a syntax error does,
+    and lands in the run log identically.
+
+    ``log_as`` renames the call in the run log without changing routing, for the one node
+    that legitimately runs more than once per session. Node 1's two turns must share a
+    model, prompt and temperature — that is what makes them one node — but they need
+    distinct log keys, because ``runlog.load_call`` treats repeated entries under one name
+    as an ambiguity it refuses to guess at.
 
     Raises ``schemas.SchemaError`` if *we* built a bad payload, ``TransportError`` if the
     provider failed, and ``LLMError`` if the model could not produce contract-valid output
@@ -202,6 +217,7 @@ def call_node(
     cfg = config.get_node_config(node)
     model = config.resolve_model(node)
     system_prompt = prompts.load_prompt(node, cfg.prompt_version)
+    log_node = log_as or node
 
     in_schema = input_schema_for(node)
     if in_schema is not None:
@@ -217,7 +233,7 @@ def call_node(
     failure: Exception | None = None
     for attempt in range(1, max_repairs + 2):
         with runlog.timed_call(
-            run_id, node, model, cfg.temperature, cfg.prompt_version, payload, attempt
+            run_id, log_node, model, cfg.temperature, cfg.prompt_version, payload, attempt
         ) as slot:
             raw = transport.complete(
                 model=model,
@@ -229,6 +245,8 @@ def call_node(
             try:
                 parsed = extract_json(raw)
                 schemas.validate(out_schema, parsed)
+                if post_validate is not None:
+                    post_validate(parsed)
             except (MalformedOutputError, schemas.SchemaError) as exc:
                 failure = exc
                 slot["error"] = f"{type(exc).__name__}: {exc}"
