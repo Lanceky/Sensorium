@@ -402,6 +402,8 @@ llm/          Featherless client + repair retry
 stats/        engine.py · deterministic trend and change-point maths
 retrieval/    Firecrawl client · committed snapshot · cache (gitignored)
 eval/         generator.py · cases/ · validators, harness, fair baseline
+serve/        FastAPI surface over the nodes — the Android app's backend
+android/      The Android client: passive signal capture and the check-in
 runs/         Append-only call logs — the submission's evidence (gitignored)
 evidence/     The run logs the iteration log cites, kept so they can be read
 tests/        Contract tests + hand-written fixtures
@@ -446,8 +448,84 @@ cp .env.example .env    # then fill in your keys — never commit .env
 pytest
 ```
 
-## Why `runs/` matters
+## The app, and what a real phone reported
 
+The workflow was built against generated cases, so the obvious question is whether the
+signals it consumes exist outside the generator. `android/` answers it: a small Views app
+that reads the four passive signals from the device it is running on and posts them to
+`serve/`, which calls the same nodes, prompts, model routing and validators this
+repository measures. Nothing is reimplemented in Kotlin. The app is a client of the
+workflow, so a guarantee in the results table is a guarantee about what the phone shows.
+
+**Every signal is read without a single permission prompt.** Media volume from
+`AudioManager`, screen brightness and adaptive-brightness mode from `Settings.System`,
+font scale from the `Configuration`, captions from `Settings.Secure`. `INTERNET` is the
+only permission in the manifest and it exists to reach the service. `app_foreground`
+appears in the workflow's data model but *not* in the app, because on Android it needs
+`PACKAGE_USAGE_STATS` special access — the engine treats a missing signal as missing
+rather than as zero, so dropping it costs a figure and corrupts nothing.
+
+The split is on-device capture, off-device reasoning. The phone reaches the service over
+`adb reverse`, so the demo needs no network, no tunnel and no public server, the handset
+never holds an API key, and journal text crosses the boundary only when a person presses
+the button that says it will.
+
+**What the live run showed.** On a Samsung SM-A035F, seeded from that device's own
+readings, the report carried a figure worth putting on a slide:
+
+| Figure | Value | Verdict |
+|---|---|---|
+| brightness pct change | 23.09 % | significant |
+| font scale pct change | 25.176 % | significant |
+| **volume pct change** | **318.547 %** | **not significant** |
+| caption on rate | 0.0 ratio | not testable in this window |
+
+A 318% change reported as *not significant* is the whole argument in one row. The phone's
+volume was near zero and moved by a step, so the percentage is enormous and the trend is
+noise — and because significance is computed by `stats/engine.py` and not by a model, no
+amount of persuasive phrasing downstream can promote it to a finding. Node 5 wrote "there
+is no detected change in volume settings" while that 318% sat on screen above it.
+
+The fourth row is a distinction this repository had to fix twice. The engine reports
+significance as **three** states — true, false, and *could not test* — and sets the last
+when a window cannot answer whether a slope differs from zero. The first version of
+`serve/api.py` wrote `bool(figure.get("significant", False))`, which quietly turned *we
+could not test this* into *we tested this and it is noise*. That is a stronger claim than
+the data supports, made by a display layer, which is exactly the failure the project
+exists to prevent. `tests/test_serve.py` now pins all three states, and reverting the fix
+fails two tests.
+
+### Running it
+
+```bash
+python -m serve.api                    # from the repo root; listens on 127.0.0.1:8765
+adb reverse tcp:8765 tcp:8765          # the phone's loopback, forwarded to this machine
+gradle -p android assembleDebug
+adb install -r android/app/build/outputs/apk/debug/app-debug.apk
+```
+
+`python -m serve.smoke` runs the same payload the phone sends, without the phone, and is
+the fastest way to check the service before a demo. It is a smoke test and not a
+measurement: claims come from `eval/`, and one live run is not evidence.
+
+`android/local.properties` is machine-local and gitignored; create it with
+`sdk.dir=/path/to/Android/Sdk`.
+
+### Seeded history is labelled, not laundered
+
+A trend needs weeks and a demo cannot wait weeks, so the app can seed four weeks of
+history. Three things keep that honest. The seeded series is anchored on the device's
+**real current readings** and drifts backwards from them, so it ends where the phone
+actually is. Noise is added deliberately, because a perfect fit makes a significance test
+a statement about the generator rather than the data. And seeded samples are stored under
+their own flag, counted separately, and shown separately on screen — `2 recorded · 16
+seeded` — so a seeded number is never mistaken for a measured one.
+
+The drift selector offers a flat history as well as a rising one, so the demo can show the
+system declining to report a trend. A workflow that only ever has a finding to announce
+has not been shown capable of saying there isn't one.
+
+## Why `runs/` matters
 `runs/<run_id>/calls.jsonl` records every node invocation — model, temperature, prompt
 version, exact input payload, raw output, latency. It is not debug output. It is the
 primary evidence artifact: Node 4's independence is proved from the *actual* payloads
