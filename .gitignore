@@ -25,3 +25,11 @@ venv/
 .idea/
 .vscode/
 retrieval/cache/
+
+# Android build outputs and machine-local SDK path
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.kotlin/
+*.apk
